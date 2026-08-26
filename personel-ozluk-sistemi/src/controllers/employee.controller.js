@@ -5,6 +5,7 @@ const XLSX = require('xlsx');
 const prisma = require('../config/prisma');
 
 const ApiError = require('../utils/ApiError');
+const { assertEmployeeAccess } = require('../policies/employee-object-access.policy');
 
 
 /* ============================================================
@@ -5796,6 +5797,11 @@ async function getById(
   req,
   res
 ) {
+
+  await assertEmployeeAccess(
+    req,
+    req.params.id
+  );
 
   const employee =
     await prisma.employee.findFirst({
