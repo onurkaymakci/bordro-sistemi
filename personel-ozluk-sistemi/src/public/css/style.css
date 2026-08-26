@@ -1,0 +1,47 @@
+.navbar{
+    background:white;
+    height:70px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    border-bottom:1px solid #e5e7eb;
+}
+
+.nav-logo{
+    height:40px;
+    width:auto;
+}
+
+.navbar-center{
+    flex:1;
+    display:flex;
+    justify-content:center;
+}
+
+.search-box{
+    width:400px;
+    height:42px;
+    padding:0 15px;
+    border:1px solid #dbe4f0;
+    border-radius:10px;
+}
+
+.navbar-right{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.logout-btn{
+    background:#ef4444;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.logout-btn:hover{
+    background:#dc2626;
+}

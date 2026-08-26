@@ -1,0 +1,338 @@
+Environment variables loaded from .env
+Prisma schema loaded from prisma/schema.prisma
+
+Error: Prisma schema validation - (validate wasm)
+Error code: P1012
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:391[0m
+[1;94m   | [0m
+[1;94m390 | [0m
+[1;94m391 | [0m  [1;91mparentUnit OrganizationUnit? @relation([0m
+[1;94m392 | [0m    "OrganizationUnitHierarchy",
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:392[0m
+[1;94m   | [0m
+[1;94m391 | [0m  parentUnit OrganizationUnit? @relation(
+[1;94m392 | [0m    [1;91m"OrganizationUnitHierarchy",[0m
+[1;94m393 | [0m    fields: [parentUnitId],
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:393[0m
+[1;94m   | [0m
+[1;94m392 | [0m    "OrganizationUnitHierarchy",
+[1;94m393 | [0m    [1;91mfields: [parentUnitId],[0m
+[1;94m394 | [0m    references: [id],
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:394[0m
+[1;94m   | [0m
+[1;94m393 | [0m    fields: [parentUnitId],
+[1;94m394 | [0m    [1;91mreferences: [id],[0m
+[1;94m395 | [0m    onDelete: Restrict
+[1;94m   | [0m
+[1;91merror[0m: [1mField declarations don't require a `:`.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:395[0m
+[1;94m   | [0m
+[1;94m394 | [0m    references: [id],
+[1;94m395 | [0m    onDelete[1;91m:[0m Restrict
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:396[0m
+[1;94m   | [0m
+[1;94m395 | [0m    onDelete: Restrict
+[1;94m396 | [0m  [1;91m)[0m
+[1;94m397 | [0m
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:402[0m
+[1;94m   | [0m
+[1;94m401 | [0m
+[1;94m402 | [0m  [1;91mmanagerPosition Position? @relation([0m
+[1;94m403 | [0m    "OrganizationUnitManagerPosition",
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:403[0m
+[1;94m   | [0m
+[1;94m402 | [0m  managerPosition Position? @relation(
+[1;94m403 | [0m    [1;91m"OrganizationUnitManagerPosition",[0m
+[1;94m404 | [0m    fields: [managerPositionId],
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:404[0m
+[1;94m   | [0m
+[1;94m403 | [0m    "OrganizationUnitManagerPosition",
+[1;94m404 | [0m    [1;91mfields: [managerPositionId],[0m
+[1;94m405 | [0m    references: [id],
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:405[0m
+[1;94m   | [0m
+[1;94m404 | [0m    fields: [managerPositionId],
+[1;94m405 | [0m    [1;91mreferences: [id],[0m
+[1;94m406 | [0m    onDelete: SetNull
+[1;94m   | [0m
+[1;91merror[0m: [1mField declarations don't require a `:`.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:406[0m
+[1;94m   | [0m
+[1;94m405 | [0m    references: [id],
+[1;94m406 | [0m    onDelete[1;91m:[0m SetNull
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:407[0m
+[1;94m   | [0m
+[1;94m406 | [0m    onDelete: SetNull
+[1;94m407 | [0m  [1;91m)[0m
+[1;94m408 | [0m
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:791[0m
+[1;94m   | [0m
+[1;94m790 | [0m  // Yeni dinamik organizasyon modeli
+[1;94m791 | [0m  [1;91morganizationUnit OrganizationUnit? @relation([0m
+[1;94m792 | [0m    "PositionOrganizationUnit",
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:792[0m
+[1;94m   | [0m
+[1;94m791 | [0m  organizationUnit OrganizationUnit? @relation(
+[1;94m792 | [0m    [1;91m"PositionOrganizationUnit",[0m
+[1;94m793 | [0m    fields: [organizationUnitId],
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:793[0m
+[1;94m   | [0m
+[1;94m792 | [0m    "PositionOrganizationUnit",
+[1;94m793 | [0m    [1;91mfields: [organizationUnitId],[0m
+[1;94m794 | [0m    references: [id],
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:794[0m
+[1;94m   | [0m
+[1;94m793 | [0m    fields: [organizationUnitId],
+[1;94m794 | [0m    [1;91mreferences: [id],[0m
+[1;94m795 | [0m    onDelete: Restrict
+[1;94m   | [0m
+[1;91merror[0m: [1mField declarations don't require a `:`.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:795[0m
+[1;94m   | [0m
+[1;94m794 | [0m    references: [id],
+[1;94m795 | [0m    onDelete[1;91m:[0m Restrict
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:796[0m
+[1;94m   | [0m
+[1;94m795 | [0m    onDelete: Restrict
+[1;94m796 | [0m  [1;91m)[0m
+[1;94m797 | [0m
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:798[0m
+[1;94m   | [0m
+[1;94m797 | [0m
+[1;94m798 | [0m  [1;91mparentPosition Position? @relation([0m
+[1;94m799 | [0m    "PositionHierarchy",
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:799[0m
+[1;94m   | [0m
+[1;94m798 | [0m  parentPosition Position? @relation(
+[1;94m799 | [0m    [1;91m"PositionHierarchy",[0m
+[1;94m800 | [0m    fields: [parentPositionId],
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:800[0m
+[1;94m   | [0m
+[1;94m799 | [0m    "PositionHierarchy",
+[1;94m800 | [0m    [1;91mfields: [parentPositionId],[0m
+[1;94m801 | [0m    references: [id],
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:801[0m
+[1;94m   | [0m
+[1;94m800 | [0m    fields: [parentPositionId],
+[1;94m801 | [0m    [1;91mreferences: [id],[0m
+[1;94m802 | [0m    onDelete: Restrict
+[1;94m   | [0m
+[1;91merror[0m: [1mField declarations don't require a `:`.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:802[0m
+[1;94m   | [0m
+[1;94m801 | [0m    references: [id],
+[1;94m802 | [0m    onDelete[1;91m:[0m Restrict
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:803[0m
+[1;94m   | [0m
+[1;94m802 | [0m    onDelete: Restrict
+[1;94m803 | [0m  [1;91m)[0m
+[1;94m804 | [0m
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:830[0m
+[1;94m   | [0m
+[1;94m829 | [0m
+[1;94m830 | [0m  [1;91mgeneralManagement GeneralManagement? @relation([0m
+[1;94m831 | [0m    "PositionGeneralManagement",
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:831[0m
+[1;94m   | [0m
+[1;94m830 | [0m  generalManagement GeneralManagement? @relation(
+[1;94m831 | [0m    [1;91m"PositionGeneralManagement",[0m
+[1;94m832 | [0m    fields: [generalManagementId],
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:832[0m
+[1;94m   | [0m
+[1;94m831 | [0m    "PositionGeneralManagement",
+[1;94m832 | [0m    [1;91mfields: [generalManagementId],[0m
+[1;94m833 | [0m    references: [id],
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:833[0m
+[1;94m   | [0m
+[1;94m832 | [0m    fields: [generalManagementId],
+[1;94m833 | [0m    [1;91mreferences: [id],[0m
+[1;94m834 | [0m    onDelete: Restrict
+[1;94m   | [0m
+[1;91merror[0m: [1mField declarations don't require a `:`.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:834[0m
+[1;94m   | [0m
+[1;94m833 | [0m    references: [id],
+[1;94m834 | [0m    onDelete[1;91m:[0m Restrict
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:835[0m
+[1;94m   | [0m
+[1;94m834 | [0m    onDelete: Restrict
+[1;94m835 | [0m  [1;91m)[0m
+[1;94m836 | [0m
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:837[0m
+[1;94m   | [0m
+[1;94m836 | [0m
+[1;94m837 | [0m  [1;91mdirectorate Directorate? @relation([0m
+[1;94m838 | [0m    "PositionDirectorate",
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:838[0m
+[1;94m   | [0m
+[1;94m837 | [0m  directorate Directorate? @relation(
+[1;94m838 | [0m    [1;91m"PositionDirectorate",[0m
+[1;94m839 | [0m    fields: [directorateId],
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:839[0m
+[1;94m   | [0m
+[1;94m838 | [0m    "PositionDirectorate",
+[1;94m839 | [0m    [1;91mfields: [directorateId],[0m
+[1;94m840 | [0m    references: [id],
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:840[0m
+[1;94m   | [0m
+[1;94m839 | [0m    fields: [directorateId],
+[1;94m840 | [0m    [1;91mreferences: [id],[0m
+[1;94m841 | [0m    onDelete: Restrict
+[1;94m   | [0m
+[1;91merror[0m: [1mField declarations don't require a `:`.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:841[0m
+[1;94m   | [0m
+[1;94m840 | [0m    references: [id],
+[1;94m841 | [0m    onDelete[1;91m:[0m Restrict
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:842[0m
+[1;94m   | [0m
+[1;94m841 | [0m    onDelete: Restrict
+[1;94m842 | [0m  [1;91m)[0m
+[1;94m843 | [0m
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:844[0m
+[1;94m   | [0m
+[1;94m843 | [0m
+[1;94m844 | [0m  [1;91mmanagement Management? @relation([0m
+[1;94m845 | [0m    "PositionManagement",
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:845[0m
+[1;94m   | [0m
+[1;94m844 | [0m  management Management? @relation(
+[1;94m845 | [0m    [1;91m"PositionManagement",[0m
+[1;94m846 | [0m    fields: [managementId],
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:846[0m
+[1;94m   | [0m
+[1;94m845 | [0m    "PositionManagement",
+[1;94m846 | [0m    [1;91mfields: [managementId],[0m
+[1;94m847 | [0m    references: [id],
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:847[0m
+[1;94m   | [0m
+[1;94m846 | [0m    fields: [managementId],
+[1;94m847 | [0m    [1;91mreferences: [id],[0m
+[1;94m848 | [0m    onDelete: Restrict
+[1;94m   | [0m
+[1;91merror[0m: [1mField declarations don't require a `:`.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:848[0m
+[1;94m   | [0m
+[1;94m847 | [0m    references: [id],
+[1;94m848 | [0m    onDelete[1;91m:[0m Restrict
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:849[0m
+[1;94m   | [0m
+[1;94m848 | [0m    onDelete: Restrict
+[1;94m849 | [0m  [1;91m)[0m
+[1;94m850 | [0m
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:851[0m
+[1;94m   | [0m
+[1;94m850 | [0m
+[1;94m851 | [0m  [1;91morganizationDepartment OrganizationDepartment? @relation([0m
+[1;94m852 | [0m    "PositionOrganizationDepartment",
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:852[0m
+[1;94m   | [0m
+[1;94m851 | [0m  organizationDepartment OrganizationDepartment? @relation(
+[1;94m852 | [0m    [1;91m"PositionOrganizationDepartment",[0m
+[1;94m853 | [0m    fields: [organizationDepartmentId],
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:853[0m
+[1;94m   | [0m
+[1;94m852 | [0m    "PositionOrganizationDepartment",
+[1;94m853 | [0m    [1;91mfields: [organizationDepartmentId],[0m
+[1;94m854 | [0m    references: [id],
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:854[0m
+[1;94m   | [0m
+[1;94m853 | [0m    fields: [organizationDepartmentId],
+[1;94m854 | [0m    [1;91mreferences: [id],[0m
+[1;94m855 | [0m    onDelete: Restrict
+[1;94m   | [0m
+[1;91merror[0m: [1mField declarations don't require a `:`.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:855[0m
+[1;94m   | [0m
+[1;94m854 | [0m    references: [id],
+[1;94m855 | [0m    onDelete[1;91m:[0m Restrict
+[1;94m   | [0m
+[1;91merror[0m: [1mError validating: This line is not a valid field or attribute definition.[0m
+  [1;94m-->[0m  [4mprisma/schema.prisma:856[0m
+[1;94m   | [0m
+[1;94m855 | [0m    onDelete: Restrict
+[1;94m856 | [0m  [1;91m)[0m
+[1;94m857 | [0m
+[1;94m   | [0m
+
+Validation Error Count: 48
+[Context: validate]
+
+Prisma CLI Version : 5.22.0

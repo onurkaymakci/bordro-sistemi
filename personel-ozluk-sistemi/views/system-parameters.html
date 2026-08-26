@@ -1,0 +1,4599 @@
+<!DOCTYPE html>
+<html lang="tr">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   HR Planet — Sistem Parametreleri
+  </title>
+  <style>
+   * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f6f8fc;
+            color: #172033;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+
+        /* =====================================================
+           LAYOUT
+        ===================================================== */
+
+        .app {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 264px;
+            flex-shrink: 0;
+            background: linear-gradient(180deg, #1e3a5f 0%, #0f172a 100%);
+            color: #C9D2E6;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            z-index: 20;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 22px 18px 20px;
+        }
+
+        .brand-logo {
+            width: 160px;
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        nav.nav {
+            flex: 1;
+            padding: 8px 14px;
+            overflow-y: auto;
+        }
+
+        .nav-group {
+            margin-bottom: 22px;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            color: #64748b;
+            padding: 0 10px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .nav-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #AEB9D4;
+            margin-bottom: 2px;
+            transition: background .15s ease, color .15s ease;
+            text-decoration: none;
+        }
+
+        .nav-item .ic {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-item .ic svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,.06);
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background: rgba(100,149,255,.18);
+            color: #fff;
+        }
+
+        .nav-item.active::before {
+            content: "";
+            position: absolute;
+            left: -14px;
+            top: 8px;
+            bottom: 8px;
+            width: 3px;
+            border-radius: 3px;
+            background: #4d82f6;
+        }
+
+        .sidebar-footer {
+            padding: 16px 18px 20px;
+            border-top: 1px solid rgba(255,255,255,.08);
+        }
+
+        .mini-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mini-user-text {
+            line-height: 1.2;
+            overflow: hidden;
+        }
+
+        .mini-user-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .mini-user-role {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+            margin-left: 0;
+            width: auto;
+            flex: 1;
+            min-width: 0;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e4eaf2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 15;
+        }
+
+        .top-search {
+            width: 500px;
+            max-width: 50vw;
+            height: 42px;
+            border: 1px solid #d9e2ef;
+            border-radius: 10px;
+            padding: 0 15px;
+            background: #f9fbfe;
+            outline: none;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .top-user {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .top-user-name {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .top-user-role {
+            font-size: 11px;
+            color: #2862db;
+            margin-top: 2px;
+        }
+
+        .logout-btn {
+            height: 40px;
+            padding: 0 15px;
+            border: 1px solid #d8e1ed;
+            border-radius: 9px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: #f5f7fb;
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
+
+        .content {
+            padding: 32px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 28px;
+        }
+
+        .page-title {
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -.5px;
+        }
+
+        .page-subtitle {
+            color: #718097;
+            margin-top: 7px;
+            font-size: 14px;
+        }
+
+        .admin-badge {
+            padding: 9px 13px;
+            background: #eef4ff;
+            color: #245fe0;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           PARAMETER CARDS
+        ===================================================== */
+
+        .parameter-grid {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(150px, 1fr));
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .parameter-card {
+            background: white;
+            border: 1px solid #e0e7f0;
+            border-radius: 14px;
+            padding: 18px;
+            cursor: pointer;
+            transition: .15s;
+            min-height: 115px;
+        }
+
+        .parameter-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(26,54,93,.07);
+        }
+
+        .parameter-card.active {
+            border-color: #4d82f6;
+            box-shadow: 0 0 0 2px rgba(77,130,246,.08);
+        }
+
+        .parameter-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #eef4ff;
+            color: #2864de;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            margin-bottom: 13px;
+        }
+
+        .parameter-title {
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .parameter-description {
+            color: #8491a5;
+            font-size: 11px;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+
+        /* =====================================================
+           PANEL
+        ===================================================== */
+
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        .section-card {
+            background: white;
+            border: 1px solid #dfe6f0;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            padding: 19px 22px;
+            border-bottom: 1px solid #e6ebf2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .section-description {
+            color: #7f8da1;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .section-body {
+            padding: 22px;
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .btn {
+            min-height: 39px;
+            border-radius: 8px;
+            padding: 0 15px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .btn-primary {
+            background: #4d82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3e71e3;
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 1px solid #d8e1ec;
+            color: #34435a;
+        }
+
+        .btn-danger {
+            background: #fff0f0;
+            color: #dc3e3e;
+            border: 1px solid #ffd1d1;
+        }
+
+        .btn-small {
+            min-height: 32px;
+            padding: 0 10px;
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           ORG TABS
+        ===================================================== */
+
+        .org-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+            background: white;
+            border: 1px solid #e0e7ef;
+            padding: 6px;
+            border-radius: 12px;
+        }
+
+        .org-tab {
+            flex: 1;
+            border: none;
+            padding: 11px;
+            border-radius: 8px;
+            background: transparent;
+            cursor: pointer;
+            color: #66758b;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .org-tab.active {
+            background: #edf3ff;
+            color: #2d65df;
+        }
+
+        .org-content {
+            display: none;
+        }
+
+        .org-content.active {
+            display: block;
+        }
+
+
+        /* =====================================================
+           FORMS
+        ===================================================== */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, minmax(0,1fr));
+            gap: 15px;
+        }
+
+        .form-grid.two {
+            grid-template-columns:
+                repeat(2, minmax(0,1fr));
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        .field label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #42516a;
+        }
+
+        .required {
+            color: #df4747;
+        }
+
+        .form-control {
+            height: 42px;
+            border: 1px solid #d9e2ee;
+            border-radius: 9px;
+            padding: 0 12px;
+            outline: none;
+            background: white;
+        }
+
+        textarea.form-control {
+            height: 80px;
+            padding-top: 12px;
+            resize: vertical;
+        }
+
+        .form-control:focus {
+            border-color: #4d82f6;
+            box-shadow: 0 0 0 3px rgba(77,130,246,.08);
+        }
+
+        .form-actions {
+            margin-top: 18px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #6b7890;
+            font-size: 11px;
+            letter-spacing: .3px;
+            text-align: left;
+            padding: 12px 14px;
+            border-bottom: 1px solid #e3e9f0;
+        }
+
+        td {
+            padding: 13px 14px;
+            border-bottom: 1px solid #edf1f6;
+            font-size: 13px;
+        }
+
+        tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .code-badge {
+            padding: 5px 8px;
+            background: #eef3fb;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 20px;
+            padding: 4px 8px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .status.active {
+            background: #e5f7ef;
+            color: #12845f;
+        }
+
+        .status.passive {
+            background: #f2f3f6;
+            color: #768196;
+        }
+
+
+        /* =====================================================
+           HIERARCHY
+        ===================================================== */
+
+        .hierarchy {
+            display: grid;
+            gap: 12px;
+        }
+
+        .hierarchy-row {
+            border: 1px solid #e0e7ef;
+            border-radius: 12px;
+            background: white;
+            padding: 14px 16px;
+        }
+
+        .hierarchy-name {
+            font-weight: 800;
+            font-size: 13px;
+        }
+
+        .hierarchy-meta {
+            margin-top: 4px;
+            color: #7c899b;
+            font-size: 11px;
+        }
+
+        .hierarchy-level-2 {
+            margin-left: 30px;
+        }
+
+        .hierarchy-level-3 {
+            margin-left: 60px;
+        }
+
+        .hierarchy-level-4 {
+            margin-left: 90px;
+        }
+
+        .hierarchy-level-5 {
+            margin-left: 120px;
+        }
+
+        .root-highlight {
+            border-color: #9bb9ff;
+            background: #f7faff;
+        }
+
+        .manager-highlight {
+            border-left: 4px solid #4d82f6;
+        }
+
+
+        /* =====================================================
+           EMPTY / TOAST
+        ===================================================== */
+
+        .empty {
+            padding: 35px;
+            text-align: center;
+            color: #8290a3;
+            font-size: 13px;
+        }
+
+        .toast {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            min-width: 260px;
+            padding: 14px 16px;
+            border-radius: 10px;
+            color: white;
+            display: none;
+            z-index: 100;
+            box-shadow: 0 8px 30px rgba(0,0,0,.15);
+        }
+
+        .toast.success {
+            background: #1f9d73;
+        }
+
+        .toast.error {
+            background: #dc4848;
+        }
+
+
+        /* =====================================================
+           PLACEHOLDER
+        ===================================================== */
+
+        .placeholder-box {
+            background: white;
+            border: 1px dashed #cfd9e7;
+            border-radius: 14px;
+            padding: 55px 25px;
+            text-align: center;
+            color: #78869b;
+        }
+
+        .placeholder-box h3 {
+            color: #28364d;
+            margin-bottom: 8px;
+        }
+
+
+
+        /* =====================================================
+           DINAMIK ORGANIZASYON
+        ===================================================== */
+        .dynamic-org-toolbar {display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px;padding:12px 14px;background:#f8fafc;border:1px solid #e3eaf3;border-radius:10px;}
+        .dynamic-org-summary {color:#64748b;font-size:12px;font-weight:600;}
+        .dynamic-org-toolbar-actions {display:flex;gap:8px;}
+        .dynamic-tree {display:grid;gap:10px;}
+        .dynamic-tree-node {--tree-depth:0;margin-left:calc(var(--tree-depth) * 28px);position:relative;}
+        .dynamic-unit-card {border:1px solid #dce5f0;border-radius:12px;background:#fff;overflow:hidden;}
+        .dynamic-unit-card.manager-unit {border-left:4px solid #4d82f6;}
+        .dynamic-unit-head {display:flex;align-items:center;gap:11px;padding:12px 14px;cursor:pointer;user-select:none;}
+        .dynamic-unit-head:hover {background:#f8fbff;}
+        .dynamic-tree-toggle {width:26px;height:26px;border:1px solid #d9e2ef;border-radius:7px;background:#fff;color:#506078;cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-weight:800;}
+        .dynamic-unit-main {min-width:0;flex:1;}
+        .dynamic-unit-name {font-size:13px;font-weight:800;color:#172033;}
+        .dynamic-unit-meta {margin-top:3px;color:#718097;font-size:11px;}
+        .dynamic-unit-manager {flex-shrink:0;text-align:right;font-size:11px;color:#51627a;}
+        .dynamic-position-list {display:grid;gap:7px;padding:0 14px 13px 51px;}
+        .dynamic-position-row {display:flex;justify-content:space-between;gap:15px;padding:9px 11px;background:#f8fafc;border:1px solid #e7edf5;border-radius:8px;font-size:11px;}
+        .dynamic-position-name {font-weight:700;color:#26354b;}
+        .dynamic-position-employee {color:#68788f;text-align:right;}
+        .dynamic-tree-children {display:grid;gap:10px;margin-top:10px;}
+        .dynamic-tree-node.collapsed > .dynamic-tree-children,
+        .dynamic-tree-node.collapsed > .dynamic-unit-card .dynamic-position-list {display:none;}
+        .dynamic-list-filter {display:grid;grid-template-columns:minmax(220px,1fr) minmax(200px,300px);gap:12px;border-bottom:1px solid #e6ebf2;}
+        .dynamic-type-pill {display:inline-flex;align-items:center;border-radius:20px;padding:4px 8px;background:#eef4ff;color:#2d65df;font-size:10px;font-weight:800;}
+        .muted {color:#8a97aa;}
+        @media(max-width:800px) {
+            .dynamic-list-filter {grid-template-columns:1fr;}
+            .dynamic-unit-manager {display:none;}
+            .dynamic-tree-node {margin-left:calc(var(--tree-depth) * 15px);}
+        }
+
+        @media(max-width:1200px) {
+
+            .parameter-grid {
+                grid-template-columns:
+                    repeat(3,1fr);
+            }
+
+        }
+  </style>
+ </head>
+ <body>
+  <div class="app">
+   <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+   <aside class="sidebar">
+    <div class="brand">
+     <img src="/images/hrplogo.png" alt="HR Planet" class="brand-logo"/>
+    </div>
+
+    <nav class="nav">
+     <div class="nav-group">
+      <div class="nav-label">Genel</div>
+      <a class="nav-item" href="/dashboard">
+       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></span>
+       Dashboard
+      </a>
+     </div>
+
+     <div class="nav-group">
+      <div class="nav-label">Personel Yönetimi</div>
+      <a class="nav-item" href="/personel">
+       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+       Personel
+      </a>
+      <a class="nav-item" href="/departments">
+       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
+       Departmanlar
+      </a>
+     </div>
+
+     <div class="nav-group">
+      <div class="nav-label">Süreçler</div>
+      <a class="nav-item" href="/leaves">
+       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+       İzin Yönetimi
+      </a>
+      <a class="nav-item" href="/documents">
+       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>
+       Evrak Yönetimi
+      </a>
+     </div>
+
+     <div class="nav-group">
+      <div class="nav-label">Raporlar &amp; Yönetim</div>
+      <a class="nav-item" href="/reports">
+       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-4"/></svg></span>
+       Raporlar
+      </a>
+      <a class="nav-item" href="/users">
+       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg></span>
+       Kullanıcılar
+      </a>
+     </div>
+
+     <div class="nav-group">
+      <div class="nav-label">Sistem</div>
+      <a class="nav-item active" href="/system-parameters">
+       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.5 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.5a1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15.5 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.15.36.37.7.65.97.28.27.65.43 1.04.43H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15z"/></svg></span>
+       Sistem Parametreleri
+      </a>
+     </div>
+    </nav>
+
+    <div class="sidebar-footer">
+     <div class="mini-user">
+      <div class="avatar">OK</div>
+      <div class="mini-user-text">
+       <div class="mini-user-name" id="sidebarUserName">Onur Kaymakcı</div>
+       <div class="mini-user-role" id="sidebarUserRole">Sistem Yöneticisi</div>
+      </div>
+     </div>
+    </div>
+   </aside>
+   <!-- =====================================================
+         MAIN
+    ====================================================== -->
+   <main class="main">
+    <header class="topbar">
+     <input class="top-search" placeholder="Parametre, organizasyon veya pozisyon ara..."/>
+     <div class="topbar-right">
+      <div class="top-user">
+       <div class="avatar">
+        OK
+       </div>
+       <div>
+        <div class="top-user-name" id="topUserName">
+         Onur Kaymakcı
+        </div>
+        <div class="top-user-role" id="topUserRole">
+         Sistem Yöneticisi
+        </div>
+       </div>
+      </div>
+      <button class="logout-btn" onclick="logout()">
+       Çıkış Yap
+      </button>
+     </div>
+    </header>
+    <div class="content">
+     <div class="page-header">
+      <div>
+       <div class="page-title">
+        Sistem Parametreleri
+       </div>
+       <div class="page-subtitle">
+        Şirket, organizasyon, pozisyon ve sistem tanımlarını yönetin.
+       </div>
+      </div>
+      <div class="admin-badge">
+       SYSTEM_ADMIN
+      </div>
+     </div>
+     <!-- =================================================
+                 PARAMETER CARDS
+            ================================================== -->
+     <div class="parameter-grid">
+      <div class="parameter-card" data-panel="company" onclick="openPanel('company',this)">
+       <div class="parameter-icon">
+        🏢
+       </div>
+       <div class="parameter-title">
+        Şirket Bilgileri
+       </div>
+       <div class="parameter-description">
+        Şirket ve işveren temel tanımları
+       </div>
+      </div>
+      <div class="parameter-card active" data-panel="organization" onclick="openPanel('organization',this)">
+       <div class="parameter-icon">
+        ⌘
+       </div>
+       <div class="parameter-title">
+        Organizasyon Yapısı
+       </div>
+       <div class="parameter-description">
+        Esnek birim tipleri, organizasyon ağacı ve hiyerarşi
+       </div>
+      </div>
+      <div class="parameter-card" data-panel="positions" onclick="openPanel('positions',this)">
+       <div class="parameter-icon">
+        ▣
+       </div>
+       <div class="parameter-title">
+        Pozisyonlar
+       </div>
+       <div class="parameter-description">
+        Pozisyon ve hiyerarşi yönetimi
+       </div>
+      </div>
+      <div class="parameter-card" data-panel="costCenters" onclick="openPanel('costCenters',this)">
+       <div class="parameter-icon">
+        ₺
+       </div>
+       <div class="parameter-title">
+        Masraf Yerleri
+       </div>
+       <div class="parameter-description">
+        Finansal masraf merkezi tanımları
+       </div>
+      </div>
+      <div class="parameter-card" data-panel="locations" onclick="openPanel('locations',this)">
+       <div class="parameter-icon">
+        ⌖
+       </div>
+       <div class="parameter-title">
+        Çalışma Lokasyonları
+       </div>
+       <div class="parameter-description">
+        Kampüs, ofis ve çalışma yeri
+       </div>
+      </div>
+      <div class="parameter-card" data-panel="roles" onclick="openPanel('roles',this)">
+       <div class="parameter-icon">
+        🔐
+       </div>
+       <div class="parameter-title">
+        Yetki &amp; Roller
+       </div>
+       <div class="parameter-description">
+        Kullanıcı erişim yetkileri
+       </div>
+      </div>
+     </div>
+     <!-- =================================================
+                 ORGANIZATION
+            ================================================== -->
+     <section class="panel active" id="panel-organization">
+       <div class="org-tabs">
+        <button class="org-tab active" onclick="openOrgTab('dynamicTree',this)">Organizasyon Ağacı</button>
+        <button class="org-tab" onclick="openOrgTab('dynamicUnits',this)">Birim Listesi</button>
+        <button class="org-tab" onclick="openOrgTab('dynamicTypes',this)">Birim Tipleri</button>
+       </div>
+
+       <div class="org-content active" id="org-dynamicTree">
+        <div class="section-card">
+         <div class="section-header">
+          <div>
+           <div class="section-title">Organizasyon Ağacı</div>
+           <div class="section-description">Organizasyon birimleri, pozisyonlar ve çalışanlar tek hiyerarşide gösterilir.</div>
+          </div>
+          <button class="btn btn-secondary btn-small" type="button" onclick="loadDynamicOrganizationTree()">Yenile</button>
+         </div>
+         <div class="section-body">
+          <div class="dynamic-org-toolbar">
+           <div class="dynamic-org-summary" id="dynamicOrganizationSummary">Organizasyon verileri yükleniyor...</div>
+           <div class="dynamic-org-toolbar-actions">
+            <button class="btn btn-secondary btn-small" type="button" onclick="expandAllDynamicUnits()">Tümünü Aç</button>
+            <button class="btn btn-secondary btn-small" type="button" onclick="collapseAllDynamicUnits()">Tümünü Kapat</button>
+           </div>
+          </div>
+          <div id="dynamicOrganizationTree" class="dynamic-tree"></div>
+         </div>
+        </div>
+       </div>
+
+       <div class="org-content" id="org-dynamicUnits">
+        <div class="section-card">
+         <div class="section-header">
+          <div>
+           <div class="section-title" id="dynamicUnitFormTitle">Yeni Organizasyon Birimi</div>
+           <div class="section-description">Birim tipini ve üst birimi seçerek şirket organizasyonunu esnek şekilde oluşturun.</div>
+          </div>
+         </div>
+         <div class="section-body">
+          <form id="dynamicUnitForm" onsubmit="saveDynamicOrganizationUnit(event)">
+           <input type="hidden" id="dynamicUnitEditId"/>
+           <div class="form-grid">
+            <div class="field">
+             <label>Birim Tipi <span class="required">*</span></label>
+             <select class="form-control" id="dynamicUnitType" required><option value="">Birim tipi seçiniz</option></select>
+            </div>
+            <div class="field">
+             <label>Üst Organizasyon Birimi</label>
+             <select class="form-control" id="dynamicUnitParent"><option value="">Üst birim yok — kök birim</option></select>
+            </div>
+            <div class="field">
+             <label>Birim Adı <span class="required">*</span></label>
+             <input class="form-control" id="dynamicUnitName" placeholder="Örn. İnsan Kaynakları Başkanlığı" required/>
+            </div>
+            <div class="field">
+             <label>Sıralama</label>
+             <input class="form-control" id="dynamicUnitSortOrder" type="number" min="0" value="0"/>
+            </div>
+            <div class="field">
+             <label>Yönetici Pozisyonu</label>
+             <select class="form-control" id="dynamicUnitManagerPosition" disabled><option value="">Önce birimi oluşturun</option></select>
+            </div>
+            <div class="field">
+             <label>Durum</label>
+             <select class="form-control" id="dynamicUnitActive"><option value="true">Aktif</option><option value="false">Pasif</option></select>
+            </div>
+            <div class="field full">
+             <label>Açıklama</label>
+             <textarea class="form-control" id="dynamicUnitDescription"></textarea>
+            </div>
+           </div>
+           <div class="form-actions">
+            <button class="btn btn-secondary" id="dynamicUnitCancelEditBtn" type="button" style="display:none;" onclick="resetDynamicUnitForm()">İptal</button>
+            <button class="btn btn-primary" id="dynamicUnitSubmitBtn">+ Organizasyon Birimi Oluştur</button>
+           </div>
+          </form>
+         </div>
+        </div>
+
+        <div class="section-card">
+         <div class="section-header">
+          <div>
+           <div class="section-title">Organizasyon Birimleri</div>
+           <div class="section-description">Kod, tip, üst birim, yönetici pozisyonu ve bağlı pozisyon sayısını birlikte yönetin.</div>
+          </div>
+          <button class="btn btn-secondary btn-small" type="button" onclick="loadDynamicOrganizationUnits()">Yenile</button>
+         </div>
+         <div class="section-body dynamic-list-filter">
+          <input class="form-control" id="dynamicUnitSearch" placeholder="Kod veya birim adı ara..." oninput="renderDynamicOrganizationUnits()"/>
+          <select class="form-control" id="dynamicUnitTypeFilter" onchange="renderDynamicOrganizationUnits()"><option value="">Tüm birim tipleri</option></select>
+         </div>
+         <div class="table-wrap" id="dynamicUnitTable"></div>
+        </div>
+       </div>
+
+       <div class="org-content" id="org-dynamicTypes">
+        <div class="section-card">
+         <div class="section-header">
+          <div>
+           <div class="section-title" id="dynamicTypeFormTitle">Yeni Birim Tipi</div>
+           <div class="section-description">Başkanlık, Grup Başkanlığı, Direktörlük, Müdürlük, Takım, Fakülte gibi tipleri şirket bazında tanımlayın.</div>
+          </div>
+         </div>
+         <div class="section-body">
+          <form id="dynamicTypeForm" onsubmit="saveDynamicOrganizationUnitType(event)">
+           <input type="hidden" id="dynamicTypeEditId"/>
+           <div class="form-grid">
+            <div class="field">
+             <label>Tip Kodu <span class="required">*</span></label>
+             <input class="form-control" id="dynamicTypeCode" placeholder="Örn. GROUP_PRESIDENCY" required/>
+            </div>
+            <div class="field">
+             <label>Tip Adı <span class="required">*</span></label>
+             <input class="form-control" id="dynamicTypeName" placeholder="Örn. Grup Başkanlığı" required/>
+            </div>
+            <div class="field">
+             <label>Görüntüleme Sırası</label>
+             <input class="form-control" id="dynamicTypeLevelOrder" type="number" min="0" value="0"/>
+            </div>
+           </div>
+           <div class="form-actions">
+            <button class="btn btn-secondary" id="dynamicTypeCancelEditBtn" type="button" style="display:none;" onclick="resetDynamicTypeForm()">İptal</button>
+            <button class="btn btn-primary" id="dynamicTypeSubmitBtn">+ Birim Tipi Oluştur</button>
+           </div>
+          </form>
+         </div>
+        </div>
+        <div class="section-card">
+         <div class="section-header">
+          <div>
+           <div class="section-title">Birim Tipleri</div>
+           <div class="section-description">Organizasyon birimlerinde kullanılabilecek esnek şirket tipleri.</div>
+          </div>
+          <button class="btn btn-secondary btn-small" type="button" onclick="loadDynamicOrganizationUnitTypes()">Yenile</button>
+         </div>
+         <div class="table-wrap" id="dynamicTypeTable"></div>
+        </div>
+       </div>
+      </section>
+     <!-- =================================================
+                 POSITIONS
+            ================================================== -->
+<section class="panel" id="panel-positions">
+  <div class="section-card">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Yeni Pozisyon</div>
+        <div class="section-description">
+          Pozisyon kodu sistem tarafından otomatik olarak 90000001 formatında oluşturulur.
+        </div>
+      </div>
+    </div>
+
+    <div class="section-body">
+      <form id="positionForm" onsubmit="savePosition(event)">
+        <input type="hidden" id="positionEditId">
+
+        <div class="form-grid">
+          <div class="field">
+            <label>
+              Organizasyon Seviyesi
+              <span class="required">*</span>
+            </label>
+            <select
+              class="form-control"
+              id="positionOrganizationLevel"
+              required
+              onchange="handlePositionLevelChange()"
+            >
+              <option value="">Seviye seçiniz</option>
+              <option value="DIRECTORATE">Direktörlük</option>
+              <option value="MANAGEMENT">Müdürlük</option>
+              <option value="DEPARTMENT">Bölüm</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>
+              Organizasyon Birimi
+              <span class="required">*</span>
+            </label>
+            <select
+              class="form-control"
+              id="positionOrganizationUnit"
+              required
+              onchange="fillParentPositionSelect()"
+              disabled
+            >
+              <option value="">Önce seviye seçiniz</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>
+              Pozisyon Adı
+              <span class="required">*</span>
+            </label>
+            <input
+              class="form-control"
+              id="positionName"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label>Üst Pozisyon</label>
+            <select
+              class="form-control"
+              id="parentPosition"
+            >
+              <option value="">Üst pozisyon yok</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Birim Yöneticisi</label>
+            <select
+              class="form-control"
+              id="positionIsUnitManager"
+              onchange="handleUnitManagerChange()"
+            >
+              <option value="false">Hayır</option>
+              <option value="true">Evet — Bu pozisyon birimi yönetir</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Norm Kadro</label>
+            <input
+              class="form-control"
+              id="normCount"
+              min="1"
+              type="number"
+              value="1"
+            />
+          </div>
+
+          <div class="field">
+            <label>Masraf Yeri</label>
+            <select
+              class="form-control"
+              disabled
+              id="positionCostCenter"
+            >
+              <option>Henüz tanımlanmadı</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Çalışma Lokasyonu</label>
+            <select
+              class="form-control"
+              disabled
+              id="positionLocation"
+            >
+              <option>Henüz tanımlanmadı</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>Açıklama</label>
+            <textarea
+              class="form-control"
+              id="positionDescription"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button
+            class="btn btn-secondary"
+            id="positionCancelEditBtn"
+            type="button"
+            style="display:none;"
+            onclick="resetPositionForm()"
+          >
+            İptal
+          </button>
+
+          <button
+            class="btn btn-primary"
+            id="positionSubmitBtn"
+          >
+            + Pozisyon Oluştur
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Pozisyonlar</div>
+        <div class="section-description">
+          Organizasyondaki tüm pozisyon kayıtları
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="table-wrap"
+      id="positionTable"
+    ></div>
+  </div>
+</section>
+
+      <!-- OTHER PANELS -->
+     <section class="panel" id="panel-company">
+      <div class="placeholder-box">
+       <h3>
+        Şirket Bilgileri
+       </h3>
+       Şirket parametreleri sonraki adımda aktif edilecek.
+      </div>
+     </section>
+     <section class="panel" id="panel-costCenters">
+      <div class="placeholder-box">
+       <h3>
+        Masraf Yerleri
+       </h3>
+       Masraf yeri CRUD yapısını sonraki adımda bağlayacağız.
+      </div>
+     </section>
+     <section class="panel" id="panel-locations">
+      <div class="placeholder-box">
+       <h3>
+        Çalışma Lokasyonları
+       </h3>
+       Kampüs, ofis ve lokasyon tanımlarını burada yöneteceğiz.
+      </div>
+     </section>
+     <section class="panel" id="panel-roles">
+      <div class="placeholder-box">
+       <h3>
+        Yetki &amp; Roller
+       </h3>
+       Sistem yetki yapısını burada yöneteceğiz.
+      </div>
+     </section>
+    </div>
+   </main>
+  </div>
+  <div class="toast" id="toast">
+  </div>
+  <script>
+   /* =========================================================
+       AUTH
+    ========================================================= */
+
+    const token =
+        localStorage.getItem('token');
+
+
+    if (!token) {
+
+        window.location.href =
+            '/';
+
+    }
+
+
+    const authHeaders = () => ({
+
+        'Authorization':
+            'Bearer ' + token
+
+    });
+
+
+    const jsonHeaders = () => ({
+
+        'Content-Type':
+            'application/json',
+
+        'Authorization':
+            'Bearer ' + token
+
+    });
+
+
+    function logout() {
+
+        localStorage.removeItem(
+            'token'
+        );
+
+        window.location.href =
+            '/';
+
+    }
+
+
+    /* =========================================================
+       STATE
+    ========================================================= */
+
+    let generalManagement = null;
+
+    let directorates = [];
+
+    let managements = [];
+
+    let departments = [];
+
+    let positions = [];
+
+    // Dinamik organizasyon state
+    let dynamicOrganizationUnitTypes = [];
+    let dynamicOrganizationUnits = [];
+    let dynamicOrganizationTree = [];
+
+
+    /* =========================================================
+       TOAST
+    ========================================================= */
+
+    function showToast(
+        message,
+        type='success'
+    ) {
+
+        const toast =
+            document.getElementById(
+                'toast'
+            );
+
+
+        toast.textContent =
+            message;
+
+        toast.className =
+            'toast ' + type;
+
+        toast.style.display =
+            'block';
+
+
+        setTimeout(
+            () => {
+
+                toast.style.display =
+                    'none';
+
+            },
+            3000
+        );
+
+    }
+
+
+    /* =========================================================
+       FETCH HELPER
+    ========================================================= */
+
+    async function api(
+        url,
+        options={}
+    ) {
+
+        const response =
+            await fetch(
+                url,
+                options
+            );
+
+
+        const text =
+            await response.text();
+
+
+        let result;
+
+
+        try {
+
+            result =
+                text
+                ? JSON.parse(text)
+                : {};
+
+        }
+        catch {
+
+            throw new Error(
+                text ||
+                'Sunucu cevabi okunamadi.'
+            );
+
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.message ||
+                result.error ||
+                'Islem basarisiz.'
+            );
+
+        }
+
+
+        return result;
+
+    }
+
+
+    /* =========================================================
+       MAIN PANELS
+    ========================================================= */
+
+    function openPanel(
+        name,
+        element
+    ) {
+
+        document.querySelectorAll('.parameter-card').forEach(
+            card => card.classList.remove('active')
+        );
+
+        element.classList.add('active');
+
+        document.querySelectorAll('.panel').forEach(
+            panel => panel.classList.remove('active')
+        );
+
+        document
+            .getElementById('panel-' + name)
+            .classList.add('active');
+
+        if (name === 'organization') {
+            loadDynamicOrganizationWorkspace();
+        }
+
+        // Pozisyon ekrani bir sonraki adimda tamamen
+        // organizationUnitId merkezli hale getirilecek.
+        if (name === 'positions') {
+            Promise
+                .all([
+                    loadGeneralManagement(),
+                    loadDirectorates(),
+                    loadManagements(),
+                    loadDepartments()
+                ])
+                .then(() => loadPositions());
+        }
+
+    }
+
+
+    /* =========================================================
+       ORG TABS
+    ========================================================= */
+
+    function openOrgTab(
+        name,
+        element
+    ) {
+
+        document.querySelectorAll('.org-tab').forEach(
+            tab => tab.classList.remove('active')
+        );
+
+        element.classList.add('active');
+
+        document.querySelectorAll('.org-content').forEach(
+            content => content.classList.remove('active')
+        );
+
+        const target =
+            document.getElementById('org-' + name);
+
+        if (!target) {
+            return;
+        }
+
+        target.classList.add('active');
+
+        if (name === 'dynamicTree') {
+            loadDynamicOrganizationTree();
+        }
+
+        if (name === 'dynamicUnits') {
+            Promise.all([
+                loadDynamicOrganizationUnitTypes(),
+                loadDynamicOrganizationUnits(),
+                loadPositions()
+            ]).then(() => {
+                fillDynamicUnitSelectors();
+                renderDynamicOrganizationUnits();
+            });
+        }
+
+        if (name === 'dynamicTypes') {
+            loadDynamicOrganizationUnitTypes();
+        }
+
+    }
+
+
+    /* =========================================================
+       DINAMIK ORGANIZASYON
+    ========================================================= */
+
+    function escapeHtml(value) {
+        return String(value ?? '')
+            .replaceAll('&','&amp;')
+            .replaceAll('<','&lt;')
+            .replaceAll('>','&gt;')
+            .replaceAll('"','&quot;')
+            .replaceAll("'",'&#039;');
+    }
+
+    async function loadDynamicOrganizationWorkspace() {
+        try {
+            await Promise.all([
+                loadDynamicOrganizationUnitTypes(),
+                loadDynamicOrganizationUnits(),
+                loadPositions()
+            ]);
+            fillDynamicUnitSelectors();
+            await loadDynamicOrganizationTree();
+        }
+        catch(error) {
+            showToast(error.message,'error');
+        }
+    }
+
+    async function loadDynamicOrganizationUnitTypes() {
+        const result = await api(
+            '/api/system-parameters/organization-unit-types',
+            {headers:authHeaders()}
+        );
+        dynamicOrganizationUnitTypes = result.data?.items || [];
+        renderDynamicOrganizationUnitTypes();
+        fillDynamicUnitSelectors();
+        return dynamicOrganizationUnitTypes;
+    }
+
+    function renderDynamicOrganizationUnitTypes() {
+        const wrap = document.getElementById('dynamicTypeTable');
+        if (!wrap) return;
+
+        if (!dynamicOrganizationUnitTypes.length) {
+            wrap.innerHTML = '<div class="empty">Henüz organizasyon birimi tipi tanımlanmamış.</div>';
+            return;
+        }
+
+        let html = `<table><thead><tr>
+            <th>TIP KODU</th><th>TIP ADI</th><th>SIRA</th>
+            <th>BIRIM SAYISI</th><th>DURUM</th><th>ISLEM</th>
+        </tr></thead><tbody>`;
+
+        dynamicOrganizationUnitTypes.forEach(item => {
+            html += `<tr>
+                <td><span class="code-badge">${escapeHtml(item.code)}</span></td>
+                <td>${escapeHtml(item.name)}</td>
+                <td>${Number(item.levelOrder || 0)}</td>
+                <td>${Number(item._count?.units || 0)}</td>
+                <td><span class="status ${item.isActive ? 'active' : 'passive'}">${item.isActive ? 'Aktif' : 'Pasif'}</span></td>
+                <td>
+                    <button class="btn btn-secondary btn-small" type="button" onclick="editDynamicOrganizationUnitType('${item.id}')">Düzenle</button>
+                    ${item.isActive ? `<button class="btn btn-danger btn-small" type="button" onclick="deactivateDynamicOrganizationUnitType('${item.id}')">Pasife Al</button>` : ''}
+                </td>
+            </tr>`;
+        });
+
+        wrap.innerHTML = html + '</tbody></table>';
+    }
+
+    async function saveDynamicOrganizationUnitType(event) {
+        event.preventDefault();
+        try {
+            const editId = document.getElementById('dynamicTypeEditId').value;
+            const payload = {
+                code: document.getElementById('dynamicTypeCode').value.trim(),
+                name: document.getElementById('dynamicTypeName').value.trim(),
+                levelOrder: Number(document.getElementById('dynamicTypeLevelOrder').value || 0)
+            };
+
+            await api(
+                editId
+                    ? '/api/system-parameters/organization-unit-types/' + editId
+                    : '/api/system-parameters/organization-unit-types',
+                {
+                    method: editId ? 'PUT' : 'POST',
+                    headers: jsonHeaders(),
+                    body: JSON.stringify(payload)
+                }
+            );
+
+            showToast(editId ? 'Birim tipi güncellendi.' : 'Birim tipi oluşturuldu.');
+            resetDynamicTypeForm();
+            await loadDynamicOrganizationUnitTypes();
+        }
+        catch(error) {
+            showToast(error.message,'error');
+        }
+    }
+
+    function editDynamicOrganizationUnitType(id) {
+        const item = dynamicOrganizationUnitTypes.find(type => type.id === id);
+        if (!item) return;
+
+        document.getElementById('dynamicTypeEditId').value = item.id;
+        document.getElementById('dynamicTypeCode').value = item.code || '';
+        document.getElementById('dynamicTypeName').value = item.name || '';
+        document.getElementById('dynamicTypeLevelOrder').value = item.levelOrder || 0;
+        document.getElementById('dynamicTypeFormTitle').textContent = 'Birim Tipini Düzenle';
+        document.getElementById('dynamicTypeSubmitBtn').textContent = 'Birim Tipini Güncelle';
+        document.getElementById('dynamicTypeCancelEditBtn').style.display = 'inline-flex';
+        window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    function resetDynamicTypeForm() {
+        const form = document.getElementById('dynamicTypeForm');
+        if (!form) return;
+        form.reset();
+        document.getElementById('dynamicTypeEditId').value = '';
+        document.getElementById('dynamicTypeLevelOrder').value = 0;
+        document.getElementById('dynamicTypeFormTitle').textContent = 'Yeni Birim Tipi';
+        document.getElementById('dynamicTypeSubmitBtn').textContent = '+ Birim Tipi Oluştur';
+        document.getElementById('dynamicTypeCancelEditBtn').style.display = 'none';
+    }
+
+    async function deactivateDynamicOrganizationUnitType(id) {
+        if (!confirm('Bu birim tipini pasife almak istediğinize emin misiniz?')) return;
+        try {
+            await api(
+                '/api/system-parameters/organization-unit-types/' + id + '/deactivate',
+                {method:'POST',headers:authHeaders()}
+            );
+            showToast('Birim tipi pasife alındı.');
+            await loadDynamicOrganizationUnitTypes();
+        }
+        catch(error) {
+            showToast(error.message,'error');
+        }
+    }
+
+    async function loadDynamicOrganizationUnits() {
+        const result = await api(
+            '/api/system-parameters/organization-units',
+            {headers:authHeaders()}
+        );
+        dynamicOrganizationUnits = result.data?.items || [];
+        fillDynamicUnitSelectors();
+        renderDynamicOrganizationUnits();
+        return dynamicOrganizationUnits;
+    }
+
+    function fillDynamicUnitSelectors() {
+        const typeSelect = document.getElementById('dynamicUnitType');
+        const typeFilter = document.getElementById('dynamicUnitTypeFilter');
+        const parentSelect = document.getElementById('dynamicUnitParent');
+        const editId = document.getElementById('dynamicUnitEditId')?.value || '';
+
+        if (typeSelect) {
+            const value = typeSelect.value;
+            typeSelect.innerHTML = '<option value="">Birim tipi seçiniz</option>';
+            dynamicOrganizationUnitTypes
+                .filter(item => item.isActive)
+                .forEach(item => {
+                    typeSelect.innerHTML += `<option value="${item.id}">${escapeHtml(item.name)}</option>`;
+                });
+            if ([...typeSelect.options].some(option => option.value === value)) typeSelect.value = value;
+        }
+
+        if (typeFilter) {
+            const value = typeFilter.value;
+            typeFilter.innerHTML = '<option value="">Tüm birim tipleri</option>';
+            dynamicOrganizationUnitTypes.forEach(item => {
+                typeFilter.innerHTML += `<option value="${item.id}">${escapeHtml(item.name)}</option>`;
+            });
+            if ([...typeFilter.options].some(option => option.value === value)) typeFilter.value = value;
+        }
+
+        if (parentSelect) {
+            const value = parentSelect.value;
+            parentSelect.innerHTML = '<option value="">Üst birim yok — kök birim</option>';
+            dynamicOrganizationUnits
+                .filter(item => item.isActive && item.id !== editId)
+                .forEach(item => {
+                    parentSelect.innerHTML += `<option value="${item.id}">${escapeHtml(item.code)} - ${escapeHtml(item.name)}</option>`;
+                });
+            if ([...parentSelect.options].some(option => option.value === value)) parentSelect.value = value;
+        }
+    }
+
+    function renderDynamicOrganizationUnits() {
+        const wrap = document.getElementById('dynamicUnitTable');
+        if (!wrap) return;
+
+        const search = (document.getElementById('dynamicUnitSearch')?.value || '').trim().toLocaleLowerCase('tr-TR');
+        const typeId = document.getElementById('dynamicUnitTypeFilter')?.value || '';
+
+        const filtered = dynamicOrganizationUnits.filter(item => {
+            if (typeId && item.typeId !== typeId) return false;
+            if (!search) return true;
+            return String(item.code || '').toLocaleLowerCase('tr-TR').includes(search)
+                || String(item.name || '').toLocaleLowerCase('tr-TR').includes(search);
+        });
+
+        if (!filtered.length) {
+            wrap.innerHTML = '<div class="empty">Filtreye uygun organizasyon birimi bulunamadı.</div>';
+            return;
+        }
+
+        let html = `<table><thead><tr>
+            <th>BIRIM KODU</th><th>BIRIM ADI</th><th>TIP</th><th>UST BIRIM</th>
+            <th>YONETICI POZISYONU</th><th>POZISYON</th><th>DURUM</th><th>ISLEM</th>
+        </tr></thead><tbody>`;
+
+        filtered.forEach(item => {
+            const manager = item.managerPosition;
+            html += `<tr>
+                <td><span class="code-badge">${escapeHtml(item.code)}</span></td>
+                <td><strong>${escapeHtml(item.name)}</strong></td>
+                <td><span class="dynamic-type-pill">${escapeHtml(item.type?.name || '-')}</span></td>
+                <td>${item.parentUnit ? escapeHtml(item.parentUnit.code + ' - ' + item.parentUnit.name) : '<span class="muted">Kök birim</span>'}</td>
+                <td>${manager ? escapeHtml(manager.positionCode + ' - ' + manager.name) : '<span class="muted">Tanımlı değil</span>'}</td>
+                <td>${Number(item._count?.positions || 0)}</td>
+                <td><span class="status ${item.isActive ? 'active' : 'passive'}">${item.isActive ? 'Aktif' : 'Pasif'}</span></td>
+                <td>
+                    <button class="btn btn-secondary btn-small" type="button" onclick="editDynamicOrganizationUnit('${item.id}')">Düzenle</button>
+                    ${item.isActive ? `<button class="btn btn-danger btn-small" type="button" onclick="deactivateDynamicOrganizationUnit('${item.id}')">Pasife Al</button>` : ''}
+                </td>
+            </tr>`;
+        });
+
+        wrap.innerHTML = html + '</tbody></table>';
+    }
+
+    function fillDynamicManagerPositionSelect(unitId, selectedId='') {
+        const select = document.getElementById('dynamicUnitManagerPosition');
+        if (!select) return;
+
+        if (!unitId) {
+            select.disabled = true;
+            select.innerHTML = '<option value="">Önce birimi oluşturun</option>';
+            return;
+        }
+
+        const candidates = positions.filter(
+            position => position.isActive && position.organizationUnitId === unitId
+        );
+
+        select.disabled = false;
+        select.innerHTML = '<option value="">Yönetici pozisyonu yok</option>';
+
+        candidates.forEach(position => {
+            select.innerHTML += `<option value="${position.id}">${escapeHtml(position.positionCode)} - ${escapeHtml(position.name)}</option>`;
+        });
+
+        if ([...select.options].some(option => option.value === selectedId)) select.value = selectedId;
+    }
+
+    async function saveDynamicOrganizationUnit(event) {
+        event.preventDefault();
+        try {
+            const editId = document.getElementById('dynamicUnitEditId').value;
+            const managerSelect = document.getElementById('dynamicUnitManagerPosition');
+
+            const payload = {
+                typeId: document.getElementById('dynamicUnitType').value,
+                parentUnitId: document.getElementById('dynamicUnitParent').value || null,
+                name: document.getElementById('dynamicUnitName').value.trim(),
+                sortOrder: Number(document.getElementById('dynamicUnitSortOrder').value || 0),
+                description: document.getElementById('dynamicUnitDescription').value.trim() || undefined,
+                isActive: document.getElementById('dynamicUnitActive').value === 'true'
+            };
+
+            if (editId && managerSelect && !managerSelect.disabled) {
+                payload.managerPositionId = managerSelect.value || null;
+            }
+
+            await api(
+                editId
+                    ? '/api/system-parameters/organization-units/' + editId
+                    : '/api/system-parameters/organization-units',
+                {
+                    method: editId ? 'PUT' : 'POST',
+                    headers: jsonHeaders(),
+                    body: JSON.stringify(payload)
+                }
+            );
+
+            showToast(editId ? 'Organizasyon birimi güncellendi.' : 'Organizasyon birimi oluşturuldu.');
+            resetDynamicUnitForm();
+
+            await Promise.all([
+                loadDynamicOrganizationUnits(),
+                loadDynamicOrganizationTree()
+            ]);
+        }
+        catch(error) {
+            showToast(error.message,'error');
+        }
+    }
+
+    async function editDynamicOrganizationUnit(id) {
+        try {
+            await loadPositions();
+
+            const result = await api(
+                '/api/system-parameters/organization-units/' + id,
+                {headers:authHeaders()}
+            );
+
+            const item = result.data;
+            if (!item) return;
+
+            document.getElementById('dynamicUnitEditId').value = item.id;
+            fillDynamicUnitSelectors();
+
+            document.getElementById('dynamicUnitType').value = item.typeId || '';
+            document.getElementById('dynamicUnitParent').value = item.parentUnitId || '';
+            document.getElementById('dynamicUnitName').value = item.name || '';
+            document.getElementById('dynamicUnitSortOrder').value = item.sortOrder || 0;
+            document.getElementById('dynamicUnitDescription').value = item.description || '';
+            document.getElementById('dynamicUnitActive').value = String(item.isActive);
+
+            fillDynamicManagerPositionSelect(item.id, item.managerPositionId || '');
+
+            document.getElementById('dynamicUnitFormTitle').textContent = 'Organizasyon Birimini Düzenle';
+            document.getElementById('dynamicUnitSubmitBtn').textContent = 'Organizasyon Birimini Güncelle';
+            document.getElementById('dynamicUnitCancelEditBtn').style.display = 'inline-flex';
+
+            window.scrollTo({top:0,behavior:'smooth'});
+        }
+        catch(error) {
+            showToast(error.message,'error');
+        }
+    }
+
+    function resetDynamicUnitForm() {
+        const form = document.getElementById('dynamicUnitForm');
+        if (!form) return;
+
+        form.reset();
+        document.getElementById('dynamicUnitEditId').value = '';
+        document.getElementById('dynamicUnitSortOrder').value = 0;
+        document.getElementById('dynamicUnitActive').value = 'true';
+        document.getElementById('dynamicUnitFormTitle').textContent = 'Yeni Organizasyon Birimi';
+        document.getElementById('dynamicUnitSubmitBtn').textContent = '+ Organizasyon Birimi Oluştur';
+        document.getElementById('dynamicUnitCancelEditBtn').style.display = 'none';
+
+        fillDynamicUnitSelectors();
+        fillDynamicManagerPositionSelect(null);
+    }
+
+    async function deactivateDynamicOrganizationUnit(id) {
+        if (!confirm('Bu organizasyon birimini pasife almak istediğinize emin misiniz?')) return;
+
+        try {
+            await api(
+                '/api/system-parameters/organization-units/' + id + '/deactivate',
+                {method:'POST',headers:authHeaders()}
+            );
+
+            showToast('Organizasyon birimi pasife alındı.');
+
+            await Promise.all([
+                loadDynamicOrganizationUnits(),
+                loadDynamicOrganizationTree()
+            ]);
+        }
+        catch(error) {
+            showToast(error.message,'error');
+        }
+    }
+
+    async function loadDynamicOrganizationTree() {
+        const result = await api(
+            '/api/system-parameters/organization-units/tree',
+            {headers:authHeaders()}
+        );
+
+        dynamicOrganizationTree = result.data?.tree || [];
+
+        const summary = document.getElementById('dynamicOrganizationSummary');
+        if (summary) {
+            const totalPositions = countDynamicTreePositions(dynamicOrganizationTree);
+            const filledPositions = countDynamicTreeFilledPositions(dynamicOrganizationTree);
+            summary.textContent = `${Number(result.data?.totalUnits || 0)} organizasyon birimi • ${totalPositions} aktif pozisyon • ${filledPositions} dolu pozisyon`;
+        }
+
+        renderDynamicOrganizationTree();
+        return dynamicOrganizationTree;
+    }
+
+    function countDynamicTreePositions(nodes) {
+        return nodes.reduce(
+            (total,node) => total + (node.positions?.length || 0) + countDynamicTreePositions(node.children || []),
+            0
+        );
+    }
+
+    function countDynamicTreeFilledPositions(nodes) {
+        return nodes.reduce(
+            (total,node) => total + (node.positions || []).filter(position => Boolean(position.employee)).length
+                + countDynamicTreeFilledPositions(node.children || []),
+            0
+        );
+    }
+
+    function renderDynamicOrganizationTree() {
+        const wrap = document.getElementById('dynamicOrganizationTree');
+        if (!wrap) return;
+
+        if (!dynamicOrganizationTree.length) {
+            wrap.innerHTML = '<div class="empty">Henüz organizasyon ağacı oluşturulmamış.</div>';
+            return;
+        }
+
+        wrap.innerHTML = dynamicOrganizationTree
+            .map(node => dynamicTreeNodeHtml(node,0))
+            .join('');
+    }
+
+    function dynamicTreeNodeHtml(node, depth) {
+        const unitPositions = node.positions || [];
+        const manager = node.managerPosition;
+        const hasChildren = (node.children?.length || 0) > 0;
+        const hasContent = hasChildren || unitPositions.length > 0;
+
+        const positionHtml = unitPositions.length
+            ? `<div class="dynamic-position-list">${
+                unitPositions.map(position => {
+                    const employee = position.employee;
+                    return `<div class="dynamic-position-row">
+                        <div>
+                            <span class="code-badge">${escapeHtml(position.positionCode)}</span>
+                            <span class="dynamic-position-name">${escapeHtml(position.name)}</span>
+                        </div>
+                        <div class="dynamic-position-employee">
+                            ${employee ? escapeHtml(employee.registryNo + ' - ' + employee.fullName) : 'Pozisyon boş'}
+                        </div>
+                    </div>`;
+                }).join('')
+            }</div>`
+            : '';
+
+        const childrenHtml = hasChildren
+            ? `<div class="dynamic-tree-children">${
+                node.children.map(child => dynamicTreeNodeHtml(child,depth + 1)).join('')
+            }</div>`
+            : '';
+
+        return `<div class="dynamic-tree-node" data-depth="${depth}" style="--tree-depth:${depth};">
+            <div class="dynamic-unit-card ${manager ? 'manager-unit' : ''}">
+                <div class="dynamic-unit-head" onclick="toggleDynamicTreeNode(this)">
+                    <button class="dynamic-tree-toggle" type="button" ${hasContent ? '' : 'disabled'}
+                        onclick="event.stopPropagation(); toggleDynamicTreeNode(this.parentElement)">
+                        ${hasContent ? '−' : '•'}
+                    </button>
+                    <div class="dynamic-unit-main">
+                        <div class="dynamic-unit-name">${escapeHtml(node.code)} - ${escapeHtml(node.name)}</div>
+                        <div class="dynamic-unit-meta">${escapeHtml(node.type?.name || 'Organizasyon Birimi')} • ${unitPositions.length} pozisyon</div>
+                    </div>
+                    <div class="dynamic-unit-manager">
+                        ${manager
+                            ? `<strong>${escapeHtml(manager.positionCode)} - ${escapeHtml(manager.name)}</strong><br/>${manager.employee ? escapeHtml(manager.employee.fullName) : 'Pozisyon boş'}`
+                            : 'Yönetici pozisyonu tanımlı değil'}
+                    </div>
+                </div>
+                ${positionHtml}
+            </div>
+            ${childrenHtml}
+        </div>`;
+    }
+
+    function toggleDynamicTreeNode(head) {
+        const node = head.closest('.dynamic-tree-node');
+        if (!node) return;
+
+        const toggle = node.querySelector(':scope > .dynamic-unit-card .dynamic-tree-toggle');
+        if (toggle?.disabled) return;
+
+        node.classList.toggle('collapsed');
+        if (toggle) toggle.textContent = node.classList.contains('collapsed') ? '+' : '−';
+    }
+
+    function expandAllDynamicUnits() {
+        document.querySelectorAll('#dynamicOrganizationTree .dynamic-tree-node').forEach(node => {
+            node.classList.remove('collapsed');
+            const toggle = node.querySelector(':scope > .dynamic-unit-card .dynamic-tree-toggle');
+            if (toggle && !toggle.disabled) toggle.textContent = '−';
+        });
+    }
+
+    function collapseAllDynamicUnits() {
+        document.querySelectorAll('#dynamicOrganizationTree .dynamic-tree-node').forEach(node => {
+            node.classList.add('collapsed');
+            const toggle = node.querySelector(':scope > .dynamic-unit-card .dynamic-tree-toggle');
+            if (toggle && !toggle.disabled) toggle.textContent = '+';
+        });
+    }
+
+
+    /* =========================================================
+       GENERAL MANAGEMENT
+    ========================================================= */
+
+    async function loadGeneralManagement() {
+
+        try {
+
+            const result =
+                await api(
+                    '/api/system-parameters/general-management',
+                    {
+                        headers:
+                            authHeaders()
+                    }
+                );
+
+            generalManagement =
+                result.data ||
+                null;
+
+            renderGeneralManagement();
+
+            fillGeneralManagementManagerSelect();
+
+        }
+        catch(error) {
+
+            showToast(
+                error.message,
+                'error'
+            );
+
+        }
+
+    }
+
+
+    function renderGeneralManagement() {
+
+        if (!generalManagement) {
+            return;
+        }
+
+        const codeInput =
+            document.getElementById(
+                'generalManagementCode'
+            );
+
+        const nameInput =
+            document.getElementById(
+                'generalManagementName'
+            );
+
+        const descriptionInput =
+            document.getElementById(
+                'generalManagementDescription'
+            );
+
+        const summary =
+            document.getElementById(
+                'generalManagementSummary'
+            );
+
+
+        if (codeInput) {
+            codeInput.value =
+                generalManagement.code ||
+                '50000001';
+        }
+
+        if (nameInput) {
+            nameInput.value =
+                generalManagement.name ||
+                'Genel Müdürlük';
+        }
+
+        if (descriptionInput) {
+            descriptionInput.value =
+                generalManagement.description ||
+                '';
+        }
+
+        if (summary) {
+
+            const manager =
+                generalManagement.managerPosition;
+
+            summary.innerHTML = `
+                <div class="hierarchy">
+                    <div class="hierarchy-row root-highlight">
+                        <div class="hierarchy-name">
+                            ${generalManagement.code || '50000001'}
+                            -
+                            ${generalManagement.name || 'Genel Müdürlük'}
+                        </div>
+
+                        <div class="hierarchy-meta">
+                            Organizasyon Kökü
+                            ${
+                                manager
+                                ?
+                                ' • Yönetici Pozisyonu: ' +
+                                manager.positionCode +
+                                ' - ' +
+                                manager.name
+                                :
+                                ' • Genel Müdür / CEO pozisyonu henüz tanımlı değil'
+                            }
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+    }
+
+
+    function fillGeneralManagementManagerSelect() {
+
+        const select =
+            document.getElementById(
+                'generalManagementManagerPosition'
+            );
+
+        if (!select) {
+            return;
+        }
+
+        const currentValue =
+            generalManagement
+                ?.managerPositionId ||
+            '';
+
+        select.innerHTML =
+            '<option value="">Yönetici pozisyonu yok</option>';
+
+        positions
+            .filter(
+                item =>
+                    item.isActive &&
+                    item.organizationLevel ===
+                        'GENERAL_MANAGEMENT' &&
+                    (
+                        !generalManagement ||
+                        item.generalManagementId ===
+                            generalManagement.id
+                    )
+            )
+            .forEach(
+                item => {
+
+                    select.innerHTML +=
+                        `<option value="${item.id}">
+                            ${item.positionCode} - ${item.name}
+                        </option>`;
+
+                }
+            );
+
+        if (
+            [...select.options]
+                .some(
+                    option =>
+                        option.value ===
+                        currentValue
+                )
+        ) {
+            select.value =
+                currentValue;
+        }
+
+    }
+
+
+    async function saveGeneralManagement(
+        event
+    ) {
+
+        event.preventDefault();
+
+        try {
+
+            const managerPositionId =
+                document
+                    .getElementById(
+                        'generalManagementManagerPosition'
+                    )
+                    .value ||
+                null;
+
+            const result =
+                await api(
+                    '/api/system-parameters/general-management',
+                    {
+                        method:
+                            'PUT',
+
+                        headers:
+                            jsonHeaders(),
+
+                        body:
+                            JSON.stringify({
+                                name:
+                                    document
+                                        .getElementById(
+                                            'generalManagementName'
+                                        )
+                                        .value
+                                        .trim(),
+
+                                description:
+                                    document
+                                        .getElementById(
+                                            'generalManagementDescription'
+                                        )
+                                        .value
+                                        .trim() ||
+                                    undefined,
+
+                                managerPositionId,
+
+                                isActive:
+                                    true
+                            })
+                    }
+                );
+
+            generalManagement =
+                result.data ||
+                generalManagement;
+
+            showToast(
+                'Genel Müdürlük güncellendi.'
+            );
+
+            await loadAllOrganizationData();
+
+            await buildOrganizationTree();
+
+        }
+        catch(error) {
+
+            showToast(
+                error.message,
+                'error'
+            );
+
+        }
+
+    }
+
+
+    async function startGeneralManagerPosition() {
+
+        if (!generalManagement) {
+            await loadGeneralManagement();
+        }
+
+        const positionCard =
+            document.querySelector(
+                '.parameter-card[data-panel="positions"]'
+            );
+
+        if (!positionCard) {
+            return;
+        }
+
+        openPanel(
+            'positions',
+            positionCard
+        );
+
+        document
+            .getElementById(
+                'positionOrganizationLevel'
+            )
+            .value =
+            'GENERAL_MANAGEMENT';
+
+        handlePositionLevelChange();
+
+        document
+            .getElementById(
+                'positionOrganizationUnit'
+            )
+            .value =
+            generalManagement?.id ||
+            '';
+
+        document
+            .getElementById(
+                'positionName'
+            )
+            .value =
+            'Genel Müdür / CEO';
+
+        document
+            .getElementById(
+                'positionIsUnitManager'
+            )
+            .value =
+            'true';
+
+        handleUnitManagerChange();
+
+        document
+            .getElementById(
+                'positionName'
+            )
+            .focus();
+
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+
+    }
+
+
+    /* =========================================================
+       DIRECTORATES
+    ========================================================= */
+
+    async function loadDirectorates() {
+
+        try {
+
+            const result =
+                await api(
+                    '/api/system-parameters/directorates',
+                    {
+                        headers:
+                            authHeaders()
+                    }
+                );
+
+
+            directorates =
+                result.data ||
+                [];
+
+
+            renderDirectorates();
+
+            fillDirectorateSelect();
+
+        }
+        catch(error) {
+
+            showToast(
+                error.message,
+                'error'
+            );
+
+        }
+
+    }
+
+
+    function renderDirectorates() {
+
+        const wrap =
+            document.getElementById(
+                'directorateTable'
+            );
+
+
+        if (
+            !directorates.length
+        ) {
+
+            wrap.innerHTML =
+                '<div class="empty">Henüz direktörlük tanımlanmamış.</div>';
+
+            return;
+
+        }
+
+
+        wrap.innerHTML = `
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>KOD</th>
+                        <th>DİREKTÖRLÜK</th>
+                        <th>MÜDÜRLÜK SAYISI</th>
+                        <th>DURUM</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    ${directorates
+                        .map(
+                            item => `
+                                <tr>
+
+                                    <td>
+                                        <span class="code-badge">
+                                            ${item.code || '-'}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        ${item.name}
+                                    </td>
+
+                                    <td>
+                                        ${item._count?.managements ?? 0}
+                                    </td>
+
+                                    <td>
+                                        <span class="status ${item.isActive ? 'active' : 'passive'}">
+                                            ${item.isActive ? 'Aktif' : 'Pasif'}
+                                        </span>
+                                    </td>
+
+                                </tr>
+                            `
+                        )
+                        .join('')}
+
+                </tbody>
+
+            </table>
+
+        `;
+
+    }
+
+
+    function fillDirectorateSelect() {
+
+        const select =
+            document.getElementById(
+                'managementDirectorate'
+            );
+
+
+        select.innerHTML =
+            '<option value="">Direktörlük seçiniz</option>';
+
+
+        directorates
+            .filter(
+                item =>
+                    item.isActive
+            )
+            .forEach(
+                item => {
+
+                    select.innerHTML +=
+                        `<option value="${item.id}">
+                            ${item.code ? item.code + ' - ' : ''}
+                            ${item.name}
+                        </option>`;
+
+                }
+            );
+
+    }
+
+
+    async function saveDirectorate(
+        event
+    ) {
+
+        event.preventDefault();
+
+
+        try {
+
+            await api(
+                '/api/system-parameters/directorates',
+                {
+                    method:
+                        'POST',
+
+                    headers:
+                        jsonHeaders(),
+
+                    body:
+                        JSON.stringify({
+
+                            code:
+                                document
+                                    .getElementById(
+                                        'directorateCode'
+                                    )
+                                    .value
+                                    .trim() ||
+                                undefined,
+
+                            name:
+                                document
+                                    .getElementById(
+                                        'directorateName'
+                                    )
+                                    .value
+                                    .trim(),
+
+                            description:
+                                document
+                                    .getElementById(
+                                        'directorateDescription'
+                                    )
+                                    .value
+                                    .trim() ||
+                                undefined,
+
+                            isActive:
+                                document
+                                    .getElementById(
+                                        'directorateActive'
+                                    )
+                                    .value ===
+                                'true'
+
+                        })
+
+                }
+            );
+
+
+            event.target.reset();
+
+            showToast(
+                'Direktörlük oluşturuldu.'
+            );
+
+
+            await loadAllOrganizationData();
+
+        }
+        catch(error) {
+
+            showToast(
+                error.message,
+                'error'
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       MANAGEMENTS
+    ========================================================= */
+
+    async function loadManagements() {
+
+        const result =
+            await api(
+                '/api/system-parameters/managements',
+                {
+                    headers:
+                        authHeaders()
+                }
+            );
+
+
+        managements =
+            result.data ||
+            [];
+
+
+        renderManagements();
+
+        fillManagementSelect();
+
+    }
+
+
+    function renderManagements() {
+
+        const wrap =
+            document.getElementById(
+                'managementTable'
+            );
+
+
+        if (
+            !managements.length
+        ) {
+
+            wrap.innerHTML =
+                '<div class="empty">Henüz müdürlük tanımlanmamış.</div>';
+
+            return;
+
+        }
+
+
+        wrap.innerHTML = `
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>KOD</th>
+                        <th>MÜDÜRLÜK</th>
+                        <th>DİREKTÖRLÜK</th>
+                        <th>BÖLÜM</th>
+                        <th>DURUM</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    ${managements
+                        .map(
+                            item => `
+                                <tr>
+
+                                    <td>
+                                        <span class="code-badge">
+                                            ${item.code || '-'}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        ${item.name}
+                                    </td>
+
+                                    <td>
+                                        ${item.directorate?.name || '-'}
+                                    </td>
+
+                                    <td>
+                                        ${item._count?.departments ?? 0}
+                                    </td>
+
+                                    <td>
+                                        <span class="status ${item.isActive ? 'active' : 'passive'}">
+                                            ${item.isActive ? 'Aktif' : 'Pasif'}
+                                        </span>
+                                    </td>
+
+                                </tr>
+                            `
+                        )
+                        .join('')}
+
+                </tbody>
+
+            </table>
+
+        `;
+
+    }
+
+
+    function fillManagementSelect() {
+
+        const select =
+            document.getElementById(
+                'departmentManagement'
+            );
+
+
+        select.innerHTML =
+            '<option value="">Müdürlük seçiniz</option>';
+
+
+        managements
+            .filter(
+                item =>
+                    item.isActive
+            )
+            .forEach(
+                item => {
+
+                    select.innerHTML +=
+                        `<option value="${item.id}">
+                            ${item.code ? item.code + ' - ' : ''}
+                            ${item.name}
+                        </option>`;
+
+                }
+            );
+
+    }
+
+
+    async function saveManagement(
+        event
+    ) {
+
+        event.preventDefault();
+
+
+        try {
+
+            await api(
+                '/api/system-parameters/managements',
+                {
+                    method:
+                        'POST',
+
+                    headers:
+                        jsonHeaders(),
+
+                    body:
+                        JSON.stringify({
+
+                            directorateId:
+                                document
+                                    .getElementById(
+                                        'managementDirectorate'
+                                    )
+                                    .value,
+
+                            code:
+                                document
+                                    .getElementById(
+                                        'managementCode'
+                                    )
+                                    .value
+                                    .trim() ||
+                                undefined,
+
+                            name:
+                                document
+                                    .getElementById(
+                                        'managementName'
+                                    )
+                                    .value
+                                    .trim(),
+
+                            description:
+                                document
+                                    .getElementById(
+                                        'managementDescription'
+                                    )
+                                    .value
+                                    .trim() ||
+                                undefined,
+
+                            isActive:
+                                true
+
+                        })
+
+                }
+            );
+
+
+            event.target.reset();
+
+            showToast(
+                'Müdürlük oluşturuldu.'
+            );
+
+
+            await loadAllOrganizationData();
+
+        }
+        catch(error) {
+
+            showToast(
+                error.message,
+                'error'
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       DEPARTMENTS
+    ========================================================= */
+
+    async function loadDepartments() {
+
+        const result =
+            await api(
+                '/api/system-parameters/organization-departments',
+                {
+                    headers:
+                        authHeaders()
+                }
+            );
+
+
+        departments =
+            result.data ||
+            [];
+
+
+        renderDepartments();
+
+        
+
+    }
+
+
+    function renderDepartments() {
+
+        const wrap =
+            document.getElementById(
+                'departmentTable'
+            );
+
+
+        if (
+            !departments.length
+        ) {
+
+            wrap.innerHTML =
+                '<div class="empty">Henüz bölüm tanımlanmamış.</div>';
+
+            return;
+
+        }
+
+
+        wrap.innerHTML = `
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>KOD</th>
+                        <th>BÖLÜM</th>
+                        <th>MÜDÜRLÜK</th>
+                        <th>DİREKTÖRLÜK</th>
+                        <th>POZİSYON</th>
+                        <th>DURUM</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    ${departments
+                        .map(
+                            item => `
+                                <tr>
+
+                                    <td>
+                                        <span class="code-badge">
+                                            ${item.code || '-'}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        ${item.name}
+                                    </td>
+
+                                    <td>
+                                        ${item.management?.name || '-'}
+                                    </td>
+
+                                    <td>
+                                        ${item.management?.directorate?.name || '-'}
+                                    </td>
+
+                                    <td>
+                                        ${item._count?.positions ?? 0}
+                                    </td>
+
+                                    <td>
+                                        <span class="status ${item.isActive ? 'active' : 'passive'}">
+                                            ${item.isActive ? 'Aktif' : 'Pasif'}
+                                        </span>
+                                    </td>
+
+                                </tr>
+                            `
+                        )
+                        .join('')}
+
+                </tbody>
+
+            </table>
+
+        `;
+
+    }
+
+
+    async function saveDepartment(
+        event
+    ) {
+
+        event.preventDefault();
+
+
+        try {
+
+            await api(
+                '/api/system-parameters/organization-departments',
+                {
+                    method:
+                        'POST',
+
+                    headers:
+                        jsonHeaders(),
+
+                    body:
+                        JSON.stringify({
+
+                            managementId:
+                                document
+                                    .getElementById(
+                                        'departmentManagement'
+                                    )
+                                    .value,
+
+                            code:
+                                document
+                                    .getElementById(
+                                        'departmentCode'
+                                    )
+                                    .value
+                                    .trim() ||
+                                undefined,
+
+                            name:
+                                document
+                                    .getElementById(
+                                        'departmentName'
+                                    )
+                                    .value
+                                    .trim(),
+
+                            description:
+                                document
+                                    .getElementById(
+                                        'departmentDescription'
+                                    )
+                                    .value
+                                    .trim() ||
+                                undefined,
+
+                            isActive:
+                                true
+
+                        })
+
+                }
+            );
+
+
+            event.target.reset();
+
+            showToast(
+                'Bölüm oluşturuldu.'
+            );
+
+
+            await loadAllOrganizationData();
+
+        }
+        catch(error) {
+
+            showToast(
+                error.message,
+                'error'
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       POSITIONS
+    ========================================================= */
+
+    function getPositionUnitContext(item) {
+
+        if (item.organizationLevel === 'GENERAL_MANAGEMENT') {
+            return {
+                levelLabel: 'Genel Müdürlük',
+                unitName:
+                    item.generalManagement?.name ||
+                    generalManagement?.name ||
+                    'Genel Müdürlük',
+                generalManagementId:
+                    item.generalManagementId ||
+                    item.generalManagement?.id ||
+                    generalManagement?.id ||
+                    null,
+                directorateId: null,
+                managementId: null,
+                departmentId: null
+            };
+        }
+
+        if (item.organizationLevel === 'DIRECTORATE') {
+            return {
+                levelLabel: 'Direktörlük',
+                unitName: item.directorate?.name || '-',
+                generalManagementId: generalManagement?.id || null,
+                directorateId: item.directorateId || item.directorate?.id || null,
+                managementId: null,
+                departmentId: null
+            };
+        }
+
+        if (item.organizationLevel === 'MANAGEMENT') {
+            return {
+                levelLabel: 'Müdürlük',
+                unitName: item.management?.name || '-',
+                generalManagementId: generalManagement?.id || null,
+                directorateId: item.management?.directorateId || item.management?.directorate?.id || null,
+                managementId: item.managementId || item.management?.id || null,
+                departmentId: null
+            };
+        }
+
+        return {
+            levelLabel: 'Bölüm',
+            unitName: item.organizationDepartment?.name || '-',
+            generalManagementId: generalManagement?.id || null,
+            directorateId:
+                item.organizationDepartment?.management?.directorateId ||
+                item.organizationDepartment?.management?.directorate?.id ||
+                null,
+            managementId:
+                item.organizationDepartment?.managementId ||
+                item.organizationDepartment?.management?.id ||
+                null,
+            departmentId:
+                item.organizationDepartmentId ||
+                item.organizationDepartment?.id ||
+                null
+        };
+    }
+
+
+    async function loadPositions() {
+
+        try {
+
+            const result =
+                await api(
+                    '/api/system-parameters/positions',
+                    {
+                        headers:
+                            authHeaders()
+                    }
+                );
+
+
+            positions =
+                result.data ||
+                [];
+
+
+            renderPositions();
+
+            fillParentPositionSelect();
+
+            fillGeneralManagementManagerSelect();
+
+        }
+        catch(error) {
+
+            showToast(
+                error.message,
+                'error'
+            );
+
+        }
+
+    }
+
+
+    function renderPositions() {
+
+        const wrap =
+            document.getElementById(
+                'positionTable'
+            );
+
+
+        if (
+            !positions.length
+        ) {
+
+            wrap.innerHTML =
+                '<div class="empty">Henüz pozisyon tanımlanmamış.</div>';
+
+            return;
+
+        }
+
+
+        wrap.innerHTML = `
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>POZİSYON KODU</th>
+                        <th>POZİSYON</th>
+                        <th>SEVİYE</th>
+                        <th>ORGANİZASYON BİRİMİ</th>
+                        <th>YÖNETİCİ</th>
+                        <th>ÜST POZİSYON</th>
+                        <th>NORM</th>
+                        <th>ÇALIŞAN</th>
+                        <th>DURUM</th>
+                        <th>İŞLEM</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    ${positions
+                        .map(
+                            item => {
+
+                                const ctx =
+                                    getPositionUnitContext(
+                                        item
+                                    );
+
+                                return `
+                                    <tr>
+
+                                        <td>
+                                            <span class="code-badge">
+                                                ${item.positionCode}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            ${item.name}
+                                        </td>
+
+                                        <td>
+                                            ${ctx.levelLabel}
+                                        </td>
+
+                                        <td>
+                                            ${ctx.unitName}
+                                        </td>
+
+                                        <td>
+                                            ${
+                                                item.isUnitManager
+                                                ?
+                                                '<span class="status active">Birim Yöneticisi</span>'
+                                                :
+                                                '-'
+                                            }
+                                        </td>
+
+                                        <td>
+                                            ${
+                                                item.parentPosition
+                                                ?
+                                                item.parentPosition.positionCode
+                                                + ' - ' +
+                                                item.parentPosition.name
+                                                :
+                                                '-'
+                                            }
+                                        </td>
+
+                                        <td>
+                                            ${item.normCount}
+                                        </td>
+
+                                        <td>
+                                            ${
+                                                item.employee
+                                                ?
+                                                item.employee.registryNo
+                                                + ' - ' +
+                                                item.employee.fullName
+                                                :
+                                                '<span style="color:#a0aabd">Boş</span>'
+                                            }
+                                        </td>
+
+                                        <td>
+                                            <span class="status ${item.isActive ? 'active' : 'passive'}">
+                                                ${item.isActive ? 'Aktif' : 'Pasif'}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <button
+                                                class="btn btn-secondary btn-small"
+                                                type="button"
+                                                onclick="editPosition('${item.id}')"
+                                            >
+                                                Düzenle
+                                            </button>
+
+                                            ${
+                                                item.isActive
+                                                ?
+                                                `<button
+                                                    class="btn btn-danger btn-small"
+                                                    type="button"
+                                                    onclick="deactivatePositionRecord('${item.id}')"
+                                                >
+                                                    Pasife Al
+                                                </button>`
+                                                :
+                                                ''
+                                            }
+                                        </td>
+
+                                    </tr>
+                                `;
+                            }
+                        )
+                        .join('')}
+
+                </tbody>
+
+            </table>
+
+        `;
+
+    }
+
+
+    function handlePositionLevelChange() {
+
+        const level =
+            document
+                .getElementById(
+                    'positionOrganizationLevel'
+                )
+                .value;
+
+        const unitSelect =
+            document
+                .getElementById(
+                    'positionOrganizationUnit'
+                );
+
+
+        unitSelect.innerHTML = '';
+        unitSelect.disabled =
+            !level;
+
+
+        if (!level) {
+
+            unitSelect.innerHTML =
+                '<option value="">Önce seviye seçiniz</option>';
+
+            fillParentPositionSelect();
+
+            return;
+
+        }
+
+
+        let source = [];
+        let placeholder =
+            'Organizasyon birimi seçiniz';
+
+
+        if (
+            level ===
+            'GENERAL_MANAGEMENT'
+        ) {
+
+            source =
+                generalManagement &&
+                generalManagement.isActive
+                    ? [generalManagement]
+                    : [];
+
+            placeholder =
+                'Genel Müdürlük seçiniz';
+
+        }
+
+
+        if (
+            level ===
+            'DIRECTORATE'
+        ) {
+
+            source =
+                directorates
+                    .filter(
+                        item =>
+                            item.isActive
+                    );
+
+            placeholder =
+                'Direktörlük seçiniz';
+
+        }
+
+
+        if (
+            level ===
+            'MANAGEMENT'
+        ) {
+
+            source =
+                managements
+                    .filter(
+                        item =>
+                            item.isActive
+                    );
+
+            placeholder =
+                'Müdürlük seçiniz';
+
+        }
+
+
+        if (
+            level ===
+            'DEPARTMENT'
+        ) {
+
+            source =
+                departments
+                    .filter(
+                        item =>
+                            item.isActive
+                    );
+
+            placeholder =
+                'Bölüm seçiniz';
+
+        }
+
+
+        unitSelect.innerHTML =
+            `<option value="">${placeholder}</option>`;
+
+
+        source.forEach(
+            item => {
+
+                unitSelect.innerHTML +=
+                    `<option value="${item.id}">
+                        ${item.code ? item.code + ' - ' : ''}
+                        ${item.name}
+                    </option>`;
+
+            }
+        );
+
+
+        fillParentPositionSelect();
+
+    }
+
+
+    function isAllowedParentPosition(
+        candidate,
+        level,
+        unitId
+    ) {
+
+        if (
+            !candidate ||
+            !candidate.isActive
+        ) {
+            return false;
+        }
+
+
+        const ctx =
+            getPositionUnitContext(
+                candidate
+            );
+
+
+        if (
+            level ===
+            'GENERAL_MANAGEMENT'
+        ) {
+
+            return (
+                candidate.organizationLevel ===
+                    'GENERAL_MANAGEMENT' &&
+                ctx.generalManagementId ===
+                    unitId
+            );
+
+        }
+
+
+        if (
+            level ===
+            'DIRECTORATE'
+        ) {
+
+            return (
+                (
+                    candidate.organizationLevel ===
+                        'DIRECTORATE' &&
+                    ctx.directorateId ===
+                        unitId
+                ) ||
+                (
+                    candidate.organizationLevel ===
+                        'GENERAL_MANAGEMENT' &&
+                    ctx.generalManagementId ===
+                        generalManagement?.id
+                )
+            );
+
+        }
+
+
+        if (
+            level ===
+            'MANAGEMENT'
+        ) {
+
+            const management =
+                managements.find(
+                    item =>
+                        item.id ===
+                        unitId
+                );
+
+
+            if (!management) {
+                return false;
+            }
+
+
+            return (
+                (
+                    candidate.organizationLevel ===
+                        'MANAGEMENT' &&
+                    ctx.managementId ===
+                        unitId
+                ) ||
+                (
+                    candidate.organizationLevel ===
+                        'DIRECTORATE' &&
+                    ctx.directorateId ===
+                        management.directorateId
+                ) ||
+                (
+                    candidate.organizationLevel ===
+                        'GENERAL_MANAGEMENT' &&
+                    ctx.generalManagementId ===
+                        generalManagement?.id
+                )
+            );
+
+        }
+
+
+        if (
+            level ===
+            'DEPARTMENT'
+        ) {
+
+            const department =
+                departments.find(
+                    item =>
+                        item.id ===
+                        unitId
+                );
+
+
+            if (!department) {
+                return false;
+            }
+
+
+            const managementId =
+                department.managementId ||
+                department.management?.id;
+
+
+            const directorateId =
+                department.management?.directorateId ||
+                department.management?.directorate?.id;
+
+
+            return (
+                (
+                    candidate.organizationLevel ===
+                        'DEPARTMENT' &&
+                    ctx.departmentId ===
+                        unitId
+                ) ||
+                (
+                    candidate.organizationLevel ===
+                        'MANAGEMENT' &&
+                    ctx.managementId ===
+                        managementId
+                ) ||
+                (
+                    candidate.organizationLevel ===
+                        'DIRECTORATE' &&
+                    ctx.directorateId ===
+                        directorateId
+                ) ||
+                (
+                    candidate.organizationLevel ===
+                        'GENERAL_MANAGEMENT' &&
+                    ctx.generalManagementId ===
+                        generalManagement?.id
+                )
+            );
+
+        }
+
+
+        return false;
+
+    }
+
+
+    function handleUnitManagerChange() {
+
+        const managerSelect =
+            document.getElementById(
+                'positionIsUnitManager'
+            );
+
+        const parentSelect =
+            document.getElementById(
+                'parentPosition'
+            );
+
+        if (
+            !managerSelect ||
+            !parentSelect
+        ) {
+            return;
+        }
+
+        const isUnitManager =
+            managerSelect.value ===
+            'true';
+
+        if (isUnitManager) {
+
+            parentSelect.value = '';
+            parentSelect.disabled = true;
+
+            /*
+             * Birim yöneticisinin üst pozisyonunu backend otomatik kurar:
+             *
+             * Genel Müdür / CEO -> kök pozisyon, üst pozisyon yok
+             * Direktörlük yöneticisi -> Genel Müdür / CEO
+             * Müdürlük yöneticisi -> bağlı direktörlük yöneticisi
+             * Bölüm yöneticisi    -> bağlı müdürlük yöneticisi
+             */
+            parentSelect.innerHTML =
+                '<option value="">Otomatik — üst birim yöneticisine bağlanır</option>';
+
+        }
+        else {
+
+            parentSelect.disabled = false;
+            fillParentPositionSelect();
+
+        }
+
+    }
+
+
+    function fillParentPositionSelect() {
+
+        const select =
+            document.getElementById(
+                'parentPosition'
+            );
+
+        const level =
+            document.getElementById(
+                'positionOrganizationLevel'
+            )?.value;
+
+        const unitId =
+            document.getElementById(
+                'positionOrganizationUnit'
+            )?.value;
+
+        const editId =
+            document.getElementById(
+                'positionEditId'
+            )?.value;
+
+
+        if (!select) {
+            return;
+        }
+
+
+        const managerSelect =
+            document.getElementById(
+                'positionIsUnitManager'
+            );
+
+        if (
+            managerSelect &&
+            managerSelect.value ===
+                'true'
+        ) {
+
+            select.disabled =
+                true;
+
+            select.innerHTML =
+                '<option value="">Otomatik — üst birim yöneticisine bağlanır</option>';
+
+            return;
+
+        }
+
+
+        select.disabled =
+            false;
+
+
+        const previousValue =
+            select.value;
+
+
+        select.innerHTML =
+            '<option value="">Üst pozisyon yok</option>';
+
+
+        if (
+            !level ||
+            !unitId
+        ) {
+            return;
+        }
+
+
+        positions
+            .filter(
+                item =>
+                    item.id !== editId &&
+                    isAllowedParentPosition(
+                        item,
+                        level,
+                        unitId
+                    )
+            )
+            .forEach(
+                item => {
+
+                    const ctx =
+                        getPositionUnitContext(
+                            item
+                        );
+
+                    select.innerHTML +=
+                        `<option value="${item.id}">
+                            ${item.positionCode} - ${item.name} (${ctx.unitName})
+                        </option>`;
+
+                }
+            );
+
+
+        if (
+            [...select.options]
+                .some(
+                    option =>
+                        option.value ===
+                        previousValue
+                )
+        ) {
+
+            select.value =
+                previousValue;
+
+        }
+
+    }
+
+
+    async function savePosition(
+        event
+    ) {
+
+        event.preventDefault();
+
+
+        try {
+
+            const editId =
+                document
+                    .getElementById(
+                        'positionEditId'
+                    )
+                    .value;
+
+            const organizationLevel =
+                document
+                    .getElementById(
+                        'positionOrganizationLevel'
+                    )
+                    .value;
+
+            const unitId =
+                document
+                    .getElementById(
+                        'positionOrganizationUnit'
+                    )
+                    .value;
+
+
+            if (
+                !organizationLevel ||
+                !unitId
+            ) {
+
+                throw new Error(
+                    'Organizasyon seviyesi ve organizasyon birimi seçiniz.'
+                );
+
+            }
+
+
+            const payload = {
+
+                name:
+                    document
+                        .getElementById(
+                            'positionName'
+                        )
+                        .value
+                        .trim(),
+
+                organizationLevel,
+
+                generalManagementId:
+                    organizationLevel ===
+                        'GENERAL_MANAGEMENT'
+                        ? unitId
+                        : null,
+
+                directorateId:
+                    organizationLevel ===
+                        'DIRECTORATE'
+                        ? unitId
+                        : null,
+
+                managementId:
+                    organizationLevel ===
+                        'MANAGEMENT'
+                        ? unitId
+                        : null,
+
+                organizationDepartmentId:
+                    organizationLevel ===
+                        'DEPARTMENT'
+                        ? unitId
+                        : null,
+
+                parentPositionId:
+                    document
+                        .getElementById(
+                            'parentPosition'
+                        )
+                        .value ||
+                    null,
+
+                isUnitManager:
+                    document
+                        .getElementById(
+                            'positionIsUnitManager'
+                        )
+                        .value ===
+                    'true',
+
+                normCount:
+                    Number(
+                        document
+                            .getElementById(
+                                'normCount'
+                            )
+                            .value ||
+                        1
+                    ),
+
+                description:
+                    document
+                        .getElementById(
+                            'positionDescription'
+                        )
+                        .value
+                        .trim() ||
+                    undefined,
+
+                isActive:
+                    true
+
+            };
+
+
+            await api(
+                editId
+                    ? '/api/system-parameters/positions/' + editId
+                    : '/api/system-parameters/positions',
+                {
+                    method:
+                        editId
+                            ? 'PUT'
+                            : 'POST',
+
+                    headers:
+                        jsonHeaders(),
+
+                    body:
+                        JSON.stringify(
+                            payload
+                        )
+                }
+            );
+
+
+            showToast(
+                editId
+                    ? 'Pozisyon güncellendi.'
+                    : 'Pozisyon oluşturuldu.'
+            );
+
+
+            resetPositionForm();
+
+            await loadPositions();
+
+            await buildOrganizationTree();
+
+        }
+        catch(error) {
+
+            showToast(
+                error.message,
+                'error'
+            );
+
+        }
+
+    }
+
+
+    function editPosition(
+        id
+    ) {
+
+        const item =
+            positions.find(
+                position =>
+                    position.id ===
+                    id
+            );
+
+
+        if (!item) {
+            return;
+        }
+
+
+        document
+            .getElementById(
+                'positionEditId'
+            )
+            .value =
+            item.id;
+
+
+        document
+            .getElementById(
+                'positionOrganizationLevel'
+            )
+            .value =
+            item.organizationLevel;
+
+
+        handlePositionLevelChange();
+
+
+        const unitSelect =
+            document
+                .getElementById(
+                    'positionOrganizationUnit'
+                );
+
+
+        if (
+            item.organizationLevel ===
+            'GENERAL_MANAGEMENT'
+        ) {
+
+            unitSelect.value =
+                item.generalManagementId ||
+                item.generalManagement?.id ||
+                generalManagement?.id ||
+                '';
+
+        }
+
+
+        if (
+            item.organizationLevel ===
+            'DIRECTORATE'
+        ) {
+
+            unitSelect.value =
+                item.directorateId ||
+                item.directorate?.id ||
+                '';
+
+        }
+
+
+        if (
+            item.organizationLevel ===
+            'MANAGEMENT'
+        ) {
+
+            unitSelect.value =
+                item.managementId ||
+                item.management?.id ||
+                '';
+
+        }
+
+
+        if (
+            item.organizationLevel ===
+            'DEPARTMENT'
+        ) {
+
+            unitSelect.value =
+                item.organizationDepartmentId ||
+                item.organizationDepartment?.id ||
+                '';
+
+        }
+
+
+        document
+            .getElementById(
+                'positionName'
+            )
+            .value =
+            item.name ||
+            '';
+
+
+        document
+            .getElementById(
+                'normCount'
+            )
+            .value =
+            item.normCount ||
+            1;
+
+
+        document
+            .getElementById(
+                'positionDescription'
+            )
+            .value =
+            item.description ||
+            '';
+
+
+        document
+            .getElementById(
+                'positionIsUnitManager'
+            )
+            .value =
+            item.isUnitManager
+                ? 'true'
+                : 'false';
+
+
+        fillParentPositionSelect();
+
+        handleUnitManagerChange();
+
+
+        document
+            .getElementById(
+                'parentPosition'
+            )
+            .value =
+            item.parentPositionId ||
+            item.parentPosition?.id ||
+            '';
+
+
+        document
+            .getElementById(
+                'positionSubmitBtn'
+            )
+            .textContent =
+            'Pozisyonu Güncelle';
+
+
+        document
+            .getElementById(
+                'positionCancelEditBtn'
+            )
+            .style
+            .display =
+            'inline-flex';
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+
+    }
+
+
+    function resetPositionForm() {
+
+        document
+            .getElementById(
+                'positionForm'
+            )
+            .reset();
+
+
+        document
+            .getElementById(
+                'positionEditId'
+            )
+            .value =
+            '';
+
+
+        const unitSelect =
+            document
+                .getElementById(
+                    'positionOrganizationUnit'
+                );
+
+
+        unitSelect.disabled =
+            true;
+
+        unitSelect.innerHTML =
+            '<option value="">Önce seviye seçiniz</option>';
+
+
+        document
+            .getElementById(
+                'parentPosition'
+            )
+            .innerHTML =
+            '<option value="">Üst pozisyon yok</option>';
+
+
+        document
+            .getElementById(
+                'positionIsUnitManager'
+            )
+            .value =
+            'false';
+
+
+        document
+            .getElementById(
+                'parentPosition'
+            )
+            .disabled =
+            false;
+
+
+        document
+            .getElementById(
+                'positionSubmitBtn'
+            )
+            .textContent =
+            '+ Pozisyon Oluştur';
+
+
+        document
+            .getElementById(
+                'positionCancelEditBtn'
+            )
+            .style
+            .display =
+            'none';
+
+    }
+
+
+    async function deactivatePositionRecord(
+        id
+    ) {
+
+        if (
+            !confirm(
+                'Bu pozisyonu pasife almak istediğinize emin misiniz?'
+            )
+        ) {
+            return;
+        }
+
+
+        try {
+
+            await api(
+                '/api/system-parameters/positions/' +
+                id +
+                '/deactivate',
+                {
+                    method:
+                        'POST',
+
+                    headers:
+                        authHeaders()
+                }
+            );
+
+
+            showToast(
+                'Pozisyon pasife alındı.'
+            );
+
+
+            await loadPositions();
+
+            await buildOrganizationTree();
+
+        }
+        catch(error) {
+
+            showToast(
+                error.message,
+                'error'
+            );
+
+        }
+
+    }
+
+
+/* =========================================================
+       ORGANIZATION TREE
+    ========================================================= */
+
+    async function buildOrganizationTree() {
+
+        await Promise.all([
+            loadGeneralManagement(),
+            loadDirectorates(),
+            loadManagements(),
+            loadDepartments(),
+            loadPositions()
+        ]);
+
+
+        const wrap =
+            document.getElementById(
+                'organizationTree'
+            );
+
+
+        if (!wrap) {
+            return;
+        }
+
+
+        if (!generalManagement) {
+
+            wrap.innerHTML =
+                '<div class="empty">Genel Müdürlük kaydı bulunamadı.</div>';
+
+            return;
+
+        }
+
+
+        const positionMeta =
+            position => {
+
+                const parts =
+                    ['Pozisyon'];
+
+                if (
+                    position.isUnitManager
+                ) {
+                    parts.push(
+                        'Birim Yöneticisi'
+                    );
+                }
+
+                if (
+                    position.employee
+                ) {
+                    parts.push(
+                        position.employee.registryNo +
+                        ' - ' +
+                        position.employee.fullName
+                    );
+                }
+                else {
+                    parts.push(
+                        'Pozisyon boş'
+                    );
+                }
+
+                if (
+                    position.parentPosition
+                ) {
+                    parts.push(
+                        'Üst: ' +
+                        position.parentPosition.positionCode +
+                        ' - ' +
+                        position.parentPosition.name
+                    );
+                }
+                else if (
+                    position.organizationLevel ===
+                    'GENERAL_MANAGEMENT'
+                ) {
+                    parts.push(
+                        'Organizasyon kökü'
+                    );
+                }
+
+                return parts.join(
+                    ' • '
+                );
+
+            };
+
+
+        const positionRow =
+            (
+                position,
+                levelClass
+            ) => `
+
+                <div class="hierarchy-row ${levelClass} ${position.isUnitManager ? 'manager-highlight' : ''}">
+
+                    <div class="hierarchy-name">
+                        ${position.positionCode}
+                        -
+                        ${position.name}
+                    </div>
+
+                    <div class="hierarchy-meta">
+                        ${positionMeta(position)}
+                    </div>
+
+                </div>
+
+            `;
+
+
+        let html =
+            '<div class="hierarchy">';
+
+
+        html += `
+
+            <div class="hierarchy-row root-highlight">
+
+                <div class="hierarchy-name">
+                    ${generalManagement.code || '50000001'}
+                    -
+                    ${generalManagement.name || 'Genel Müdürlük'}
+                </div>
+
+                <div class="hierarchy-meta">
+                    Genel Müdürlük • Organizasyon Kökü
+                    ${
+                        generalManagement.managerPosition
+                        ?
+                        ' • Yönetici Pozisyonu: ' +
+                        generalManagement.managerPosition.positionCode +
+                        ' - ' +
+                        generalManagement.managerPosition.name
+                        :
+                        ' • Genel Müdür / CEO pozisyonu tanımlı değil'
+                    }
+                </div>
+
+            </div>
+
+        `;
+
+
+        positions
+            .filter(
+                position =>
+                    position.isActive &&
+                    position.organizationLevel ===
+                        'GENERAL_MANAGEMENT' &&
+                    (
+                        !position.generalManagementId ||
+                        position.generalManagementId ===
+                            generalManagement.id
+                    )
+            )
+            .forEach(
+                position => {
+
+                    html +=
+                        positionRow(
+                            position,
+                            'hierarchy-level-2'
+                        );
+
+                }
+            );
+
+
+        directorates
+            .filter(
+                directorate =>
+                    directorate.isActive
+            )
+            .forEach(
+                directorate => {
+
+
+                    html += `
+
+                        <div class="hierarchy-row hierarchy-level-2">
+
+                            <div class="hierarchy-name">
+                                ${directorate.code || ''}
+                                ${directorate.code ? ' - ' : ''}
+                                ${directorate.name}
+                            </div>
+
+                            <div class="hierarchy-meta">
+                                Direktörlük
+                                ${
+                                    directorate.managerPosition
+                                    ?
+                                    ' • Yönetici Pozisyonu: ' +
+                                    directorate.managerPosition.positionCode +
+                                    ' - ' +
+                                    directorate.managerPosition.name
+                                    :
+                                    ' • Yönetici pozisyonu tanımlı değil'
+                                }
+                            </div>
+
+                        </div>
+
+                    `;
+
+
+                    positions
+                        .filter(
+                            position =>
+                                position.isActive &&
+                                position.organizationLevel ===
+                                    'DIRECTORATE' &&
+                                position.directorateId ===
+                                    directorate.id
+                        )
+                        .forEach(
+                            position => {
+
+                                html +=
+                                    positionRow(
+                                        position,
+                                        'hierarchy-level-3'
+                                    );
+
+                            }
+                        );
+
+
+                    managements
+                        .filter(
+                            management =>
+                                management.directorateId ===
+                                    directorate.id &&
+                                management.isActive
+                        )
+                        .forEach(
+                            management => {
+
+
+                                html += `
+
+                                    <div class="hierarchy-row hierarchy-level-3">
+
+                                        <div class="hierarchy-name">
+                                            ${management.code || ''}
+                                            ${management.code ? ' - ' : ''}
+                                            ${management.name}
+                                        </div>
+
+                                        <div class="hierarchy-meta">
+                                            Müdürlük
+                                            ${
+                                                management.managerPosition
+                                                ?
+                                                ' • Yönetici Pozisyonu: ' +
+                                                management.managerPosition.positionCode +
+                                                ' - ' +
+                                                management.managerPosition.name
+                                                :
+                                                ' • Yönetici pozisyonu tanımlı değil'
+                                            }
+                                        </div>
+
+                                    </div>
+
+                                `;
+
+
+                                positions
+                                    .filter(
+                                        position =>
+                                            position.isActive &&
+                                            position.organizationLevel ===
+                                                'MANAGEMENT' &&
+                                            position.managementId ===
+                                                management.id
+                                    )
+                                    .forEach(
+                                        position => {
+
+                                            html +=
+                                                positionRow(
+                                                    position,
+                                                    'hierarchy-level-4'
+                                                );
+
+                                        }
+                                    );
+
+
+                                departments
+                                    .filter(
+                                        department =>
+                                            department.managementId ===
+                                                management.id &&
+                                            department.isActive
+                                    )
+                                    .forEach(
+                                        department => {
+
+
+                                            html += `
+
+                                                <div class="hierarchy-row hierarchy-level-4">
+
+                                                    <div class="hierarchy-name">
+                                                        ${department.code || ''}
+                                                        ${department.code ? ' - ' : ''}
+                                                        ${department.name}
+                                                    </div>
+
+                                                    <div class="hierarchy-meta">
+                                                        Bölüm
+                                                        ${
+                                                            department.managerPosition
+                                                            ?
+                                                            ' • Yönetici Pozisyonu: ' +
+                                                            department.managerPosition.positionCode +
+                                                            ' - ' +
+                                                            department.managerPosition.name
+                                                            :
+                                                            ' • Ayrı bölüm yöneticisi tanımlı değil'
+                                                        }
+                                                    </div>
+
+                                                </div>
+
+                                            `;
+
+
+                                            positions
+                                                .filter(
+                                                    position =>
+                                                        position.isActive &&
+                                                        position.organizationLevel ===
+                                                            'DEPARTMENT' &&
+                                                        position.organizationDepartmentId ===
+                                                            department.id
+                                                )
+                                                .forEach(
+                                                    position => {
+
+                                                        html +=
+                                                            positionRow(
+                                                                position,
+                                                                'hierarchy-level-5'
+                                                            );
+
+                                                    }
+                                                );
+
+                                        }
+                                    );
+
+                            }
+                        );
+
+                }
+            );
+
+
+        html +=
+            '</div>';
+
+
+        wrap.innerHTML =
+            html;
+
+    }
+
+
+    /* =========================================================
+       LOAD ALL
+    ========================================================= */
+
+    async function loadAllOrganizationData() {
+
+        try {
+
+            await loadGeneralManagement();
+
+            await loadDirectorates();
+
+            await loadManagements();
+
+            await loadDepartments();
+
+            await loadPositions();
+
+            fillGeneralManagementManagerSelect();
+
+        }
+        catch(error) {
+
+            showToast(
+                error.message,
+                'error'
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       START
+    ========================================================= */
+
+    document.addEventListener(
+        'DOMContentLoaded',
+        async () => {
+
+            await loadDynamicOrganizationWorkspace();
+
+        }
+    );
+  </script>
+ </body>
+</html>

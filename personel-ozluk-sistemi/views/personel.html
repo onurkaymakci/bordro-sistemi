@@ -1,0 +1,5945 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>HR Planet — Personel</title>
+
+<style>
+:root{
+    --ink:#1e293b;
+    --ink-2:#334155;
+    --ink-3:#475569;
+    --slate:#64748b;
+    --slate-light:#94a3b8;
+    --cloud:#f8fafc;
+    --line:#e2e8f0;
+    --white:#ffffff;
+
+    --primary:#6495ff;
+    --primary-dark:#4f86f7;
+    --primary-darker:#1d4ed8;
+    --primary-tint:#eef3ff;
+
+    --amber:#E8A23D;
+    --amber-tint:#FBF0DC;
+
+    --coral:#E5654A;
+    --coral-tint:#FCE9E4;
+
+    --teal:#0F9D8C;
+    --teal-dark:#0B7C6F;
+    --teal-tint:#E4F5F2;
+
+    --radius-lg:18px;
+    --radius-md:12px;
+    --radius-sm:8px;
+
+    --shadow-1:
+        0 1px 2px rgba(15,23,42,.04),
+        0 1px 0 rgba(15,23,42,.03);
+
+    --shadow-2:
+        0 8px 24px rgba(15,23,42,.08);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    min-height:100%;
+}
+
+body{
+    font-family:"Segoe UI",sans-serif;
+    background:var(--cloud);
+    color:var(--ink);
+    display:flex;
+}
+
+button,
+input,
+select,
+textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar{
+    width:264px;
+    flex-shrink:0;
+    min-height:100vh;
+    background:linear-gradient(180deg,#1e3a5f 0%,#0f172a 100%);
+    color:#C9D2E6;
+    display:flex;
+    flex-direction:column;
+    position:sticky;
+    top:0;
+    height:100vh;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px 18px 20px;
+}
+
+.brand-logo{
+    width:160px;
+    height:auto;
+    display:block;
+}
+
+nav.nav{
+    flex:1;
+    padding:8px 14px;
+    overflow-y:auto;
+}
+
+.nav-group{
+    margin-bottom:22px;
+}
+
+.nav-label{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+    color:#64748b;
+    padding:0 10px;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.nav-item{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 12px;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:500;
+    color:#AEB9D4;
+    margin-bottom:2px;
+    transition:.15s ease;
+}
+
+.nav-item:hover{
+    background:rgba(255,255,255,.06);
+    color:#fff;
+}
+
+.nav-item.active{
+    background:rgba(100,149,255,.18);
+    color:#fff;
+}
+
+.nav-item.active::before{
+    content:"";
+    position:absolute;
+    left:-14px;
+    top:8px;
+    bottom:8px;
+    width:3px;
+    border-radius:3px;
+    background:var(--primary);
+}
+
+.nav-item .ic{
+    width:18px;
+    height:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+}
+
+.nav-item .ic svg{
+    width:100%;
+    height:100%;
+}
+
+.sidebar-footer{
+    padding:16px 18px 20px;
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+.mini-user{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.avatar{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-weight:700;
+    font-size:13px;
+    background:var(--primary-dark);
+}
+
+.mini-user-name{
+    color:#fff;
+    font-size:13px;
+    font-weight:600;
+}
+
+.mini-user-role{
+    color:var(--slate-light);
+    font-size:11px;
+    margin-top:2px;
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main{
+    flex:1;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+}
+
+.topbar{
+    height:72px;
+    background:#fff;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    gap:24px;
+    padding:0 32px;
+    position:sticky;
+    top:0;
+    z-index:30;
+}
+
+.search-wrap{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    position:relative;
+}
+
+.global-search-box{
+    position:relative;
+    width:100%;
+    max-width:500px;
+}
+
+.global-search-box svg{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    width:16px;
+    height:16px;
+    color:var(--slate-light);
+}
+
+.global-search-box input{
+    width:100%;
+    height:42px;
+    border:1px solid var(--line);
+    background:var(--cloud);
+    border-radius:10px;
+    padding:0 14px 0 40px;
+    font-size:13.5px;
+    color:var(--ink);
+}
+
+.global-search-box input:focus{
+    outline:none;
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px var(--primary-tint);
+    background:#fff;
+}
+
+.global-results{
+    display:none;
+    position:absolute;
+    top:48px;
+    left:0;
+    right:0;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+    box-shadow:var(--shadow-2);
+    z-index:100;
+    overflow:hidden;
+    max-height:380px;
+    overflow-y:auto;
+}
+
+.global-results.show{
+    display:block;
+}
+
+.global-result-group{
+    padding:8px 12px 5px;
+    font-size:10px;
+    font-weight:700;
+    color:var(--slate-light);
+    text-transform:uppercase;
+    letter-spacing:.6px;
+    background:var(--cloud);
+}
+
+.global-result-item{
+    padding:11px 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    border-bottom:1px solid #f1f4f7;
+}
+
+.global-result-item:hover{
+    background:var(--primary-tint);
+}
+
+.global-result-item:last-child{
+    border-bottom:0;
+}
+
+.global-result-icon{
+    width:30px;
+    height:30px;
+    border-radius:8px;
+    background:var(--primary-tint);
+    color:var(--primary-darker);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+}
+
+.global-result-icon svg{
+    width:15px;
+    height:15px;
+}
+
+.global-result-title{
+    font-size:13px;
+    font-weight:600;
+}
+
+.global-result-sub{
+    font-size:11px;
+    color:var(--slate);
+    margin-top:2px;
+}
+
+.topbar-right{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.icon-btn{
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--slate);
+}
+
+.icon-btn svg{
+    width:17px;
+    height:17px;
+}
+
+.divider-v{
+    width:1px;
+    height:28px;
+    background:var(--line);
+}
+
+.user-chip{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.user-chip-name{
+    font-size:13.5px;
+    font-weight:600;
+}
+
+.role-pill{
+    display:inline-block;
+    font-size:10.5px;
+    font-weight:600;
+    margin-top:3px;
+    padding:1px 8px;
+    border-radius:20px;
+    color:var(--primary-darker);
+    background:var(--primary-tint);
+}
+
+.logout-btn{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    height:38px;
+    padding:0 16px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--slate);
+    font-size:13px;
+    font-weight:600;
+}
+
+.logout-btn:hover{
+    color:var(--coral);
+    background:var(--coral-tint);
+}
+
+.logout-btn svg{
+    width:15px;
+    height:15px;
+}
+
+.content{
+    flex:1;
+    padding:32px 32px 56px;
+    max-width:1280px;
+    width:100%;
+    margin:0 auto;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.page-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:28px;
+    flex-wrap:wrap;
+}
+
+.page-title{
+    font-size:26px;
+    font-weight:700;
+}
+
+.page-sub{
+    font-size:13.5px;
+    color:var(--slate);
+    margin-top:6px;
+}
+
+.btn{
+    height:40px;
+    padding:0 16px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:#fff;
+    color:var(--slate);
+    font-size:13px;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    justify-content:center;
+}
+
+.btn:hover{
+    background:var(--cloud);
+    color:var(--ink);
+}
+
+.btn-primary{
+    background:var(--primary-dark);
+    color:#fff;
+    border-color:var(--primary-dark);
+}
+
+.btn-primary:hover{
+    background:var(--primary-darker);
+    color:#fff;
+}
+
+.btn-danger{
+    color:var(--coral);
+    border-color:#f0c5bb;
+}
+
+.btn-danger:hover{
+    background:var(--coral-tint);
+    color:var(--coral);
+}
+
+.btn svg{
+    width:15px;
+    height:15px;
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:28px;
+}
+
+.stat-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:22px;
+    box-shadow:var(--shadow-1);
+}
+
+.stat-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.stat-icon{
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.stat-icon svg{
+    width:19px;
+    height:19px;
+}
+
+.indigo{
+    background:var(--primary-tint);
+    color:var(--primary-darker);
+}
+
+.teal{
+    background:var(--teal-tint);
+    color:var(--teal-dark);
+}
+
+.amber{
+    background:var(--amber-tint);
+    color:#a1731a;
+}
+
+.coral{
+    background:var(--coral-tint);
+    color:var(--coral);
+}
+
+.stat-badge{
+    font-size:11px;
+    font-weight:700;
+    padding:3px 8px;
+    border-radius:20px;
+    background:var(--cloud);
+    color:var(--slate);
+}
+
+.stat-value{
+    font-size:32px;
+    font-weight:800;
+}
+
+.stat-label{
+    font-size:13px;
+    color:var(--slate);
+    margin-top:8px;
+}
+
+/* =========================================================
+   PANELS
+========================================================= */
+
+.panel{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:18px;
+    box-shadow:var(--shadow-1);
+    overflow:hidden;
+}
+
+.panel + .panel{
+    margin-top:18px;
+}
+
+.panel-head{
+    padding:18px 22px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.panel-title{
+    font-size:15px;
+    font-weight:700;
+}
+
+.panel-body{
+    padding:20px 22px;
+}
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+.filters{
+    display:grid;
+    grid-template-columns:minmax(280px,2fr) 1fr 160px auto;
+    gap:10px;
+}
+
+.form-control{
+    width:100%;
+    height:42px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:#fff;
+    padding:0 13px;
+    color:var(--ink);
+    font-size:13px;
+}
+
+textarea.form-control{
+    height:94px;
+    padding:11px 13px;
+    resize:vertical;
+}
+
+.form-control:focus{
+    outline:none;
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px var(--primary-tint);
+}
+
+.filter-search{
+    position:relative;
+}
+
+.filter-search svg{
+    position:absolute;
+    width:16px;
+    height:16px;
+    left:13px;
+    top:13px;
+    color:var(--slate-light);
+}
+
+.filter-search input{
+    padding-left:39px;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead th{
+    padding:12px 16px;
+    text-align:left;
+    background:var(--cloud);
+    border-bottom:1px solid var(--line);
+    color:var(--slate);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.45px;
+    font-weight:700;
+    white-space:nowrap;
+}
+
+tbody td{
+    padding:14px 16px;
+    border-bottom:1px solid #edf1f5;
+    font-size:13px;
+    vertical-align:middle;
+}
+
+tbody tr:hover{
+    background:var(--cloud);
+}
+
+.employee-cell{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    cursor:pointer;
+}
+
+.employee-cell .avatar{
+    width:36px;
+    height:36px;
+}
+
+.employee-name{
+    font-size:13.5px;
+    font-weight:600;
+}
+
+.employee-sub{
+    font-size:11.5px;
+    color:var(--slate-light);
+    margin-top:2px;
+}
+
+.status{
+    display:inline-flex;
+    padding:3px 9px;
+    border-radius:20px;
+    font-size:10.5px;
+    font-weight:700;
+}
+
+.status-active{
+    background:var(--teal-tint);
+    color:var(--teal-dark);
+}
+
+.status-probation{
+    background:var(--amber-tint);
+    color:#a1731a;
+}
+
+.status-terminated{
+    background:var(--coral-tint);
+    color:var(--coral);
+}
+
+.table-actions{
+    display:flex;
+    gap:6px;
+    justify-content:flex-end;
+}
+
+.icon-action{
+    width:32px;
+    height:32px;
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--slate);
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.icon-action:hover{
+    background:var(--primary-tint);
+    color:var(--primary-darker);
+}
+
+.icon-action svg{
+    width:14px;
+    height:14px;
+}
+
+.empty{
+    text-align:center;
+    padding:42px 20px;
+    color:var(--slate);
+}
+
+.loading{
+    text-align:center;
+    padding:45px;
+    color:var(--slate);
+}
+
+/* =========================================================
+   ACCORDION FORM
+========================================================= */
+
+#employeeFormView,
+#employeeDetailView{
+    display:none;
+}
+
+.accordion{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.acc-item{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    box-shadow:var(--shadow-1);
+    overflow:hidden;
+}
+
+.acc-item.open{
+    overflow:visible;
+    position:relative;
+    z-index:20;
+}
+
+.acc-item.open .acc-body{
+    position:relative;
+    z-index:21;
+}
+
+.autocomplete-wrap{
+    position:relative;
+    z-index:100;
+}
+
+.autocomplete-results{
+    z-index:999;
+}
+
+.acc-head{
+    padding:17px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    cursor:pointer;
+    user-select:none;
+}
+
+.acc-head:hover{
+    background:#fbfcff;
+}
+
+.acc-head-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.acc-step{
+    width:31px;
+    height:31px;
+    border-radius:9px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--primary-tint);
+    color:var(--primary-darker);
+    font-size:12px;
+    font-weight:800;
+}
+
+.acc-title{
+    font-size:15px;
+    font-weight:700;
+}
+
+.acc-sub{
+    font-size:11.5px;
+    color:var(--slate);
+    margin-top:2px;
+}
+
+.acc-arrow{
+    width:28px;
+    height:28px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--slate);
+    transition:.2s ease;
+}
+
+.acc-arrow svg{
+    width:14px;
+    height:14px;
+}
+
+.acc-item.open .acc-arrow{
+    transform:rotate(180deg);
+}
+
+.acc-body{
+    display:none;
+    padding:22px;
+    border-top:1px solid var(--line);
+}
+
+.acc-item.open .acc-body{
+    display:block;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:17px;
+}
+
+.field.full{
+    grid-column:1/-1;
+}
+
+.field label{
+    display:block;
+    font-size:12px;
+    font-weight:600;
+    color:var(--ink-3);
+    margin-bottom:7px;
+}
+
+.req{
+    color:var(--coral);
+}
+
+.readonly{
+    background:#f3f6fa;
+    color:var(--slate);
+}
+
+.field-note{
+    font-size:10.5px;
+    color:var(--slate-light);
+    margin-top:5px;
+    line-height:1.4;
+}
+
+.info-box{
+    padding:14px 16px;
+    border:1px solid #d9e4ff;
+    border-radius:10px;
+    background:var(--primary-tint);
+    color:#4a5d82;
+    line-height:1.55;
+    font-size:12px;
+}
+
+.warning-box{
+    background:#fffaf0;
+    border-color:#f0dfb8;
+    color:#80672f;
+}
+
+.form-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:9px;
+    margin-top:18px;
+}
+
+/* =========================================================
+   DYNAMIC ROWS
+========================================================= */
+
+.dynamic-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.dynamic-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr) auto;
+    gap:10px;
+    align-items:end;
+    padding:14px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:var(--cloud);
+}
+
+.dynamic-row.education{
+    grid-template-columns:1fr 1.4fr 1.4fr 1fr auto;
+}
+
+.dynamic-row.family{
+    grid-template-columns:1fr 1fr 1fr 1fr auto;
+}
+
+.remove-btn{
+    width:40px;
+    height:42px;
+    border-radius:9px;
+    border:1px solid #f0c5bb;
+    background:#fff;
+    color:var(--coral);
+}
+
+/* =========================================================
+   AUTOCOMPLETE PLACEHOLDER
+========================================================= */
+
+.autocomplete-wrap{
+    position:relative;
+}
+
+.autocomplete-results{
+    display:none;
+    position:absolute;
+    top:45px;
+    left:0;
+    right:0;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    box-shadow:var(--shadow-2);
+    z-index:50;
+    max-height:240px;
+    overflow:auto;
+}
+
+.autocomplete-results.show{
+    display:block;
+}
+
+.autocomplete-item{
+    padding:10px 12px;
+    cursor:pointer;
+    border-bottom:1px solid #f1f3f5;
+    font-size:12px;
+}
+
+.autocomplete-item:hover{
+    background:var(--primary-tint);
+}
+
+/* =========================================================
+   DETAIL
+========================================================= */
+
+.employee-header{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:22px;
+    box-shadow:var(--shadow-1);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    margin-bottom:18px;
+}
+
+.employee-header-left{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.employee-header-avatar{
+    width:56px;
+    height:56px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--primary-dark);
+    color:#fff;
+    font-size:18px;
+    font-weight:700;
+}
+
+.employee-header-name{
+    font-size:21px;
+    font-weight:700;
+}
+
+.employee-header-sub{
+    color:var(--slate);
+    font-size:12.5px;
+    margin-top:4px;
+}
+
+.employee-header-status{
+    margin-top:7px;
+}
+
+.employee-header-actions{
+    display:flex;
+    gap:8px;
+}
+
+.detail-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.detail-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:var(--shadow-1);
+}
+
+.detail-card-title{
+    padding:16px 19px;
+    border-bottom:1px solid var(--line);
+    font-size:14px;
+    font-weight:700;
+}
+
+.detail-card-body{
+    padding:16px 19px;
+}
+
+.detail-row{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    padding:10px 0;
+    border-bottom:1px solid #eef2f6;
+}
+
+.detail-row:last-child{
+    border-bottom:0;
+}
+
+.detail-label{
+    color:var(--slate);
+    font-size:12px;
+}
+
+.detail-value{
+    color:var(--ink-2);
+    font-size:12px;
+    font-weight:600;
+    text-align:right;
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-backdrop{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.5);
+    z-index:100;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal-backdrop.show{
+    display:flex;
+}
+
+.modal{
+    width:100%;
+    max-width:520px;
+    background:#fff;
+    border-radius:16px;
+    box-shadow:0 20px 60px rgba(15,23,42,.25);
+    overflow:hidden;
+}
+
+.modal-head{
+    padding:18px 20px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.modal-title{
+    font-size:15px;
+    font-weight:700;
+}
+
+.modal-body{
+    padding:20px;
+}
+
+.modal-actions{
+    padding:16px 20px;
+    border-top:1px solid var(--line);
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast{
+    position:fixed;
+    right:28px;
+    bottom:28px;
+    min-width:290px;
+    max-width:420px;
+    padding:14px 17px;
+    border-radius:11px;
+    background:#172b46;
+    color:#fff;
+    box-shadow:0 10px 35px rgba(0,0,0,.18);
+    font-size:13px;
+    z-index:120;
+    transform:translateY(20px);
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+.toast.success{
+    background:var(--teal-dark);
+}
+
+.toast.error{
+    background:#b84d40;
+}
+
+
+/* =========================================================
+   PERSONEL TOPLU IMPORT
+========================================================= */
+
+.page-actions{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    flex-wrap:wrap;
+}
+
+.btn-import{
+    color:var(--primary-darker);
+    border-color:#cbd9ff;
+    background:var(--primary-tint);
+}
+
+.btn-import:hover{
+    color:var(--primary-darker);
+    background:#e3ebff;
+}
+
+.import-modal{
+    max-width:920px;
+    max-height:calc(100vh - 32px);
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+#importModal{
+    align-items:flex-start;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+}
+
+#importModal .import-modal{
+    margin:auto;
+}
+
+#importModal .modal-head{
+    flex:0 0 auto;
+}
+
+#importModal .modal-body{
+    flex:1 1 auto;
+    min-height:0;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+}
+
+#importModal .modal-actions{
+    flex:0 0 auto;
+    position:sticky;
+    bottom:0;
+    z-index:5;
+    background:#fff;
+}
+
+body.import-modal-open{
+    overflow:hidden;
+}
+
+.import-intro{
+    display:flex;
+    align-items:flex-start;
+    gap:13px;
+    padding:15px 16px;
+    border:1px solid #d9e4ff;
+    border-radius:12px;
+    background:var(--primary-tint);
+    color:#4a5d82;
+    font-size:12.5px;
+    line-height:1.55;
+    margin-bottom:18px;
+}
+
+.import-intro-icon{
+    width:34px;
+    height:34px;
+    border-radius:9px;
+    background:#fff;
+    color:var(--primary-darker);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+}
+
+.import-intro-icon svg{
+    width:18px;
+    height:18px;
+}
+
+.import-dropzone{
+    border:2px dashed #cbd5e1;
+    border-radius:14px;
+    background:#fbfdff;
+    padding:30px 20px;
+    text-align:center;
+    transition:.15s ease;
+}
+
+.import-dropzone.dragover{
+    border-color:var(--primary);
+    background:var(--primary-tint);
+}
+
+.import-dropzone-title{
+    font-size:14px;
+    font-weight:700;
+    margin-bottom:6px;
+}
+
+.import-dropzone-sub{
+    font-size:12px;
+    color:var(--slate);
+    margin-bottom:14px;
+}
+
+.import-file-name{
+    margin-top:12px;
+    font-size:12px;
+    font-weight:600;
+    color:var(--teal-dark);
+}
+
+.import-file-input{
+    display:none;
+}
+
+.import-preview{
+    display:none;
+    margin-top:18px;
+}
+
+.import-preview.show{
+    display:block;
+}
+
+.import-summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:15px;
+}
+
+.import-summary-card{
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 16px;
+    background:#fff;
+}
+
+.import-summary-value{
+    font-size:24px;
+    font-weight:800;
+}
+
+.import-summary-label{
+    margin-top:4px;
+    font-size:11.5px;
+    color:var(--slate);
+}
+
+.import-summary-card.valid{
+    background:var(--teal-tint);
+    border-color:#bce2dc;
+}
+
+.import-summary-card.invalid{
+    background:var(--coral-tint);
+    border-color:#f0c5bb;
+}
+
+.import-result-wrap{
+    max-height:none;
+    overflow-x:auto;
+    overflow-y:visible;
+    border:1px solid var(--line);
+    border-radius:12px;
+}
+
+.import-result-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.import-result-table thead th{
+    position:sticky;
+    top:0;
+    z-index:2;
+}
+
+.import-result-table td{
+    padding:11px 12px;
+    font-size:12px;
+    border-bottom:1px solid #edf1f5;
+    vertical-align:top;
+}
+
+.import-row-status{
+    display:inline-flex;
+    align-items:center;
+    padding:3px 8px;
+    border-radius:20px;
+    font-size:10.5px;
+    font-weight:700;
+}
+
+.import-row-status.ok{
+    color:var(--teal-dark);
+    background:var(--teal-tint);
+}
+
+.import-row-status.error{
+    color:var(--coral);
+    background:var(--coral-tint);
+}
+
+.import-errors{
+    color:var(--coral);
+    line-height:1.45;
+}
+
+.import-empty{
+    padding:24px;
+    text-align:center;
+    color:var(--slate);
+    font-size:12px;
+}
+
+
+.import-alert{
+    display:none;
+    margin-top:16px;
+    border:1px solid #f0c5bb;
+    background:var(--coral-tint);
+    color:#8f3f34;
+    border-radius:12px;
+    padding:14px 16px;
+}
+
+.import-alert.show{
+    display:block;
+}
+
+.import-alert-title{
+    font-size:13px;
+    font-weight:800;
+    margin-bottom:6px;
+}
+
+.import-alert-text{
+    font-size:12px;
+    line-height:1.55;
+    white-space:pre-wrap;
+}
+
+.import-error-actions{
+    display:none;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:14px;
+    flex-wrap:wrap;
+}
+
+.import-error-actions.show{
+    display:flex;
+}
+
+.import-error-count{
+    font-size:12px;
+    color:var(--slate);
+}
+
+@media(max-width:800px){
+    .page-actions{
+        width:100%;
+    }
+
+    .page-actions .btn{
+        flex:1;
+    }
+
+    .import-summary{
+        grid-template-columns:1fr;
+    }
+}
+
+
+
+/* =========================================================
+   IMPORT V3 - SECIMLI AKTARIM
+========================================================= */
+.import-select-cell{width:42px;text-align:center;}
+.import-select{width:16px;height:16px;accent-color:var(--primary-dark);}
+.import-selection-bar{display:none;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px;padding:10px 12px;border:1px solid #d9e4ff;border-radius:10px;background:var(--primary-tint);font-size:12px;color:#4a5d82;}
+.import-selection-bar.show{display:flex;}
+.import-selection-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.import-mini-btn{border:1px solid #cbd9ff;background:#fff;color:var(--primary-darker);border-radius:8px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;}
+.import-mini-btn:hover{background:#e8efff;}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1080px){
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .form-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .detail-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:800px){
+    .sidebar{
+        display:none;
+    }
+
+    .global-search-box{
+        display:none;
+    }
+
+    .content{
+        padding:22px 18px;
+    }
+
+    .filters,
+    .form-grid,
+    .dynamic-row,
+    .dynamic-row.education,
+    .dynamic-row.family{
+        grid-template-columns:1fr;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .employee-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+/* =========================================
+   AUTOCOMPLETE FIX
+========================================= */
+
+.acc-item.open{
+    overflow:visible !important;
+    position:relative;
+    z-index:100;
+}
+
+.acc-item.open .acc-body{
+    overflow:visible !important;
+    position:relative;
+    z-index:101;
+}
+
+.form-grid{
+    overflow:visible !important;
+}
+
+.field{
+    overflow:visible !important;
+}
+
+.autocomplete-wrap{
+    position:relative;
+    overflow:visible !important;
+    z-index:500;
+}
+
+.autocomplete-results{
+    position:absolute;
+    top:calc(100% + 6px);
+    left:0;
+    right:0;
+    display:none;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    box-shadow:0 12px 30px rgba(15,23,42,.14);
+    max-height:260px !important;
+    overflow-y:auto !important;
+    z-index:9999 !important;
+}
+
+.autocomplete-results.show{
+    display:block;
+}
+
+
+
+/* =========================================================
+   PERSONEL FORM V2 - EK STILLER
+========================================================= */
+.dynamic-row.family,
+.dynamic-row.education,
+.dynamic-row.emergency{
+    grid-template-columns:repeat(3,minmax(170px,1fr)) auto;
+    align-items:end;
+}
+
+.dynamic-row .row-wide{
+    grid-column:1/-2;
+}
+
+.child-fields{
+    grid-column:1/-2;
+    display:none;
+    grid-template-columns:repeat(3,minmax(170px,1fr));
+    gap:10px;
+    padding:12px;
+    border:1px dashed #cbd5e1;
+    border-radius:10px;
+    background:#fff;
+}
+
+.family-row.is-child .child-fields{
+    display:grid;
+}
+
+.check-field{
+    min-height:42px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:0 11px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:#fff;
+    font-size:12px;
+    color:var(--ink-3);
+}
+
+.check-field input{
+    width:16px;
+    height:16px;
+}
+
+.section-required-note{
+    margin-bottom:14px;
+    font-size:11.5px;
+    color:var(--slate);
+}
+
+#disabilityRateField,
+#militaryDefermentField,
+#marriageDateField{
+    transition:.15s ease;
+}
+
+.hidden-field{
+    display:none !important;
+}
+
+@media(max-width:1080px){
+    .dynamic-row.family,
+    .dynamic-row.education,
+    .dynamic-row.emergency,
+    .child-fields{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:800px){
+    .dynamic-row.family,
+    .dynamic-row.education,
+    .dynamic-row.emergency,
+    .child-fields{
+        grid-template-columns:1fr;
+    }
+
+    .dynamic-row .row-wide,
+    .child-fields{
+        grid-column:auto;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside class="sidebar">
+
+    <div class="brand">
+        <img src="/images/hrplogo.png" class="brand-logo" alt="HR Planet">
+    </div>
+
+    <nav class="nav">
+
+        <div class="nav-group">
+            <div class="nav-label">Genel</div>
+
+            <a class="nav-item" href="/dashboard">
+                <span class="ic">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="9" rx="1.5"/>
+                        <rect x="14" y="3" width="7" height="5" rx="1.5"/>
+                        <rect x="14" y="12" width="7" height="9" rx="1.5"/>
+                        <rect x="3" y="16" width="7" height="5" rx="1.5"/>
+                    </svg>
+                </span>
+                Dashboard
+            </a>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-label">Personel Yönetimi</div>
+
+            <a class="nav-item active" href="/personel">
+                <span class="ic">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/>
+                        <circle cx="10" cy="7" r="4"/>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                    </svg>
+                </span>
+                Personel
+            </a>
+
+            <a class="nav-item" href="/departments">
+                <span class="ic">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <path d="M3 9h18M9 21V9"/>
+                    </svg>
+                </span>
+                Departmanlar
+            </a>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-label">Süreçler</div>
+
+            <a class="nav-item" href="/izin">
+                <span class="ic">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2"/>
+                        <path d="M16 2v4M8 2v4M3 10h18"/>
+                    </svg>
+                </span>
+                İzin Yönetimi
+            </a>
+
+            <a class="nav-item" href="/evrak">
+                <span class="ic">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <path d="M14 2v6h6"/>
+                    </svg>
+                </span>
+                Evrak Yönetimi
+            </a>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-label">Raporlar &amp; Yönetim</div>
+
+            <a class="nav-item" href="/raporlar">
+                <span class="ic">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 3v18h18"/>
+                        <path d="M18 17V9M13 17V5M8 17v-4"/>
+                    </svg>
+                </span>
+                Raporlar
+            </a>
+
+            <a class="nav-item" href="/users">
+                <span class="ic">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="8" r="4"/>
+                        <path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/>
+                    </svg>
+                </span>
+                Kullanıcılar
+            </a>
+        </div>
+
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="mini-user">
+            <div class="avatar" id="sideAvatar">--</div>
+            <div>
+                <div class="mini-user-name" id="sideUserName">Yükleniyor...</div>
+                <div class="mini-user-role" id="sideUserRole">—</div>
+            </div>
+        </div>
+    </div>
+
+</aside>
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<div class="main">
+
+    <header class="topbar">
+
+        <div class="search-wrap">
+
+            <div class="global-search-box">
+
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.3-4.3"/>
+                </svg>
+
+                <input
+                    id="globalSearch"
+                    placeholder="Personel, işlem veya modül ara..."
+                    autocomplete="off"
+                >
+
+                <div id="globalResults" class="global-results"></div>
+
+            </div>
+
+        </div>
+
+        <div class="topbar-right">
+
+            <button class="icon-btn" title="Bildirimler">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+            </button>
+
+            <div class="divider-v"></div>
+
+            <div class="user-chip">
+                <div class="avatar" id="topAvatar">--</div>
+
+                <div>
+                    <div class="user-chip-name" id="topUserName">Yükleniyor...</div>
+                    <span class="role-pill" id="topUserRole">—</span>
+                </div>
+            </div>
+
+            <button class="logout-btn" onclick="logout()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16 17 21 12 16 7"/>
+                    <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                Çıkış Yap
+            </button>
+
+        </div>
+
+    </header>
+
+    <main class="content">
+
+        <!-- =====================================================
+             LIST
+        ====================================================== -->
+
+        <section id="employeeListView">
+
+            <div class="page-head">
+
+                <div>
+                    <h1 class="page-title">Personel</h1>
+                    <p class="page-sub">
+                        Tüm personel kayıtlarını görüntüleyin, yönetin ve yeni çalışan oluşturun.
+                    </p>
+                </div>
+
+                <div class="page-actions">
+                    <button class="btn btn-import" id="importEmployeeButton" onclick="openImportModal()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 3v12"/>
+                            <path d="m7 10 5 5 5-5"/>
+                            <path d="M5 21h14"/>
+                        </svg>
+                        Toplu Personel Aktar
+                    </button>
+
+                    <button class="btn btn-primary" id="newEmployeeButton" onclick="openNewEmployee()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5v14M5 12h14"/>
+                        </svg>
+                        Yeni Personel
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="stats">
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <div class="stat-icon indigo">👤</div>
+                        <span class="stat-badge">Toplam</span>
+                    </div>
+                    <div class="stat-value" id="totalEmployeeCount">0</div>
+                    <div class="stat-label">Toplam Personel</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <div class="stat-icon teal">✓</div>
+                        <span class="stat-badge">Aktif</span>
+                    </div>
+                    <div class="stat-value" id="activeEmployeeCount">0</div>
+                    <div class="stat-label">Aktif Personel</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <div class="stat-icon amber">◷</div>
+                        <span class="stat-badge">Deneme</span>
+                    </div>
+                    <div class="stat-value" id="probationEmployeeCount">0</div>
+                    <div class="stat-label">Deneme Süresinde</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <div class="stat-icon coral">−</div>
+                        <span class="stat-badge">Ayrılan</span>
+                    </div>
+                    <div class="stat-value" id="terminatedEmployeeCount">0</div>
+                    <div class="stat-label">İşten Ayrılmış</div>
+                </div>
+
+            </div>
+
+            <div class="panel">
+
+                <div class="panel-head">
+                    <div class="panel-title">Personel Arama ve Filtreleme</div>
+                </div>
+
+                <div class="panel-body">
+
+                    <div class="filters">
+
+                        <div class="filter-search">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="m21 21-4.3-4.3"/>
+                            </svg>
+
+                            <input
+                                id="employeeSearch"
+                                class="form-control"
+                                placeholder="Sicil no, ad, soyad veya T.C. kimlik no ara..."
+                            >
+                        </div>
+
+                        <select id="statusFilter" class="form-control">
+                            <option value="">Tüm Durumlar</option>
+                            <option value="PROBATION">Deneme Süresinde</option>
+                            <option value="ACTIVE">Aktif</option>
+                            <option value="TERMINATED">İşten Ayrılmış</option>
+                        </select>
+
+                        <select id="pageSize" class="form-control">
+                            <option value="20">20 kayıt</option>
+                            <option value="50">50 kayıt</option>
+                            <option value="100">100 kayıt</option>
+                        </select>
+
+                        <button class="btn" onclick="loadEmployees()">Yenile</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="panel">
+
+                <div class="panel-head">
+                    <div class="panel-title">Personel Listesi</div>
+                    <div id="tableCount" style="font-size:12px;color:var(--slate);">0 kayıt</div>
+                </div>
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Personel</th>
+                                <th>T.C. Kimlik</th>
+                                <th>Departman</th>
+                                <th>Pozisyon</th>
+                                <th>Meslek Kodu</th>
+                                <th>İşe Giriş</th>
+                                <th>Durum</th>
+                                <th style="text-align:right;">İşlem</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="employeeTableBody">
+                            <tr>
+                                <td colspan="8">
+                                    <div class="loading">Personeller yükleniyor...</div>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+             FORM
+        ====================================================== -->
+
+        <section id="employeeFormView">
+
+            <div class="page-head">
+                <div>
+                    <h1 class="page-title" id="employeeFormTitle">Yeni Personel</h1>
+                    <p class="page-sub" id="employeeFormSub">Personelin özlük bilgilerini oluşturun.</p>
+                </div>
+                <button type="button" class="btn" onclick="showList()">← Listeye Dön</button>
+            </div>
+
+            <form id="employeeForm" novalidate>
+                <input type="hidden" id="editingEmployeeId">
+
+                <div class="accordion">
+
+                    <!-- 01 KİŞİSEL BİLGİLER -->
+                    <div class="acc-item open" data-section="personal">
+                        <div class="acc-head" onclick="toggleAccordion(this)">
+                            <div class="acc-head-left">
+                                <div class="acc-step">01</div>
+                                <div>
+                                    <div class="acc-title">Kişisel Bilgiler</div>
+                                    <div class="acc-sub">Personelin kimlik ve kişisel bilgileri</div>
+                                </div>
+                            </div>
+                            <div class="acc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="acc-body">
+                            <div class="section-required-note">Bu bölümdeki kişisel bilgiler zorunludur. Sicil numarası sistem tarafından otomatik oluşturulur.</div>
+                            <div class="form-grid">
+                                <div class="field">
+                                    <label>Sicil No</label>
+                                    <input id="registryNoDisplay" class="form-control readonly" value="Otomatik üretilecek" readonly>
+                                    <div class="field-note">8 haneli sicil numarası otomatik oluşturulur ve daha sonra değiştirilmez.</div>
+                                </div>
+                                <div class="field"><label>Ad <span class="req">*</span></label><input id="firstName" class="form-control" required></div>
+                                <div class="field"><label>Soyad <span class="req">*</span></label><input id="lastName" class="form-control" required></div>
+                                <div class="field"><label>T.C. Kimlik No <span class="req">*</span></label><input id="nationalId" class="form-control" maxlength="11" inputmode="numeric" required></div>
+                                <div class="field"><label>Doğum Tarihi <span class="req">*</span></label><input id="birthDate" class="form-control" type="date" required></div>
+                                <div class="field">
+                                    <label>Cinsiyet <span class="req">*</span></label>
+                                    <select id="gender" class="form-control" required><option value="">Seçiniz</option><option value="MALE">Erkek</option><option value="FEMALE">Kadın</option><option value="UNSPECIFIED">Belirtilmemiş</option></select>
+                                </div>
+                                <div class="field">
+                                    <label>Medeni Durum <span class="req">*</span></label>
+                                    <select id="maritalStatus" class="form-control" required><option value="">Seçiniz</option><option value="SINGLE">Bekar</option><option value="MARRIED">Evli</option><option value="DIVORCED">Boşanmış</option><option value="WIDOWED">Dul</option><option value="UNSPECIFIED">Belirtilmemiş</option></select>
+                                </div>
+                                <div class="field" id="marriageDateField"><label>Evlilik Tarihi</label><input id="marriageDate" class="form-control" type="date"></div>
+                                <div class="field"><label>Uyruk <span class="req">*</span></label><input id="nationality" class="form-control" placeholder="Örn. Türkiye" required></div>
+                                <div class="field">
+                                    <label>Askerlik Durumu <span class="req">*</span></label>
+                                    <select id="militaryStatus" class="form-control" required><option value="">Seçiniz</option><option value="NOT_APPLICABLE">Uygulanmaz</option><option value="COMPLETED">Tamamlandı</option><option value="EXEMPT">Muaf</option><option value="DEFERRED">Tecilli</option><option value="ACTIVE">Askerde</option><option value="UNKNOWN">Bilinmiyor</option></select>
+                                </div>
+                                <div class="field" id="militaryDefermentField"><label>Askerlik Tecil Tarihi</label><input id="militaryDefermentDate" class="form-control" type="date"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 02 İLETİŞİM -->
+                    <div class="acc-item" data-section="contact">
+                        <div class="acc-head" onclick="toggleAccordion(this)">
+                            <div class="acc-head-left"><div class="acc-step">02</div><div><div class="acc-title">İletişim Bilgileri</div><div class="acc-sub">Telefon, e-posta ve adres bilgileri</div></div></div>
+                            <div class="acc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="acc-body">
+                            <div class="form-grid">
+                                <div class="field"><label>Telefon <span class="req">*</span></label><input id="phone" class="form-control" required></div>
+                                <div class="field"><label>Kişisel E-Posta</label><input id="email" class="form-control" type="email"></div>
+                                <div class="field"><label>Kurumsal E-Posta</label><input id="corporateEmail" class="form-control" type="email"></div>
+                                <div class="field"><label>Şehir <span class="req">*</span></label><input id="city" class="form-control" required></div>
+                                <div class="field"><label>Ülke <span class="req">*</span></label><input id="country" class="form-control" value="Türkiye" required></div>
+                                <div class="field full"><label>Adres <span class="req">*</span></label><textarea id="address" class="form-control" required></textarea></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 03 AİLE -->
+                    <div class="acc-item" data-section="family">
+                        <div class="acc-head" onclick="toggleAccordion(this)">
+                            <div class="acc-head-left"><div class="acc-step">03</div><div><div class="acc-title">Aile Bilgileri</div><div class="acc-sub">Eş, çocuk ve diğer aile bireyleri</div></div></div>
+                            <div class="acc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="acc-body">
+                            <div class="info-box" style="margin-bottom:15px;">Çocuk seçildiğinde çocuk yardımı ve eğitim bilgileri açılır. Yaş/eğitim uygunluğu ileride bordro parametrelerinden kontrol edilecektir.</div>
+                            <div id="familyList" class="dynamic-list"></div>
+                            <button type="button" class="btn" style="margin-top:12px;" onclick="addFamilyRow()">+ Aile Bireyi Ekle</button>
+                        </div>
+                    </div>
+
+                    <!-- 04 EĞİTİM -->
+                    <div class="acc-item" data-section="education">
+                        <div class="acc-head" onclick="toggleAccordion(this)">
+                            <div class="acc-head-left"><div class="acc-step">04</div><div><div class="acc-title">Eğitim Bilgileri</div><div class="acc-sub">Okul, bölüm ve eğitim tarihleri</div></div></div>
+                            <div class="acc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="acc-body">
+                            <div class="section-required-note">En az 1 eğitim kaydı zorunludur. “Devam Ediyor” seçiliyse bitiş tarihi boş bırakılabilir.</div>
+                            <div id="educationList" class="dynamic-list"></div>
+                            <button type="button" class="btn" style="margin-top:12px;" onclick="addEducationRow()">+ Eğitim Bilgisi Ekle</button>
+                        </div>
+                    </div>
+
+                    <!-- 05 BANKA -->
+                    <div class="acc-item" data-section="bank">
+                        <div class="acc-head" onclick="toggleAccordion(this)">
+                            <div class="acc-head-left"><div class="acc-step">05</div><div><div class="acc-title">Banka Bilgileri</div><div class="acc-sub">Personelin banka, hesap ve IBAN bilgileri</div></div></div>
+                            <div class="acc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="acc-body">
+                            <div class="section-required-note">En az 1 banka hesabı zorunludur. Banka, hesap no, IBAN ve ana hesap seçimi doldurulmalıdır.</div>
+                            <div id="bankAccountsList" class="dynamic-list"></div>
+                            <button type="button" class="btn" style="margin-top:12px;" onclick="addBankAccountRow()">+ Banka Hesabı Ekle</button>
+                        </div>
+                    </div>
+
+                    <!-- 06 ACİL DURUM -->
+                    <div class="acc-item" data-section="emergency">
+                        <div class="acc-head" onclick="toggleAccordion(this)">
+                            <div class="acc-head-left"><div class="acc-step">06</div><div><div class="acc-title">Acil Durum İletişim</div><div class="acc-sub">Acil durumda ulaşılacak kişi veya kişiler</div></div></div>
+                            <div class="acc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="acc-body">
+                            <div class="section-required-note">En az 1 acil durum kişisi zorunludur. Ek kişiler isteğe bağlıdır.</div>
+                            <div id="emergencyContactsList" class="dynamic-list"></div>
+                            <button type="button" class="btn" style="margin-top:12px;" onclick="addEmergencyContactRow()">+ Acil Durum Kişisi Ekle</button>
+                        </div>
+                    </div>
+
+                    <!-- 07 ORGANİZASYON -->
+                    <div class="acc-item" data-section="organization">
+                        <div class="acc-head" onclick="toggleAccordion(this)">
+                            <div class="acc-head-left"><div class="acc-step">07</div><div><div class="acc-title">Organizasyon Bilgileri</div><div class="acc-sub">Personelin organizasyon içindeki konumu</div></div></div>
+                            <div class="acc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="acc-body">
+                            <div class="section-required-note">Bu bölümdeki tüm alanlar zorunludur.</div>
+                            <div class="form-grid">
+                                <div class="field"><label>Departman ID <span class="req">*</span></label><input id="departmentId" class="form-control" placeholder="Departman UUID" required></div>
+                                <div class="field"><label>Pozisyon <span class="req">*</span></label><input id="position" class="form-control" required></div>
+                                <div class="field"><label>Çalışma Yeri <span class="req">*</span></label><input id="workLocation" class="form-control" required></div>
+                                <div class="field">
+                                    <label>Yaka Türü <span class="req">*</span></label>
+                                    <select id="collarType" class="form-control" required><option value="">Seçiniz</option><option value="WHITE_COLLAR">Beyaz Yaka</option><option value="BLUE_COLLAR">Mavi Yaka</option><option value="OTHER">Diğer</option></select>
+                                </div>
+                                <div class="field"><label>Yönetici <span class="req">*</span></label><select id="managerId" class="form-control" required><option value="">Yönetici seçiniz</option></select></div>
+                                <div class="field">
+                                    <label>Meslek Kodu <span class="req">*</span></label>
+                                    <div class="autocomplete-wrap">
+                                        <input id="occupationSearch" class="form-control" placeholder="Kod veya meslek adı ara..." autocomplete="off" required>
+                                        <input type="hidden" id="occupationCode">
+                                        <div id="occupationResults" class="autocomplete-results"></div>
+                                    </div>
+                                    <div class="field-note">Meslek kodu veya meslek adı yazarak seçim yapabilirsiniz.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 08 İŞE GİRİŞ / SGK -->
+                    <div class="acc-item" data-section="employment">
+                        <div class="acc-head" onclick="toggleAccordion(this)">
+                            <div class="acc-head-left"><div class="acc-step">08</div><div><div class="acc-title">İşe Giriş ve SGK</div><div class="acc-sub">Çalışma başlangıç, sözleşme, SGK ve engellilik bilgileri</div></div></div>
+                            <div class="acc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="acc-body">
+                            <div class="section-required-note">İlk İşe Giriş Tarihi hariç bu bölümdeki alanlar zorunludur.</div>
+                            <div class="form-grid">
+                                <div class="field"><label>İşe Giriş Tarihi <span class="req">*</span></label><input id="hireDate" class="form-control" type="date" required></div>
+                                <div class="field"><label>İlk İşe Giriş Tarihi</label><input id="firstHireDate" class="form-control" type="date"></div>
+                                <div class="field"><label>Kıdem Baz Tarihi <span class="req">*</span></label><input id="seniorityBaseDate" class="form-control" type="date" required></div>
+                                <div class="field"><label>Yıllık İzin Baz Tarihi <span class="req">*</span></label><input id="annualLeaveBaseDate" class="form-control" type="date" required></div>
+                                <div class="field"><label>Topluluk İşe Giriş Tarihi <span class="req">*</span></label><input id="groupHireDate" class="form-control" type="date" required></div>
+                                <div class="field"><label>Sözleşme Türü <span class="req">*</span></label><select id="contractType" class="form-control" required><option value="">Seçiniz</option><option value="INDEFINITE">Belirsiz Süreli</option><option value="FIXED_TERM">Belirli Süreli</option><option value="OTHER">Diğer</option></select></div>
+                                <div class="field"><label>Çalışma Türü <span class="req">*</span></label><select id="employmentType" class="form-control" required><option value="">Seçiniz</option><option value="FULL_TIME">Tam Zamanlı</option><option value="PART_TIME">Kısmi Zamanlı</option><option value="OTHER">Diğer</option></select></div>
+                                <div class="field"><label>SGK Belge Türü <span class="req">*</span></label><input id="sgkDocumentTypeCode" class="form-control" placeholder="Kod giriniz (master bağlantısı sonraki adım)" required></div>
+                                <div class="field"><label>Teşvik / Kanun No <span class="req">*</span></label><input id="incentiveCode" class="form-control" placeholder="Kanun no giriniz (master bağlantısı sonraki adım)" required></div>
+                                <div class="field"><label>Engellilik Durumu <span class="req">*</span></label><select id="isDisabled" class="form-control" required><option value="">Seçiniz</option><option value="false">Hayır</option><option value="true">Evet</option></select></div>
+                                <div class="field" id="disabilityRateField"><label>Engellilik Oranı (%)</label><input id="disabilityRate" type="number" min="0.01" max="100" step="0.01" class="form-control"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 09 ÜCRET -->
+                    <div class="acc-item" data-section="salary">
+                        <div class="acc-head" onclick="toggleAccordion(this)">
+                            <div class="acc-head-left"><div class="acc-step">09</div><div><div class="acc-title">Ücret Bilgileri</div><div class="acc-sub">Ücret türleri ve bordro bağlantısı sonraki aşamada</div></div></div>
+                            <div class="acc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="acc-body"><div class="info-box warning-box"><strong>Ücret bölümü şu anda pasif.</strong><br><br>Ücret türleri ve bordro hesaplama alanları aksiyon planındaki ücret yapısına göre ayrıca aktif edilecektir.</div></div>
+                    </div>
+
+                    <!-- 10 İŞTEN AYRILIŞ -->
+                    <div class="acc-item" data-section="termination">
+                        <div class="acc-head" onclick="toggleAccordion(this)">
+                            <div class="acc-head-left"><div class="acc-step">10</div><div><div class="acc-title">İşten Ayrılış Bilgileri</div><div class="acc-sub">Personel işten ayrıldığında doldurulur</div></div></div>
+                            <div class="acc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="acc-body"><div class="info-box warning-box">Yeni personel oluştururken bu bölüm kullanılmaz. İşten ayrılış personel kartındaki <strong>İşten Çıkar</strong> işlemiyle yapılır. Sicil numarası çalışan üzerinde kalır ve geçmiş kaydı korunur.</div></div>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn" onclick="showList()">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary" id="saveEmployeeBtn">Personeli Kaydet</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- =====================================================
+             DETAIL
+        ====================================================== -->
+
+        <section id="employeeDetailView">
+
+            <div class="page-head">
+
+                <div>
+                    <h1 class="page-title">Personel Kartı</h1>
+                    <p class="page-sub">
+                        Personelin özlük, organizasyon ve çalışma bilgilerini görüntüleyin.
+                    </p>
+                </div>
+
+                <button class="btn" onclick="showList()">← Listeye Dön</button>
+
+            </div>
+
+            <div id="detailContent"></div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<!-- =========================================================
+     PERSONEL IMPORT MODAL
+========================================================= -->
+
+<div class="modal-backdrop" id="importModal">
+
+    <div class="modal import-modal">
+
+        <div class="modal-head">
+            <div>
+                <div class="modal-title">Toplu Personel Aktar</div>
+                <div style="font-size:11.5px;color:var(--slate);margin-top:3px;">
+                    Excel dosyasını yükleyin ve kayıt öncesi sistem kontrollerini çalıştırın.
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="icon-action"
+                onclick="closeImportModal()"
+                title="Kapat"
+            >
+                ✕
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="import-intro">
+                <div class="import-intro-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <path d="M14 2v6h6"/>
+                        <path d="M8 13h8M8 17h5"/>
+                    </svg>
+                </div>
+                <div>
+                    <strong>Önce ön kontrol yapılır.</strong><br>
+                    Excel yüklendiğinde henüz personel kaydı oluşturulmaz. Sistem TCKN, zorunlu alanlar,
+                    pozisyon kodu, meslek kodu, SGK belge türü ve teşvik kodlarını kontrol eder.
+                </div>
+            </div>
+
+            <div
+                class="import-dropzone"
+                id="importDropzone"
+                onclick="document.getElementById('employeeImportFile').click()"
+            >
+                <div class="import-dropzone-title">
+                    Excel dosyasını buraya sürükleyin
+                </div>
+
+                <div class="import-dropzone-sub">
+                    veya bilgisayarınızdan .xlsx dosyası seçin
+                </div>
+
+                <button type="button" class="btn">
+                    Dosya Seç
+                </button>
+
+                <input
+                    id="employeeImportFile"
+                    class="import-file-input"
+                    type="file"
+                    accept=".xlsx,.xls"
+                    onchange="handleImportFileChange(event)"
+                >
+
+                <div class="import-file-name" id="importFileName">
+                    Henüz dosya seçilmedi
+                </div>
+            </div>
+
+            <div class="import-alert" id="importGeneralError">
+                <div class="import-alert-title">
+                    Ön kontrol sırasında hata bulundu
+                </div>
+                <div class="import-alert-text" id="importGeneralErrorText"></div>
+            </div>
+
+            <div class="import-error-actions" id="importErrorActions">
+                <div class="import-error-count" id="importErrorCountText"></div>
+
+                <button
+                    type="button"
+                    class="btn btn-danger"
+                    id="downloadImportErrorReportButton"
+                    onclick="downloadImportErrorReport()"
+                >
+                    Hata Raporunu İndir
+                </button>
+            </div>
+
+            <div class="import-preview" id="importPreview">
+
+                <div class="import-summary">
+                    <div class="import-summary-card">
+                        <div class="import-summary-value" id="importTotalRows">0</div>
+                        <div class="import-summary-label">Toplam Satır</div>
+                    </div>
+
+                    <div class="import-summary-card valid">
+                        <div class="import-summary-value" id="importValidRows">0</div>
+                        <div class="import-summary-label">Aktarıma Uygun</div>
+                    </div>
+
+                    <div class="import-summary-card invalid">
+                        <div class="import-summary-value" id="importInvalidRows">0</div>
+                        <div class="import-summary-label">Hatalı Satır</div>
+                    </div>
+                </div>
+
+                <div class="import-selection-bar" id="importSelectionBar">
+                    <div><strong id="importSelectedCount">0</strong> uygun personel seçildi.</div>
+                    <div class="import-selection-actions">
+                        <button type="button" class="import-mini-btn" onclick="selectAllValidImportRows()">Tüm Uygunları Seç</button>
+                        <button type="button" class="import-mini-btn" onclick="clearImportRowSelection()">Seçimi Temizle</button>
+                    </div>
+                </div>
+
+                <div class="import-result-wrap">
+                    <table class="import-result-table">
+                        <thead>
+                            <tr>
+                                <th class="import-select-cell"><input id="importSelectAll" class="import-select" type="checkbox" onchange="toggleAllValidImportRows(this.checked)" title="Tüm uygunları seç"></th>
+                                <th>Satır</th>
+                                <th>Personel</th>
+                                <th>Pozisyon</th>
+                                <th>Durum</th>
+                                <th>Kontrol Sonucu</th>
+                            </tr>
+                        </thead>
+                        <tbody id="importResultBody"></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn" type="button" onclick="closeImportModal()">
+                Kapat
+            </button>
+
+            <button
+                class="btn btn-primary"
+                type="button"
+                id="previewImportButton"
+                onclick="previewEmployeeImport()"
+                disabled
+            >
+                Ön Kontrolü Başlat
+            </button>
+
+            <button
+                class="btn btn-primary"
+                type="button"
+                id="confirmImportButton"
+                onclick="confirmEmployeeImport()"
+                style="display:none;"
+                disabled
+            >
+                Personeli Aktar
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     DEACTIVATE MODAL
+========================================================= -->
+
+<div class="modal-backdrop" id="deactivateModal">
+
+    <div class="modal">
+
+        <div class="modal-head">
+            <div class="modal-title">Personeli İşten Çıkar / Pasife Al</div>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="field" style="margin-bottom:15px;">
+                <label>İşten Ayrılış Tarihi <span class="req">*</span></label>
+                <input id="terminationDate" class="form-control" type="date">
+            </div>
+
+            <div class="field" style="margin-bottom:15px;">
+                <label>SGK İşten Çıkış Kodu</label>
+
+                <input
+                    id="terminationReasonSearch"
+                    class="form-control"
+                    placeholder="Kod veya açıklama ara..."
+                >
+
+                <input type="hidden" id="terminationReasonCode">
+
+                <div class="field-note">
+                    İşten çıkış master API'si bağlandığında filtrelenebilir olacaktır.
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Açıklama</label>
+                <textarea id="terminationNote" class="form-control"></textarea>
+            </div>
+
+        </div>
+
+        <div class="modal-actions">
+
+            <button class="btn" onclick="closeDeactivateModal()">Vazgeç</button>
+
+            <button
+                id="confirmDeactivateButton"
+                class="btn btn-danger"
+                onclick="confirmDeactivate()"
+            >
+                İşten Çıkar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+/* =========================================================
+   STATE
+========================================================= */
+
+const ROLE_LABELS = {
+    SYSTEM_ADMIN:'Sistem Yöneticisi',
+    KEY_USER:'Anahtar Kullanıcı',
+    HR_SPECIALIST:'İK Uzmanı',
+    MANAGER:'Yönetici',
+    EMPLOYEE:'Çalışan'
+};
+
+let authToken = null;
+let currentUser = null;
+
+let employees = [];
+let searchTimer = null;
+let globalTimer = null;
+
+let deactivateEmployeeId = null;
+
+let selectedImportFile = null;
+let importPreviewRows = [];
+let importGeneralErrorMessage = '';
+let importPreviewValidCount = 0;
+let importPreviewInvalidCount = 0;
+let selectedImportRowNumbers = new Set();
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+function logout(){
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/';
+}
+
+function initials(name){
+    if(!name) return '--';
+
+    const parts = name.trim().split(/\s+/);
+
+    const first = parts[0]?.[0] || '';
+    const last = parts.length > 1
+        ? parts[parts.length - 1][0]
+        : '';
+
+    return (first + last).toUpperCase();
+}
+
+function renderUser(){
+
+    const token = localStorage.getItem('token');
+    const raw = localStorage.getItem('user');
+
+    if(!token || !raw){
+        logout();
+        return false;
+    }
+
+    try{
+        currentUser = JSON.parse(raw);
+    }catch{
+        logout();
+        return false;
+    }
+
+    authToken = token;
+
+    const name = currentUser.fullName || 'Kullanıcı';
+    const role = ROLE_LABELS[currentUser.role] || currentUser.role || 'Kullanıcı';
+
+    document.getElementById('sideAvatar').textContent = initials(name);
+    document.getElementById('sideUserName').textContent = name;
+    document.getElementById('sideUserRole').textContent = role;
+
+    document.getElementById('topAvatar').textContent = initials(name);
+    document.getElementById('topUserName').textContent = name;
+    document.getElementById('topUserRole').textContent = role;
+
+    return true;
+}
+
+function userCanManage(){
+    return [
+        'SYSTEM_ADMIN',
+        'KEY_USER',
+        'HR_SPECIALIST'
+    ].includes(currentUser?.role);
+}
+
+/* =========================================================
+   API
+========================================================= */
+
+async function api(url, options = {}){
+
+    const headers = {
+        ...(options.headers || {})
+    };
+
+    if(authToken){
+        headers.Authorization = 'Bearer ' + authToken;
+    }
+
+    if(options.body){
+        headers['Content-Type'] = 'application/json';
+    }
+
+    const response = await fetch(url, {
+        ...options,
+        headers
+    });
+
+    if(response.status === 401){
+        logout();
+        throw new Error('Oturum süresi sona erdi.');
+    }
+
+    let body = null;
+
+    try{
+        body = await response.json();
+    }catch{}
+
+    if(!response.ok){
+        throw new Error(
+            body?.message ||
+            body?.error ||
+            'İşlem sırasında bir hata oluştu.'
+        );
+    }
+
+    return body;
+}
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(v){
+    if(v === null || v === undefined) return '';
+
+    return String(v)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'","&#039;");
+}
+
+function emptyToUndefined(v){
+    return (
+        v === '' ||
+        v === null ||
+        v === undefined
+    )
+        ? undefined
+        : v;
+}
+
+function boolValue(v){
+    if(v === '') return undefined;
+    return v === 'true';
+}
+
+function numberValue(v){
+    if(v === '') return undefined;
+    return Number(v);
+}
+
+function formatDate(v){
+    if(!v) return '-';
+
+    const d = new Date(v);
+
+    if(Number.isNaN(d.getTime())){
+        return '-';
+    }
+
+    return d.toLocaleDateString('tr-TR');
+}
+
+function isoDate(v){
+    if(!v) return '';
+
+    const d = new Date(v);
+
+    if(Number.isNaN(d.getTime())){
+        return '';
+    }
+
+    return [
+        d.getFullYear(),
+        String(d.getMonth()+1).padStart(2,'0'),
+        String(d.getDate()).padStart(2,'0')
+    ].join('-');
+}
+
+function maskNationalId(v){
+    if(!v) return '-';
+
+    const s = String(v);
+
+    if(s.length !== 11){
+        return '•••••••••••';
+    }
+
+    return s.slice(0,3) + '••••••' + s.slice(-2);
+}
+
+function statusLabel(v){
+    return {
+        ACTIVE:'Aktif',
+        PROBATION:'Deneme Süresinde',
+        TERMINATED:'İşten Ayrılmış',
+        ON_LEAVE:'İzinde'
+    }[v] || v || '-';
+}
+
+function statusClass(v){
+    if(v === 'ACTIVE') return 'status-active';
+    if(v === 'TERMINATED') return 'status-terminated';
+    return 'status-probation';
+}
+
+function genderLabel(v){
+    return {
+        MALE:'Erkek',
+        FEMALE:'Kadın',
+        UNSPECIFIED:'Belirtilmemiş'
+    }[v] || '-';
+}
+
+function showToast(message,type=''){
+    const toast = document.getElementById('toast');
+
+    toast.textContent = message;
+    toast.className = 'toast show ' + type;
+
+    setTimeout(() => {
+        toast.className = 'toast';
+    },3500);
+}
+
+/* =========================================================
+   ACCORDION
+========================================================= */
+
+function toggleAccordion(head){
+    const current = head.closest('.acc-item');
+    const wasOpen = current.classList.contains('open');
+
+    document.querySelectorAll('#employeeFormView .acc-item.open')
+        .forEach(item => item.classList.remove('open'));
+
+    if(!wasOpen){
+        current.classList.add('open');
+    }
+}
+
+/* =========================================================
+   VIEW CONTROL
+========================================================= */
+
+function showList(){
+
+    document.getElementById('employeeListView').style.display = 'block';
+    document.getElementById('employeeFormView').style.display = 'none';
+    document.getElementById('employeeDetailView').style.display = 'none';
+
+    loadEmployees();
+    loadStats();
+
+    window.scrollTo({top:0,behavior:'smooth'});
+}
+
+async function openNewEmployee(){
+
+    document.getElementById('employeeListView').style.display = 'none';
+    document.getElementById('employeeFormView').style.display = 'block';
+    document.getElementById('employeeDetailView').style.display = 'none';
+
+    document.getElementById('employeeForm').reset();
+    document.getElementById('editingEmployeeId').value = '';
+
+    document.getElementById('registryNoDisplay').value = 'Otomatik üretilecek';
+
+    document.getElementById('employeeFormTitle').textContent = 'Yeni Personel';
+    document.getElementById('saveEmployeeBtn').textContent = 'Personeli Kaydet';
+
+    document.querySelectorAll('.acc-item').forEach((x,i) => {
+        x.classList.toggle('open',i === 0);
+    });
+
+    document.getElementById('bankAccountsList').innerHTML = '';
+    document.getElementById('familyList').innerHTML = '';
+    document.getElementById('educationList').innerHTML = '';
+    document.getElementById('emergencyContactsList').innerHTML = '';
+
+    const today = isoDate(new Date());
+    document.getElementById('hireDate').value = today;
+    document.getElementById('seniorityBaseDate').value = today;
+    document.getElementById('annualLeaveBaseDate').value = today;
+    document.getElementById('groupHireDate').value = today;
+    document.getElementById('country').value = 'Türkiye';
+
+    addBankAccountRow();
+    addEducationRow();
+    addEmergencyContactRow({isPrimary:true});
+    syncConditionalFields();
+
+    await loadManagers();
+
+    window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* =========================================================
+   LOAD EMPLOYEES
+========================================================= */
+
+async function loadEmployees(){
+
+    const search = document.getElementById('employeeSearch').value.trim();
+    const status = document.getElementById('statusFilter').value;
+    const pageSize = document.getElementById('pageSize').value;
+
+    const params = new URLSearchParams({
+        page:'1',
+        pageSize
+    });
+
+    if(search) params.set('search',search);
+    if(status) params.set('status',status);
+
+    const tbody = document.getElementById('employeeTableBody');
+
+    tbody.innerHTML = `
+        <tr>
+            <td colspan="8">
+                <div class="loading">Personeller yükleniyor...</div>
+            </td>
+        </tr>
+    `;
+
+    try{
+
+        const result = await api('/api/employees?' + params.toString());
+
+        employees = result.data || [];
+
+        renderEmployees(employees,result.meta);
+
+    }catch(error){
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8">
+                    <div class="empty">
+                        Personel listesi alınamadı.<br>
+                        ${escapeHtml(error.message)}
+                    </div>
+                </td>
+            </tr>
+        `;
+
+    }
+}
+
+function renderEmployees(list,meta){
+
+    document.getElementById('tableCount').textContent =
+        `${meta?.total ?? list.length} kayıt`;
+
+    const tbody = document.getElementById('employeeTableBody');
+
+    if(!list.length){
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8">
+                    <div class="empty">Personel bulunamadı.</div>
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    tbody.innerHTML = list.map(e => {
+
+        const name =
+            e.fullName ||
+            [e.firstName,e.lastName].filter(Boolean).join(' ');
+
+        const occupation =
+            e.occupation
+                ? `${e.occupation.code} - ${e.occupation.name}`
+                : '-';
+
+        return `
+            <tr>
+
+                <td>
+                    <div
+                        class="employee-cell"
+                        onclick="openEmployee('${e.id}')"
+                    >
+
+                        <div class="avatar">
+                            ${escapeHtml(initials(name))}
+                        </div>
+
+                        <div>
+                            <div class="employee-name">
+                                ${escapeHtml(name)}
+                            </div>
+
+                            <div class="employee-sub">
+                                Sicil: ${escapeHtml(e.registryNo)}
+                            </div>
+                        </div>
+
+                    </div>
+                </td>
+
+                <td>
+                    ${escapeHtml(maskNationalId(e.nationalId))}
+                </td>
+
+                <td>
+                    ${escapeHtml(e.department?.name || '-')}
+                </td>
+
+                <td>
+                    ${escapeHtml(e.position || '-')}
+                </td>
+
+                <td>
+                    ${escapeHtml(occupation)}
+                </td>
+
+                <td>
+                    ${formatDate(e.hireDate)}
+                </td>
+
+                <td>
+                    <span class="status ${statusClass(e.status)}">
+                        ${escapeHtml(statusLabel(e.status))}
+                    </span>
+                </td>
+
+                <td>
+                    <div class="table-actions">
+
+                        <button
+                            class="icon-action"
+                            onclick="openEmployee('${e.id}')"
+                            title="Personel Kartı"
+                        >
+                            →
+                        </button>
+
+                        ${
+                            userCanManage()
+                                ? `
+                                    <button
+                                        class="icon-action"
+                                        onclick="editEmployee('${e.id}')"
+                                        title="Düzenle"
+                                    >
+                                        ✎
+                                    </button>
+                                `
+                                : ''
+                        }
+
+                    </div>
+                </td>
+
+            </tr>
+        `;
+
+    }).join('');
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
+async function loadStats(){
+
+    try{
+
+        const [
+            total,
+            active,
+            probation,
+            terminated
+        ] = await Promise.all([
+
+            api('/api/employees?page=1&pageSize=1'),
+
+            api('/api/employees?page=1&pageSize=1&status=ACTIVE'),
+
+            api('/api/employees?page=1&pageSize=1&status=PROBATION'),
+
+            api('/api/employees?page=1&pageSize=1&status=TERMINATED')
+
+        ]);
+
+        document.getElementById('totalEmployeeCount').textContent =
+            total.meta?.total || 0;
+
+        document.getElementById('activeEmployeeCount').textContent =
+            active.meta?.total || 0;
+
+        document.getElementById('probationEmployeeCount').textContent =
+            probation.meta?.total || 0;
+
+        document.getElementById('terminatedEmployeeCount').textContent =
+            terminated.meta?.total || 0;
+
+    }catch(error){
+        console.error(error);
+    }
+}
+
+/* =========================================================
+   MANAGER
+========================================================= */
+
+async function loadManagers(selectedId=''){
+
+    const select = document.getElementById('managerId');
+
+    select.innerHTML =
+        '<option value="">Yönetici seçilmedi</option>';
+
+    try{
+
+        const result = await api(
+            '/api/employees?page=1&pageSize=100'
+        );
+
+        result.data.forEach(e => {
+
+            const option = document.createElement('option');
+
+            option.value = e.id;
+            option.textContent =
+                `${e.registryNo} - ${e.fullName}`;
+
+            option.selected = e.id === selectedId;
+
+            select.appendChild(option);
+        });
+
+    }catch(error){
+        console.error(error);
+    }
+}
+
+/* =========================================================
+   DYNAMIC BANK
+========================================================= */
+
+function addBankAccountRow(account = {}) {
+
+    const wrap = document.createElement('div');
+
+    wrap.className = 'dynamic-row bank-row';
+
+
+    const selectedBankId =
+        account.bankId ||
+        account.bank?.id ||
+        '';
+
+
+    const selectedBankCode =
+        account.bank?.bankCode ||
+        account.bankCode ||
+        '';
+
+
+    const selectedBankName =
+        account.bank?.name ||
+        account.bankName ||
+        '';
+
+
+    const selectedBankText =
+        selectedBankName
+            ? `${selectedBankCode ? selectedBankCode + ' - ' : ''}${selectedBankName}`
+            : '';
+
+
+    wrap.innerHTML = `
+
+        <div class="field">
+
+            <label>Banka</label>
+
+            <div class="autocomplete-wrap">
+
+                <input
+                    type="text"
+                    class="form-control bank-search"
+                    placeholder="Banka adı veya banka kodu ara..."
+                    autocomplete="off"
+                    value="${escapeHtml(selectedBankText)}"
+                >
+
+                <input
+                    type="hidden"
+                    class="bank-id"
+                    value="${escapeHtml(selectedBankId)}"
+                >
+
+                <div
+                    class="autocomplete-results bank-results"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="field">
+            <label>Hesap No</label>
+            <input
+                class="form-control bank-account-no"
+                value="${escapeHtml(account.accountNo || '')}"
+                placeholder="Hesap numarası"
+            >
+        </div>
+
+
+        <div class="field">
+            <label>IBAN</label>
+            <input
+                class="form-control bank-iban"
+                value="${escapeHtml(account.iban || '')}"
+                placeholder="TR..."
+                maxlength="26"
+            >
+        </div>
+
+
+        <div class="field">
+            <label>Ana Hesap</label>
+
+            <select class="form-control bank-primary">
+                <option value="true">Evet</option>
+                <option value="false">Hayır</option>
+            </select>
+        </div>
+
+
+        <button
+            type="button"
+            class="remove-btn"
+            title="Banka hesabını kaldır"
+        >
+            ×
+        </button>
+
+    `;
+
+
+    const searchInput =
+        wrap.querySelector('.bank-search');
+
+    const hiddenBankId =
+        wrap.querySelector('.bank-id');
+
+    const resultsBox =
+        wrap.querySelector('.bank-results');
+
+    const primarySelect =
+        wrap.querySelector('.bank-primary');
+
+    const ibanInput =
+        wrap.querySelector('.bank-iban');
+
+    const removeButton =
+        wrap.querySelector('.remove-btn');
+
+
+    primarySelect.value =
+        String(account.isPrimary ?? true);
+
+
+    let bankSearchTimer = null;
+
+
+    async function searchBanks() {
+
+        const query =
+            searchInput.value.trim();
+
+
+        hiddenBankId.value = '';
+
+
+        if (query.length < 2) {
+
+            resultsBox.innerHTML = '';
+
+            resultsBox.classList.remove('show');
+
+            return;
+        }
+
+
+        resultsBox.innerHTML = `
+            <div
+                class="autocomplete-item"
+                style="cursor:default;"
+            >
+                Bankalar aranıyor...
+            </div>
+        `;
+
+        resultsBox.classList.add('show');
+
+
+        try {
+
+            const result =
+                await api(
+                    '/api/master/banks?search=' +
+                    encodeURIComponent(query)
+                );
+
+
+            const banks =
+                result?.data || [];
+
+
+            if (!banks.length) {
+
+                resultsBox.innerHTML = `
+                    <div
+                        class="autocomplete-item"
+                        style="
+                            color:var(--slate);
+                            cursor:default;
+                        "
+                    >
+                        Banka bulunamadı.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            resultsBox.innerHTML =
+                banks
+                    .filter(bank =>
+                        bank.isActive !== false
+                    )
+                    .map(bank => {
+
+                        const id =
+                            escapeHtml(bank.id || '');
+
+                        const bankCode =
+                            escapeHtml(bank.bankCode || '');
+
+                        const eftCode =
+                            escapeHtml(bank.eftCode || '');
+
+                        const name =
+                            escapeHtml(bank.name || '');
+
+                        const type =
+                            escapeHtml(bank.bankType || '');
+
+
+                        return `
+                            <div
+                                class="autocomplete-item bank-result-item"
+                                data-id="${id}"
+                                data-code="${bankCode}"
+                                data-name="${name}"
+                            >
+
+                                <div
+                                    style="
+                                        display:flex;
+                                        justify-content:space-between;
+                                        gap:10px;
+                                        align-items:center;
+                                    "
+                                >
+
+                                    <div
+                                        style="
+                                            font-weight:700;
+                                            color:var(--ink);
+                                        "
+                                    >
+                                        ${name}
+                                    </div>
+
+                                    ${
+                                        bankCode
+                                            ? `
+                                                <span
+                                                    style="
+                                                        background:var(--primary-tint);
+                                                        color:var(--primary-darker);
+                                                        border-radius:12px;
+                                                        padding:3px 7px;
+                                                        font-size:10px;
+                                                        white-space:nowrap;
+                                                    "
+                                                >
+                                                    ${bankCode}
+                                                </span>
+                                            `
+                                            : ''
+                                    }
+
+                                </div>
+
+
+                                <div
+                                    style="
+                                        margin-top:4px;
+                                        font-size:10.5px;
+                                        color:var(--slate);
+                                    "
+                                >
+                                    ${
+                                        eftCode
+                                            ? `EFT Kodu: ${eftCode}`
+                                            : ''
+                                    }
+
+                                    ${
+                                        eftCode && type
+                                            ? ' · '
+                                            : ''
+                                    }
+
+                                    ${type}
+                                </div>
+
+                            </div>
+                        `;
+
+                    })
+                    .join('');
+
+
+            resultsBox
+                .querySelectorAll('.bank-result-item')
+                .forEach(item => {
+
+                    item.addEventListener(
+                        'mousedown',
+                        function(event) {
+
+                            event.preventDefault();
+
+
+                            const id =
+                                this.dataset.id;
+
+                            const code =
+                                this.dataset.code;
+
+                            const name =
+                                this.dataset.name;
+
+
+                            hiddenBankId.value =
+                                id;
+
+
+                            searchInput.value =
+                                `${code ? code + ' - ' : ''}${name}`;
+
+
+                            resultsBox.innerHTML = '';
+
+                            resultsBox.classList.remove('show');
+
+                        }
+                    );
+
+                });
+
+
+        } catch (error) {
+
+            console.error(
+                'Banka arama hatası:',
+                error
+            );
+
+
+            resultsBox.innerHTML = `
+                <div
+                    class="autocomplete-item"
+                    style="
+                        color:var(--coral);
+                        cursor:default;
+                    "
+                >
+                    Banka listesi alınamadı.
+                </div>
+            `;
+
+        }
+
+    }
+
+
+    searchInput.addEventListener(
+        'input',
+        function() {
+
+            clearTimeout(bankSearchTimer);
+
+            bankSearchTimer =
+                setTimeout(
+                    searchBanks,
+                    300
+                );
+
+        }
+    );
+
+
+    searchInput.addEventListener(
+        'focus',
+        function() {
+
+            if (
+                !hiddenBankId.value &&
+                searchInput.value.trim().length >= 2
+            ) {
+
+                searchBanks();
+
+            }
+
+        }
+    );
+
+
+    ibanInput.addEventListener(
+        'input',
+        function() {
+
+            this.value =
+                this.value
+                    .toUpperCase()
+                    .replace(/\s/g, '')
+                    .replace(/[^A-Z0-9]/g, '')
+                    .slice(0, 26);
+
+        }
+    );
+
+
+    removeButton.addEventListener(
+        'click',
+        function() {
+
+            wrap.remove();
+
+        }
+    );
+
+
+    document
+        .getElementById('bankAccountsList')
+        .appendChild(wrap);
+
+}
+
+
+function collectBankAccounts() {
+
+    return [
+        ...document.querySelectorAll('.bank-row')
+    ]
+        .map(row => {
+
+            const bankId =
+                row
+                    .querySelector('.bank-id')
+                    .value
+                    .trim();
+
+
+            if (!bankId) {
+                return null;
+            }
+
+
+            return {
+
+                bankId,
+
+                accountNo:
+                    emptyToUndefined(
+                        row
+                            .querySelector('.bank-account-no')
+                            .value
+                            .trim()
+                    ),
+
+                iban:
+                    emptyToUndefined(
+                        row
+                            .querySelector('.bank-iban')
+                            .value
+                            .trim()
+                    ),
+
+                isPrimary:
+                    row
+                        .querySelector('.bank-primary')
+                        .value === 'true',
+
+                isActive: true
+
+            };
+
+        })
+
+        .filter(Boolean);
+
+}
+/* =========================================================
+   FAMILY
+========================================================= */
+
+function addFamilyRow(member={}){
+    const wrap = document.createElement('div');
+    wrap.className = 'dynamic-row family family-row';
+
+    wrap.innerHTML = `
+        <div class="field">
+            <label>Yakınlık</label>
+            <select class="form-control family-relation">
+                <option value="SPOUSE">Eş</option>
+                <option value="CHILD">Çocuk</option>
+                <option value="MOTHER">Anne</option>
+                <option value="FATHER">Baba</option>
+                <option value="OTHER">Diğer</option>
+            </select>
+        </div>
+        <div class="field"><label>Ad</label><input class="form-control family-first-name" value="${escapeHtml(member.firstName || '')}"></div>
+        <div class="field"><label>Soyad</label><input class="form-control family-last-name" value="${escapeHtml(member.lastName || '')}"></div>
+        <div class="field"><label>T.C. Kimlik No</label><input class="form-control family-national-id" maxlength="11" inputmode="numeric" value="${escapeHtml(member.nationalId || '')}"></div>
+        <div class="field"><label>Doğum Tarihi</label><input class="form-control family-birth-date" type="date" value="${isoDate(member.birthDate)}"></div>
+        <div class="field">
+            <label>Cinsiyet</label>
+            <select class="form-control family-gender"><option value="UNSPECIFIED">Belirtilmemiş</option><option value="MALE">Erkek</option><option value="FEMALE">Kadın</option></select>
+        </div>
+        <div class="child-fields">
+            <div class="field">
+                <label>Çocuk Yardımı</label>
+                <label class="check-field"><input type="checkbox" class="family-child-allowance"> Çocuk yardımı alır</label>
+            </div>
+            <div class="field">
+                <label>Eğitim Seviyesi</label>
+                <select class="form-control family-education-level"><option value="">Seçilmedi</option><option value="PRIMARY">İlköğretim</option><option value="SECONDARY">Ortaöğretim</option><option value="HIGH_SCHOOL">Lise</option><option value="ASSOCIATE">Ön Lisans</option><option value="BACHELOR">Lisans</option><option value="MASTER">Yüksek Lisans</option><option value="DOCTORATE">Doktora</option><option value="OTHER">Diğer</option></select>
+            </div>
+            <div class="field"><label>Okul Adı</label><input class="form-control family-school" value="${escapeHtml(member.schoolName || '')}"></div>
+            <div class="field"><label>Eğitim Başlangıç Tarihi</label><input class="form-control family-education-start" type="date" value="${isoDate(member.educationStartDate)}"></div>
+            <div class="field"><label>Eğitim Bitiş Tarihi</label><input class="form-control family-education-end" type="date" value="${isoDate(member.educationEndDate)}"></div>
+            <div class="field">
+                <label>Eğitim Durumu</label>
+                <label class="check-field"><input type="checkbox" class="family-education-continuing"> Eğitime devam ediyor</label>
+            </div>
+        </div>
+        <button type="button" class="remove-btn" title="Aile bireyini kaldır">×</button>
+    `;
+
+    wrap.querySelector('.family-relation').value = member.relationType || 'CHILD';
+    wrap.querySelector('.family-gender').value = member.gender || 'UNSPECIFIED';
+    wrap.querySelector('.family-education-level').value = member.educationLevel || '';
+    wrap.querySelector('.family-child-allowance').checked = member.childAllowanceEligible === true;
+    wrap.querySelector('.family-education-continuing').checked = member.isEducationContinuing === true;
+
+    const syncChild = () => {
+        const isChild = wrap.querySelector('.family-relation').value === 'CHILD';
+        wrap.classList.toggle('is-child',isChild);
+        if(!isChild){
+            wrap.querySelector('.family-child-allowance').checked = false;
+            wrap.querySelector('.family-education-continuing').checked = false;
+        }
+    };
+
+    const syncEducationEnd = () => {
+        const continuing = wrap.querySelector('.family-education-continuing').checked;
+        const end = wrap.querySelector('.family-education-end');
+        end.disabled = continuing;
+        if(continuing) end.value = '';
+    };
+
+    wrap.querySelector('.family-relation').addEventListener('change',syncChild);
+    wrap.querySelector('.family-education-continuing').addEventListener('change',syncEducationEnd);
+    wrap.querySelector('.remove-btn').addEventListener('click',() => wrap.remove());
+    syncChild();
+    syncEducationEnd();
+
+    document.getElementById('familyList').appendChild(wrap);
+}
+
+function collectFamilyMembers(){
+    return [...document.querySelectorAll('.family-row')].map(row => {
+        const firstName = row.querySelector('.family-first-name').value.trim();
+        if(!firstName) return null;
+        const relationType = row.querySelector('.family-relation').value;
+        const isChild = relationType === 'CHILD';
+        return {
+            relationType,
+            firstName,
+            lastName:emptyToUndefined(row.querySelector('.family-last-name').value.trim()),
+            nationalId:emptyToUndefined(row.querySelector('.family-national-id').value.trim()),
+            birthDate:emptyToUndefined(row.querySelector('.family-birth-date').value),
+            gender:emptyToUndefined(row.querySelector('.family-gender').value),
+            educationLevel:isChild ? emptyToUndefined(row.querySelector('.family-education-level').value) : undefined,
+            childAllowanceEligible:isChild && row.querySelector('.family-child-allowance').checked,
+            schoolName:isChild ? emptyToUndefined(row.querySelector('.family-school').value.trim()) : undefined,
+            educationStartDate:isChild ? emptyToUndefined(row.querySelector('.family-education-start').value) : undefined,
+            educationEndDate:isChild ? emptyToUndefined(row.querySelector('.family-education-end').value) : undefined,
+            isEducationContinuing:isChild && row.querySelector('.family-education-continuing').checked
+        };
+    }).filter(Boolean);
+}
+
+/* =========================================================
+   EDUCATION
+========================================================= */
+
+function addEducationRow(education={}){
+    const wrap = document.createElement('div');
+    wrap.className = 'dynamic-row education education-row';
+    wrap.innerHTML = `
+        <div class="field"><label>Seviye <span class="req">*</span></label><select class="form-control education-level"><option value="">Seçiniz</option><option value="PRIMARY">İlköğretim</option><option value="SECONDARY">Ortaöğretim</option><option value="HIGH_SCHOOL">Lise</option><option value="ASSOCIATE">Ön Lisans</option><option value="BACHELOR">Lisans</option><option value="MASTER">Yüksek Lisans</option><option value="DOCTORATE">Doktora</option><option value="OTHER">Diğer</option></select></div>
+        <div class="field"><label>Okul Adı <span class="req">*</span></label><input class="form-control education-school" value="${escapeHtml(education.schoolName || '')}"></div>
+        <div class="field"><label>Bölüm / Program</label><input class="form-control education-department" value="${escapeHtml(education.departmentName || '')}"></div>
+        <div class="field"><label>Başlangıç Tarihi <span class="req">*</span></label><input class="form-control education-start" type="date" value="${isoDate(education.startDate)}"></div>
+        <div class="field"><label>Bitiş Tarihi</label><input class="form-control education-end" type="date" value="${isoDate(education.endDate || education.graduationDate)}"></div>
+        <div class="field"><label>Eğitim Durumu</label><label class="check-field"><input type="checkbox" class="education-continuing"> Devam ediyor</label></div>
+        <button type="button" class="remove-btn" title="Eğitim kaydını kaldır">×</button>
+    `;
+    wrap.querySelector('.education-level').value = education.level || '';
+    wrap.querySelector('.education-continuing').checked = education.isContinuing === true;
+
+    const sync = () => {
+        const continuing = wrap.querySelector('.education-continuing').checked;
+        const end = wrap.querySelector('.education-end');
+        end.disabled = continuing;
+        if(continuing) end.value = '';
+    };
+    wrap.querySelector('.education-continuing').addEventListener('change',sync);
+    wrap.querySelector('.remove-btn').addEventListener('click',() => wrap.remove());
+    sync();
+    document.getElementById('educationList').appendChild(wrap);
+}
+
+function collectEducations(){
+    return [...document.querySelectorAll('.education-row')].map(row => {
+        const level = row.querySelector('.education-level').value;
+        const schoolName = row.querySelector('.education-school').value.trim();
+        const startDate = row.querySelector('.education-start').value;
+        if(!level && !schoolName && !startDate) return null;
+        return {
+            level:emptyToUndefined(level),
+            schoolName:emptyToUndefined(schoolName),
+            departmentName:emptyToUndefined(row.querySelector('.education-department').value.trim()),
+            startDate:emptyToUndefined(startDate),
+            endDate:emptyToUndefined(row.querySelector('.education-end').value),
+            isContinuing:row.querySelector('.education-continuing').checked
+        };
+    }).filter(Boolean);
+}
+
+/* =========================================================
+   EMERGENCY CONTACTS
+========================================================= */
+
+function addEmergencyContactRow(contact={}){
+    const wrap = document.createElement('div');
+    wrap.className = 'dynamic-row emergency emergency-row';
+    wrap.innerHTML = `
+        <div class="field"><label>Ad Soyad <span class="req">*</span></label><input class="form-control emergency-name" value="${escapeHtml(contact.fullName || '')}"></div>
+        <div class="field"><label>Yakınlık Derecesi <span class="req">*</span></label><input class="form-control emergency-relation" value="${escapeHtml(contact.relation || '')}" placeholder="Örn. Eş, Anne, Kardeş"></div>
+        <div class="field"><label>Telefon <span class="req">*</span></label><input class="form-control emergency-phone" value="${escapeHtml(contact.phone || '')}"></div>
+        <div class="field"><label>Ana Kişi</label><label class="check-field"><input type="checkbox" class="emergency-primary"> Ana iletişim kişisi</label></div>
+        <button type="button" class="remove-btn" title="Acil durum kişisini kaldır">×</button>
+    `;
+    wrap.querySelector('.emergency-primary').checked = contact.isPrimary === true;
+    wrap.querySelector('.emergency-primary').addEventListener('change',function(){
+        if(this.checked){
+            document.querySelectorAll('.emergency-primary').forEach(x => { if(x !== this) x.checked = false; });
+        }
+    });
+    wrap.querySelector('.remove-btn').addEventListener('click',() => wrap.remove());
+    document.getElementById('emergencyContactsList').appendChild(wrap);
+}
+
+function collectEmergencyContacts(){
+    return [...document.querySelectorAll('.emergency-row')].map(row => {
+        const fullName = row.querySelector('.emergency-name').value.trim();
+        const relation = row.querySelector('.emergency-relation').value.trim();
+        const phone = row.querySelector('.emergency-phone').value.trim();
+        if(!fullName && !relation && !phone) return null;
+        return {fullName,relation,phone,isPrimary:row.querySelector('.emergency-primary').checked};
+    }).filter(Boolean);
+}
+
+/* =========================================================
+   FORM DATA
+========================================================= */
+
+function getFormData(){
+    return {
+        nationalId:document.getElementById('nationalId').value.trim(),
+        firstName:document.getElementById('firstName').value.trim(),
+        lastName:document.getElementById('lastName').value.trim(),
+        birthDate:emptyToUndefined(document.getElementById('birthDate').value),
+        gender:emptyToUndefined(document.getElementById('gender').value),
+        maritalStatus:emptyToUndefined(document.getElementById('maritalStatus').value),
+        marriageDate:emptyToUndefined(document.getElementById('marriageDate').value),
+        nationality:emptyToUndefined(document.getElementById('nationality').value.trim()),
+        militaryStatus:emptyToUndefined(document.getElementById('militaryStatus').value),
+        militaryDefermentDate:emptyToUndefined(document.getElementById('militaryDefermentDate').value),
+
+        phone:emptyToUndefined(document.getElementById('phone').value.trim()),
+        email:emptyToUndefined(document.getElementById('email').value.trim()),
+        corporateEmail:emptyToUndefined(document.getElementById('corporateEmail').value.trim()),
+        address:emptyToUndefined(document.getElementById('address').value.trim()),
+        city:emptyToUndefined(document.getElementById('city').value.trim()),
+        country:emptyToUndefined(document.getElementById('country').value.trim()),
+
+        departmentId:emptyToUndefined(document.getElementById('departmentId').value.trim()),
+        position:emptyToUndefined(document.getElementById('position').value.trim()),
+        workLocation:emptyToUndefined(document.getElementById('workLocation').value.trim()),
+        collarType:emptyToUndefined(document.getElementById('collarType').value),
+        managerId:emptyToUndefined(document.getElementById('managerId').value),
+        occupationCode:emptyToUndefined(document.getElementById('occupationCode').value.trim()),
+
+        hireDate:document.getElementById('hireDate').value,
+        firstHireDate:emptyToUndefined(document.getElementById('firstHireDate').value),
+        seniorityBaseDate:emptyToUndefined(document.getElementById('seniorityBaseDate').value),
+        annualLeaveBaseDate:emptyToUndefined(document.getElementById('annualLeaveBaseDate').value),
+        groupHireDate:emptyToUndefined(document.getElementById('groupHireDate').value),
+        contractType:emptyToUndefined(document.getElementById('contractType').value),
+        employmentType:emptyToUndefined(document.getElementById('employmentType').value),
+        sgkDocumentTypeCode:emptyToUndefined(document.getElementById('sgkDocumentTypeCode').value.trim()),
+        incentiveCode:emptyToUndefined(document.getElementById('incentiveCode').value.trim()),
+        isDisabled:boolValue(document.getElementById('isDisabled').value),
+        disabilityRate:numberValue(document.getElementById('disabilityRate').value),
+
+        bankAccounts:collectBankAccounts(),
+        familyMembers:collectFamilyMembers(),
+        educations:collectEducations(),
+        emergencyContacts:collectEmergencyContacts()
+    };
+}
+
+
+function openSectionForElement(element){
+    const item = element?.closest('.acc-item');
+    if(!item) return;
+    document.querySelectorAll('#employeeFormView .acc-item.open').forEach(x => x.classList.remove('open'));
+    item.classList.add('open');
+    setTimeout(() => element.scrollIntoView({behavior:'smooth',block:'center'}),50);
+}
+
+function validateFormBeforeSubmit(){
+    const required = [...document.querySelectorAll('#employeeForm [required]')];
+    for(const field of required){
+        if(!field.value || !field.checkValidity()){
+            openSectionForElement(field);
+            field.focus();
+            showToast('Lütfen zorunlu alanları eksiksiz doldurun.','error');
+            return false;
+        }
+    }
+
+    if(!document.getElementById('occupationCode').value){
+        const f=document.getElementById('occupationSearch'); openSectionForElement(f); f.focus(); showToast('Meslek kodu seçimi zorunludur.','error'); return false;
+    }
+    if(collectEducations().length < 1){
+        const item=document.querySelector('[data-section="education"]'); document.querySelectorAll('#employeeFormView .acc-item.open').forEach(x=>x.classList.remove('open')); item.classList.add('open'); showToast('En az bir eğitim bilgisi eklemelisiniz.','error'); return false;
+    }
+    if(collectBankAccounts().length < 1){
+        const item=document.querySelector('[data-section="bank"]'); document.querySelectorAll('#employeeFormView .acc-item.open').forEach(x=>x.classList.remove('open')); item.classList.add('open'); showToast('En az bir banka hesabı eklemelisiniz.','error'); return false;
+    }
+    if(collectEmergencyContacts().length < 1){
+        const item=document.querySelector('[data-section="emergency"]'); document.querySelectorAll('#employeeFormView .acc-item.open').forEach(x=>x.classList.remove('open')); item.classList.add('open'); showToast('En az bir acil durum kişisi eklemelisiniz.','error'); return false;
+    }
+    return true;
+}
+
+function syncConditionalFields(){
+    const married = document.getElementById('maritalStatus')?.value === 'MARRIED';
+    const marriageField = document.getElementById('marriageDateField');
+    if(marriageField){
+        marriageField.classList.toggle('hidden-field',!married);
+        const input=document.getElementById('marriageDate'); input.required=married; if(!married) input.value='';
+    }
+
+    const deferred = document.getElementById('militaryStatus')?.value === 'DEFERRED';
+    const deferField = document.getElementById('militaryDefermentField');
+    if(deferField){
+        deferField.classList.toggle('hidden-field',!deferred);
+        const input=document.getElementById('militaryDefermentDate'); input.required=deferred; if(!deferred) input.value='';
+    }
+
+    const disabled = document.getElementById('isDisabled')?.value === 'true';
+    const disabilityField = document.getElementById('disabilityRateField');
+    if(disabilityField){
+        disabilityField.classList.toggle('hidden-field',!disabled);
+        const input=document.getElementById('disabilityRate'); input.required=disabled; if(!disabled) input.value='';
+    }
+}
+
+/* =========================================================
+   SAVE
+========================================================= */
+
+document
+    .getElementById('employeeForm')
+    .addEventListener('submit',async function(event){
+
+        event.preventDefault();
+
+        if(!validateFormBeforeSubmit()) return;
+
+        const editingId =
+            document.getElementById('editingEmployeeId').value;
+
+        const button =
+            document.getElementById('saveEmployeeBtn');
+
+        button.disabled = true;
+        button.textContent =
+            editingId
+                ? 'Güncelleniyor...'
+                : 'Kaydediliyor...';
+
+        try{
+
+            const data = getFormData();
+
+            if(editingId){
+
+                await api(
+                    '/api/employees/' + editingId,
+                    {
+                        method:'PUT',
+                        body:JSON.stringify(data)
+                    }
+                );
+
+                showToast(
+                    'Personel bilgileri güncellendi.',
+                    'success'
+                );
+
+                await openEmployee(editingId);
+
+            }else{
+
+                const result = await api(
+                    '/api/employees',
+                    {
+                        method:'POST',
+                        body:JSON.stringify(data)
+                    }
+                );
+
+                showToast(
+                    'Personel başarıyla oluşturuldu.',
+                    'success'
+                );
+
+                await openEmployee(result.data.id);
+            }
+
+        }catch(error){
+
+            showToast(
+                error.message,
+                'error'
+            );
+
+        }finally{
+
+            button.disabled = false;
+            button.textContent =
+                editingId
+                    ? 'Değişiklikleri Kaydet'
+                    : 'Personeli Kaydet';
+        }
+
+    });
+
+/* =========================================================
+   DETAIL
+========================================================= */
+
+async function openEmployee(id){
+
+    document.getElementById('employeeListView').style.display = 'none';
+    document.getElementById('employeeFormView').style.display = 'none';
+    document.getElementById('employeeDetailView').style.display = 'block';
+
+    const container =
+        document.getElementById('detailContent');
+
+    container.innerHTML =
+        '<div class="loading">Personel kartı yükleniyor...</div>';
+
+    try{
+
+        const result =
+            await api('/api/employees/' + id);
+
+        renderEmployeeDetail(result.data);
+
+    }catch(error){
+
+        container.innerHTML =
+            `<div class="empty">${escapeHtml(error.message)}</div>`;
+    }
+}
+
+function detailRow(label,value){
+
+    return `
+        <div class="detail-row">
+            <div class="detail-label">${escapeHtml(label)}</div>
+            <div class="detail-value">${escapeHtml(value || '-')}</div>
+        </div>
+    `;
+}
+
+function renderEmployeeDetail(e){
+    const name = e.fullName || [e.firstName,e.lastName].filter(Boolean).join(' ');
+    const primaryBank = e.bankAccounts?.find(x => x.isPrimary) || e.bankAccounts?.[0];
+    const primaryEmergency = e.emergencyContacts?.find(x => x.isPrimary) || e.emergencyContacts?.[0];
+    const collarLabel = {WHITE_COLLAR:'Beyaz Yaka',BLUE_COLLAR:'Mavi Yaka',OTHER:'Diğer'}[e.collarType] || '-';
+
+    document.getElementById('detailContent').innerHTML = `
+        <div class="employee-header">
+            <div class="employee-header-left">
+                <div class="employee-header-avatar">${escapeHtml(initials(name))}</div>
+                <div>
+                    <div class="employee-header-name">${escapeHtml(name)}</div>
+                    <div class="employee-header-sub">Sicil ${escapeHtml(e.registryNo)} · ${escapeHtml(e.department?.name || '-')} · ${escapeHtml(e.position || '-')}</div>
+                    <div class="employee-header-status"><span class="status ${statusClass(e.status)}">${escapeHtml(statusLabel(e.status))}</span></div>
+                </div>
+            </div>
+            <div class="employee-header-actions">
+                ${userCanManage() ? `<button class="btn" onclick="editEmployee('${e.id}')">Düzenle</button>` : ''}
+                ${userCanManage() && e.status !== 'TERMINATED' ? `<button class="btn btn-danger" onclick="openDeactivateModal('${e.id}')">İşten Çıkar</button>` : ''}
+            </div>
+        </div>
+
+        <div class="detail-grid">
+            <div class="detail-card"><div class="detail-card-title">Kişisel Bilgiler</div><div class="detail-card-body">
+                ${detailRow('Sicil No',e.registryNo)}${detailRow('Ad',e.firstName)}${detailRow('Soyad',e.lastName)}${detailRow('T.C. Kimlik',maskNationalId(e.nationalId))}${detailRow('Doğum Tarihi',formatDate(e.birthDate))}${detailRow('Cinsiyet',genderLabel(e.gender))}${detailRow('Uyruk',e.nationality)}
+            </div></div>
+            <div class="detail-card"><div class="detail-card-title">İletişim Bilgileri</div><div class="detail-card-body">
+                ${detailRow('Telefon',e.phone)}${detailRow('Kişisel E-Posta',e.email)}${detailRow('Kurumsal E-Posta',e.corporateEmail)}${detailRow('Şehir',e.city)}${detailRow('Ülke',e.country)}${detailRow('Adres',e.address)}
+            </div></div>
+            <div class="detail-card"><div class="detail-card-title">Organizasyon Bilgileri</div><div class="detail-card-body">
+                ${detailRow('Departman',e.department?.name)}${detailRow('Pozisyon',e.position)}${detailRow('Çalışma Yeri',e.workLocation)}${detailRow('Yaka Türü',collarLabel)}${detailRow('Yönetici',e.manager?.fullName)}${detailRow('Meslek Kodu',e.occupation ? `${e.occupation.code} - ${e.occupation.name}` : '-')}
+            </div></div>
+            <div class="detail-card"><div class="detail-card-title">İşe Giriş ve SGK</div><div class="detail-card-body">
+                ${detailRow('İşe Giriş',formatDate(e.hireDate))}${detailRow('İlk İşe Giriş',formatDate(e.firstHireDate))}${detailRow('Kıdem Baz Tarihi',formatDate(e.seniorityBaseDate))}${detailRow('Yıllık İzin Baz Tarihi',formatDate(e.annualLeaveBaseDate))}${detailRow('Topluluk İşe Giriş',formatDate(e.groupHireDate))}${detailRow('SGK Belge Türü',e.sgkDocumentType ? `${e.sgkDocumentType.code} - ${e.sgkDocumentType.name}` : e.sgkDocumentTypeCode)}${detailRow('Teşvik / Kanun',e.incentive ? `${e.incentive.code} - ${e.incentive.name}` : e.incentiveCode)}${detailRow('Engellilik',e.isDisabled ? `%${e.disabilityRate || '-'}` : 'Hayır')}
+            </div></div>
+            <div class="detail-card"><div class="detail-card-title">Banka Bilgileri</div><div class="detail-card-body">${detailRow('Banka',primaryBank?.bank?.name)}${detailRow('Hesap No',primaryBank?.accountNo)}${detailRow('IBAN',primaryBank?.iban)}</div></div>
+            <div class="detail-card"><div class="detail-card-title">Acil Durum İletişim</div><div class="detail-card-body">${detailRow('Ad Soyad',primaryEmergency?.fullName)}${detailRow('Yakınlık',primaryEmergency?.relation)}${detailRow('Telefon',primaryEmergency?.phone)}${detailRow('Toplam Kişi',String(e.emergencyContacts?.length || 0))}</div></div>
+            <div class="detail-card"><div class="detail-card-title">Eğitim Bilgileri</div><div class="detail-card-body">${detailRow('Eğitim Kaydı',String(e.educations?.length || 0))}</div></div>
+            <div class="detail-card"><div class="detail-card-title">Aile Bilgileri</div><div class="detail-card-body">${detailRow('Aile Bireyi',String(e.familyMembers?.length || 0))}</div></div>
+            <div class="detail-card"><div class="detail-card-title">Ücret Bilgileri</div><div class="detail-card-body"><div class="info-box warning-box">Bu bölüm sonraki aşamada aktif edilecektir.</div></div></div>
+            <div class="detail-card"><div class="detail-card-title">İşten Ayrılış Bilgileri</div><div class="detail-card-body">${detailRow('Durum',statusLabel(e.status))}${detailRow('İşten Ayrılış Tarihi',formatDate(e.terminationDate))}${detailRow('Çıkış Nedeni',e.terminationReason ? `${e.terminationReason.code} - ${e.terminationReason.name}` : '-')}</div></div>
+        </div>`;
+}
+
+/* =========================================================
+   EDIT
+========================================================= */
+
+async function editEmployee(id){
+    const result = await api('/api/employees/' + id);
+    const e = result.data;
+
+    document.getElementById('employeeListView').style.display = 'none';
+    document.getElementById('employeeDetailView').style.display = 'none';
+    document.getElementById('employeeFormView').style.display = 'block';
+    document.getElementById('employeeForm').reset();
+    document.getElementById('editingEmployeeId').value = e.id;
+    document.getElementById('employeeFormTitle').textContent = 'Personel Düzenle';
+    document.getElementById('saveEmployeeBtn').textContent = 'Değişiklikleri Kaydet';
+    document.getElementById('registryNoDisplay').value = e.registryNo;
+
+    document.getElementById('firstName').value = e.firstName || '';
+    document.getElementById('lastName').value = e.lastName || '';
+    document.getElementById('nationalId').value = e.nationalId || '';
+    document.getElementById('birthDate').value = isoDate(e.birthDate);
+    document.getElementById('gender').value = e.gender || '';
+    document.getElementById('maritalStatus').value = e.maritalStatus || '';
+    document.getElementById('marriageDate').value = isoDate(e.marriageDate);
+    document.getElementById('nationality').value = e.nationality || '';
+    document.getElementById('militaryStatus').value = e.militaryStatus || '';
+    document.getElementById('militaryDefermentDate').value = isoDate(e.militaryDefermentDate);
+
+    document.getElementById('phone').value = e.phone || '';
+    document.getElementById('email').value = e.email || '';
+    document.getElementById('corporateEmail').value = e.corporateEmail || '';
+    document.getElementById('city').value = e.city || '';
+    document.getElementById('country').value = e.country || 'Türkiye';
+    document.getElementById('address').value = e.address || '';
+
+    document.getElementById('departmentId').value = e.departmentId || '';
+    document.getElementById('position').value = e.position || '';
+    document.getElementById('workLocation').value = e.workLocation || '';
+    document.getElementById('collarType').value = e.collarType || '';
+    await loadManagers(e.managerId || '');
+    document.getElementById('occupationCode').value = e.occupationCode || '';
+    document.getElementById('occupationSearch').value = e.occupation ? `${e.occupation.code} - ${e.occupation.name}` : '';
+
+    document.getElementById('hireDate').value = isoDate(e.hireDate);
+    document.getElementById('firstHireDate').value = isoDate(e.firstHireDate);
+    document.getElementById('seniorityBaseDate').value = isoDate(e.seniorityBaseDate);
+    document.getElementById('annualLeaveBaseDate').value = isoDate(e.annualLeaveBaseDate);
+    document.getElementById('groupHireDate').value = isoDate(e.groupHireDate);
+    document.getElementById('contractType').value = e.contractType || '';
+    document.getElementById('employmentType').value = e.employmentType || '';
+    document.getElementById('sgkDocumentTypeCode').value = e.sgkDocumentTypeCode || '';
+    document.getElementById('incentiveCode').value = e.incentiveCode || '';
+    document.getElementById('isDisabled').value = String(e.isDisabled === true);
+    document.getElementById('disabilityRate').value = e.disabilityRate ?? '';
+
+    document.getElementById('bankAccountsList').innerHTML = '';
+    (e.bankAccounts || []).forEach(addBankAccountRow);
+    document.getElementById('familyList').innerHTML = '';
+    (e.familyMembers || []).forEach(addFamilyRow);
+    document.getElementById('educationList').innerHTML = '';
+    (e.educations || []).forEach(addEducationRow);
+    document.getElementById('emergencyContactsList').innerHTML = '';
+    (e.emergencyContacts || []).forEach(addEmergencyContactRow);
+
+    if(!(e.bankAccounts || []).length) addBankAccountRow();
+    if(!(e.educations || []).length) addEducationRow();
+    if(!(e.emergencyContacts || []).length) addEmergencyContactRow({isPrimary:true});
+
+    document.querySelectorAll('#employeeFormView .acc-item').forEach((x,i) => x.classList.toggle('open',i === 0));
+    syncConditionalFields();
+    window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* =========================================================
+   DEACTIVATE
+========================================================= */
+
+function openDeactivateModal(id){
+
+    deactivateEmployeeId = id;
+
+    document.getElementById('terminationDate').value =
+        isoDate(new Date());
+
+    document.getElementById('terminationReasonSearch').value = '';
+    document.getElementById('terminationReasonCode').value = '';
+    document.getElementById('terminationNote').value = '';
+
+    document.getElementById('deactivateModal').classList.add('show');
+}
+
+function closeDeactivateModal(){
+    deactivateEmployeeId = null;
+    document.getElementById('deactivateModal').classList.remove('show');
+}
+
+async function confirmDeactivate(){
+
+    if(!deactivateEmployeeId){
+        return;
+    }
+
+    try{
+
+        await api(
+            `/api/employees/${deactivateEmployeeId}/deactivate`,
+            {
+                method:'POST',
+                body:JSON.stringify({
+                    terminationDate:
+                        document.getElementById('terminationDate').value,
+
+                    terminationReasonCode:
+                        emptyToUndefined(
+                            document.getElementById('terminationReasonCode').value
+                        ),
+
+                    terminationNote:
+                        emptyToUndefined(
+                            document.getElementById('terminationNote').value.trim()
+                        )
+                })
+            }
+        );
+
+        closeDeactivateModal();
+
+        showToast(
+            'Personel işten ayrılmış olarak güncellendi.',
+            'success'
+        );
+
+        await openEmployee(deactivateEmployeeId);
+
+    }catch(error){
+
+        showToast(
+            error.message,
+            'error'
+        );
+    }
+}
+
+
+/* =========================================================
+   PERSONEL TOPLU IMPORT
+========================================================= */
+
+function openImportModal(){
+
+    if(!userCanManage()){
+        showToast(
+            'Toplu personel aktarımı için yetkiniz bulunmuyor.',
+            'error'
+        );
+        return;
+    }
+
+    resetImportModal();
+
+    document
+        .getElementById('importModal')
+        .classList
+        .add('show');
+
+    document.body.classList.add('import-modal-open');
+}
+
+
+function closeImportModal(){
+
+    document
+        .getElementById('importModal')
+        .classList
+        .remove('show');
+
+    document.body.classList.remove('import-modal-open');
+}
+
+
+document.addEventListener('keydown', function(event){
+
+    if(
+        event.key === 'Escape' &&
+        document.getElementById('importModal')?.classList.contains('show')
+    ){
+        closeImportModal();
+    }
+
+});
+
+document.getElementById('importModal')?.addEventListener('mousedown', function(event){
+
+    if(event.target === this){
+        closeImportModal();
+    }
+
+});
+
+
+function resetImportModal(){
+
+    selectedImportFile = null;
+    importPreviewRows = [];
+    importPreviewValidCount = 0;
+    importPreviewInvalidCount = 0;
+    selectedImportRowNumbers = new Set();
+
+    const input =
+        document.getElementById('employeeImportFile');
+
+    if(input){
+        input.value = '';
+    }
+
+    document.getElementById('importFileName').textContent =
+        'Henüz dosya seçilmedi';
+
+    document.getElementById('previewImportButton').disabled =
+        true;
+
+    const confirmButton =
+        document.getElementById('confirmImportButton');
+
+    if(confirmButton){
+        confirmButton.disabled = true;
+        confirmButton.style.display = 'none';
+        confirmButton.textContent = 'Personeli Aktar';
+    }
+
+    document.getElementById('importPreview')
+        .classList
+        .remove('show');
+
+    document.getElementById('importTotalRows').textContent = '0';
+    document.getElementById('importValidRows').textContent = '0';
+    document.getElementById('importInvalidRows').textContent = '0';
+    document.getElementById('importResultBody').innerHTML = '';
+
+    importGeneralErrorMessage = '';
+
+    const generalError =
+        document.getElementById('importGeneralError');
+
+    const generalErrorText =
+        document.getElementById('importGeneralErrorText');
+
+    const errorActions =
+        document.getElementById('importErrorActions');
+
+    if(generalError){
+        generalError.classList.remove('show');
+    }
+
+    if(generalErrorText){
+        generalErrorText.textContent = '';
+    }
+
+    if(errorActions){
+        errorActions.classList.remove('show');
+    }
+
+    const errorCountText =
+        document.getElementById('importErrorCountText');
+
+    if(errorCountText){
+        errorCountText.textContent = '';
+    }
+}
+
+
+function handleImportFileChange(event){
+
+    const file =
+        event.target.files?.[0] ||
+        null;
+
+    setSelectedImportFile(file);
+}
+
+
+function setSelectedImportFile(file){
+
+    if(!file){
+        return;
+    }
+
+    const fileName =
+        String(file.name || '');
+
+    const validExtension =
+        /\.(xlsx|xls)$/i.test(fileName);
+
+    if(!validExtension){
+
+        showToast(
+            'Yalnızca .xlsx veya .xls Excel dosyası seçebilirsiniz.',
+            'error'
+        );
+
+        resetImportModal();
+        return;
+    }
+
+    selectedImportFile = file;
+
+    document.getElementById('importFileName').textContent =
+        `${file.name} • ${formatFileSize(file.size)}`;
+
+    document.getElementById('previewImportButton').disabled =
+        false;
+
+    document.getElementById('importPreview')
+        .classList
+        .remove('show');
+
+    importPreviewRows = [];
+    importPreviewValidCount = 0;
+    importPreviewInvalidCount = 0;
+    selectedImportRowNumbers = new Set();
+
+    const confirmButton =
+        document.getElementById('confirmImportButton');
+
+    if(confirmButton){
+        confirmButton.disabled = true;
+        confirmButton.style.display = 'none';
+        confirmButton.textContent = 'Personeli Aktar';
+    }
+}
+
+
+function formatFileSize(bytes){
+
+    if(!Number.isFinite(bytes)){
+        return '';
+    }
+
+    if(bytes < 1024){
+        return `${bytes} B`;
+    }
+
+    if(bytes < 1024 * 1024){
+        return `${(bytes / 1024).toFixed(1)} KB`;
+    }
+
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+
+async function previewEmployeeImport(){
+
+    if(!selectedImportFile){
+
+        showToast(
+            'Önce Excel dosyasını seçiniz.',
+            'error'
+        );
+
+        return;
+    }
+
+    const button =
+        document.getElementById(
+            'previewImportButton'
+        );
+
+    const originalText =
+        button.textContent;
+
+    button.disabled = true;
+    button.textContent = 'Kontrol ediliyor...';
+
+    try{
+
+        importGeneralErrorMessage = '';
+
+        const generalError =
+            document.getElementById('importGeneralError');
+
+        const generalErrorText =
+            document.getElementById('importGeneralErrorText');
+
+        const errorActions =
+            document.getElementById('importErrorActions');
+
+        if(generalError){
+            generalError.classList.remove('show');
+        }
+
+        if(generalErrorText){
+            generalErrorText.textContent = '';
+        }
+
+        if(errorActions){
+            errorActions.classList.remove('show');
+        }
+
+        const formData =
+            new FormData();
+
+        formData.append(
+            'file',
+            selectedImportFile
+        );
+
+        const response =
+            await fetch(
+                '/api/employees/import/preview',
+                {
+                    method:'POST',
+
+                    headers:{
+                        Authorization:
+                            'Bearer ' +
+                            authToken
+                    },
+
+                    body:
+                        formData
+                }
+            );
+
+        if(response.status === 401){
+            logout();
+            return;
+        }
+
+        let result = null;
+
+        try{
+            result =
+                await response.json();
+        }catch{}
+
+        if(!response.ok){
+
+            const message =
+                result?.message ||
+                result?.error ||
+                'Excel ön kontrolü sırasında bir hata oluştu.';
+
+            showImportGeneralError(
+                message
+            );
+
+            throw new Error(
+                message
+            );
+
+        }
+
+        const preview =
+            result?.data ||
+            {};
+
+        importPreviewRows =
+            preview.rows ||
+            [];
+
+        importPreviewValidCount =
+            Number(
+                preview.validCount ||
+                0
+            );
+
+        importPreviewInvalidCount =
+            Number(
+                preview.invalidCount ||
+                0
+            );
+
+        selectedImportRowNumbers = new Set(
+            importPreviewRows
+                .filter(row => row?.isValid === true)
+                .map(row => String(row.rowNumber))
+        );
+
+        renderImportPreview(
+            preview
+        );
+
+        updateImportErrorActions(
+            preview
+        );
+
+        updateImportConfirmButton(
+            preview
+        );
+
+        showToast(
+            'Excel ön kontrolü tamamlandı.',
+            'success'
+        );
+
+    }catch(error){
+
+        if(!importGeneralErrorMessage){
+            showImportGeneralError(
+                error.message
+            );
+        }
+
+        showToast(
+            error.message,
+            'error'
+        );
+
+    }finally{
+
+        button.disabled =
+            !selectedImportFile;
+
+        button.textContent =
+            originalText;
+
+    }
+}
+
+
+
+
+function updateImportConfirmButton(preview){
+    const button = document.getElementById('confirmImportButton');
+    const selectionBar = document.getElementById('importSelectionBar');
+    const selectedCountEl = document.getElementById('importSelectedCount');
+    if(!button) return;
+
+    const validRows = importPreviewRows.filter(row => row?.isValid === true);
+    const selectedRows = validRows.filter(row => selectedImportRowNumbers.has(String(row.rowNumber)));
+
+    if(selectionBar){
+        selectionBar.classList.toggle('show', validRows.length > 0);
+    }
+    if(selectedCountEl){
+        selectedCountEl.textContent = String(selectedRows.length);
+    }
+
+    const selectAll = document.getElementById('importSelectAll');
+    if(selectAll){
+        selectAll.disabled = validRows.length === 0;
+        selectAll.checked = validRows.length > 0 && selectedRows.length === validRows.length;
+        selectAll.indeterminate = selectedRows.length > 0 && selectedRows.length < validRows.length;
+    }
+
+    if(selectedRows.length < 1){
+        button.disabled = true;
+        button.style.display = validRows.length > 0 ? 'inline-flex' : 'none';
+        button.textContent = 'Seçilenleri Aktar';
+        return;
+    }
+
+    button.style.display = 'inline-flex';
+    button.disabled = false;
+    button.textContent = `${selectedRows.length} Seçili Personeli Aktar`;
+}
+
+function toggleImportRowSelection(rowNumber, checked){
+    const key = String(rowNumber);
+    if(checked) selectedImportRowNumbers.add(key);
+    else selectedImportRowNumbers.delete(key);
+    updateImportConfirmButton({});
+}
+
+function toggleAllValidImportRows(checked){
+    importPreviewRows.forEach(row => {
+        if(row?.isValid === true){
+            const key = String(row.rowNumber);
+            if(checked) selectedImportRowNumbers.add(key);
+            else selectedImportRowNumbers.delete(key);
+        }
+    });
+    renderImportPreview({
+        totalRows: importPreviewRows.length,
+        validCount: importPreviewValidCount,
+        invalidCount: importPreviewInvalidCount,
+        rows: importPreviewRows
+    });
+}
+
+function selectAllValidImportRows(){
+    toggleAllValidImportRows(true);
+}
+
+function clearImportRowSelection(){
+    selectedImportRowNumbers.clear();
+    renderImportPreview({
+        totalRows: importPreviewRows.length,
+        validCount: importPreviewValidCount,
+        invalidCount: importPreviewInvalidCount,
+        rows: importPreviewRows
+    });
+}
+
+
+async function confirmEmployeeImport(){
+
+    const button =
+        document.getElementById(
+            'confirmImportButton'
+        );
+
+    if(!button){
+        return;
+    }
+
+    const validRows = importPreviewRows.filter(
+        row => row?.isValid === true && selectedImportRowNumbers.has(String(row.rowNumber))
+    );
+
+    if(validRows.length < 1){
+        showToast('Aktarmak için en az bir uygun personel seçiniz.','error');
+        return;
+    }
+
+    const originalText =
+        button.textContent;
+
+    button.disabled = true;
+    button.textContent = 'Aktarılıyor...';
+
+    const previewButton =
+        document.getElementById(
+            'previewImportButton'
+        );
+
+    if(previewButton){
+        previewButton.disabled = true;
+    }
+
+    try{
+
+        const response =
+            await fetch(
+                '/api/employees/import/confirm',
+                {
+                    method:'POST',
+
+                    headers:{
+                        'Content-Type':'application/json',
+                        Authorization:
+                            'Bearer ' +
+                            authToken
+                    },
+
+                    body:
+                        JSON.stringify({
+                            rows:
+                                validRows
+                        })
+                }
+            );
+
+        if(response.status === 401){
+            logout();
+            return;
+        }
+
+        let result = null;
+
+        try{
+            result =
+                await response.json();
+        }catch{}
+
+        if(!response.ok){
+
+            const message =
+                result?.message ||
+                result?.error ||
+                'Personel aktarımı sırasında bir hata oluştu.';
+
+            throw new Error(
+                message
+            );
+        }
+
+        const createdCount =
+            Number(
+                result?.data?.createdCount ||
+                0
+            );
+
+        const createdEmployees =
+            result?.data?.employees ||
+            [];
+
+        const firstEmployee =
+            createdEmployees[0];
+
+        let successMessage =
+            `${createdCount} personel başarıyla aktarıldı.`;
+
+        if(
+            createdCount === 1 &&
+            firstEmployee
+        ){
+
+            successMessage =
+                `${firstEmployee.registryNo || ''} - ${firstEmployee.fullName || 'Personel'} başarıyla aktarıldı.`;
+        }
+
+        showToast(
+            successMessage,
+            'success'
+        );
+
+        closeImportModal();
+
+        /*
+         * Liste + istatistikleri backend'den yeniden yükle.
+         */
+        await loadEmployees();
+
+    }catch(error){
+
+        showToast(
+            error.message,
+            'error'
+        );
+
+        /*
+         * Kayıt aşamasındaki hata modal içinde de kalıcı görünsün.
+         */
+        showImportGeneralError(
+            error.message
+        );
+
+        button.disabled = false;
+        button.textContent = originalText;
+
+        if(previewButton){
+            previewButton.disabled =
+                !selectedImportFile;
+        }
+    }
+}
+
+
+function showImportGeneralError(message){
+
+    importGeneralErrorMessage =
+        String(
+            message ||
+            'Bilinmeyen import hatası'
+        );
+
+    const box =
+        document.getElementById(
+            'importGeneralError'
+        );
+
+    const text =
+        document.getElementById(
+            'importGeneralErrorText'
+        );
+
+    const actions =
+        document.getElementById(
+            'importErrorActions'
+        );
+
+    const count =
+        document.getElementById(
+            'importErrorCountText'
+        );
+
+    if(text){
+        text.textContent =
+            importGeneralErrorMessage;
+    }
+
+    if(box){
+        box.classList.add('show');
+    }
+
+    if(actions){
+        actions.classList.add('show');
+    }
+
+    if(count){
+        count.textContent =
+            'Dosya seviyesi hata bulundu.';
+    }
+}
+
+
+function updateImportErrorActions(preview){
+
+    const invalidCount =
+        Number(
+            preview?.invalidCount ||
+            0
+        );
+
+    const actions =
+        document.getElementById(
+            'importErrorActions'
+        );
+
+    const count =
+        document.getElementById(
+            'importErrorCountText'
+        );
+
+    if(
+        invalidCount > 0 ||
+        importGeneralErrorMessage
+    ){
+
+        actions
+            ?.classList
+            .add('show');
+
+        if(count){
+
+            count.textContent =
+                invalidCount > 0
+                    ? `${invalidCount} hatalı satır bulundu. Düzenleyip dosyayı yeniden yükleyebilirsiniz.`
+                    : 'Dosya seviyesi hata bulundu.';
+
+        }
+
+    }else{
+
+        actions
+            ?.classList
+            .remove('show');
+
+        if(count){
+            count.textContent = '';
+        }
+
+    }
+}
+
+
+function downloadImportErrorReport(){
+
+    const reportRows = [
+        [
+            'Satır',
+            'TCKN',
+            'Ad Soyad',
+            'Pozisyon Kodu',
+            'Alan',
+            'Hata'
+        ]
+    ];
+
+
+    if(importGeneralErrorMessage){
+
+        reportRows.push([
+            '',
+            '',
+            '',
+            '',
+            'DOSYA',
+            importGeneralErrorMessage
+        ]);
+
+    }
+
+
+    importPreviewRows
+        .filter(
+            row =>
+                !row.isValid
+        )
+        .forEach(
+            row => {
+
+                const data =
+                    row.data ||
+                    {};
+
+                const fullName =
+                    [
+                        data.firstName,
+                        data.lastName
+                    ]
+                        .filter(Boolean)
+                        .join(' ');
+
+                const errors =
+                    row.errors ||
+                    [];
+
+                if(!errors.length){
+
+                    reportRows.push([
+                        row.rowNumber || '',
+                        data.nationalId || '',
+                        fullName,
+                        data.positionCode || '',
+                        '',
+                        'Kontrol hatası'
+                    ]);
+
+                    return;
+
+                }
+
+                errors.forEach(
+                    error => {
+
+                        reportRows.push([
+                            row.rowNumber || '',
+                            data.nationalId || '',
+                            fullName,
+                            data.positionCode || '',
+                            error.field || '',
+                            error.message || 'Kontrol hatası'
+                        ]);
+
+                    }
+                );
+
+            }
+        );
+
+
+    if(reportRows.length === 1){
+
+        showToast(
+            'İndirilecek hata kaydı bulunmuyor.',
+            'error'
+        );
+
+        return;
+    }
+
+
+    const csv =
+        '\uFEFF' +
+        reportRows
+            .map(
+                row =>
+                    row
+                        .map(
+                            value =>
+                                '"' +
+                                String(
+                                    value ?? ''
+                                )
+                                    .replace(
+                                        /"/g,
+                                        '""'
+                                    ) +
+                                '"'
+                        )
+                        .join(';')
+            )
+            .join('\r\n');
+
+
+    const blob =
+        new Blob(
+            [csv],
+            {
+                type:
+                    'text/csv;charset=utf-8;'
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const link =
+        document.createElement(
+            'a'
+        );
+
+    const now =
+        new Date();
+
+    const stamp =
+        [
+            now.getFullYear(),
+            String(
+                now.getMonth() + 1
+            ).padStart(2,'0'),
+            String(
+                now.getDate()
+            ).padStart(2,'0')
+        ].join('');
+
+
+    link.href = url;
+    link.download =
+        `personel-import-hata-raporu-${stamp}.csv`;
+
+    document.body.appendChild(
+        link
+    );
+
+    link.click();
+
+    link.remove();
+
+    URL.revokeObjectURL(
+        url
+    );
+
+}
+
+
+function renderImportPreview(preview){
+
+    document.getElementById('importTotalRows').textContent =
+        preview.totalRows ?? 0;
+
+    document.getElementById('importValidRows').textContent =
+        preview.validCount ?? 0;
+
+    document.getElementById('importInvalidRows').textContent =
+        preview.invalidCount ?? 0;
+
+    const tbody =
+        document.getElementById(
+            'importResultBody'
+        );
+
+    const rows =
+        preview.rows ||
+        [];
+
+    if(!rows.length){
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="6">
+                    <div class="import-empty">
+                        Excel dosyasında aktarılabilir satır bulunamadı.
+                    </div>
+                </td>
+            </tr>
+        `;
+
+    }else{
+
+        tbody.innerHTML =
+            rows.map(
+                row => {
+
+                    const data =
+                        row.data ||
+                        {};
+
+                    const fullName =
+                        [
+                            data.firstName,
+                            data.lastName
+                        ]
+                            .filter(Boolean)
+                            .join(' ') ||
+                        '-';
+
+                    const positionText =
+                        row.position
+                            ? `${row.position.positionCode} - ${row.position.name}`
+                            : data.positionCode || '-';
+
+                    const errors =
+                        row.errors ||
+                        [];
+
+                    const rowKey = String(row.rowNumber ?? '');
+                    const checked = row.isValid && selectedImportRowNumbers.has(rowKey);
+
+                    return `
+                        <tr>
+                            <td class="import-select-cell">
+                                <input
+                                    class="import-select"
+                                    type="checkbox"
+                                    ${row.isValid ? '' : 'disabled'}
+                                    ${checked ? 'checked' : ''}
+                                    onchange="toggleImportRowSelection('${escapeHtml(rowKey)}', this.checked)"
+                                    title="${row.isValid ? 'Aktarıma dahil et' : 'Hatalı satır aktarılamaz'}"
+                                >
+                            </td>
+                            <td>
+                                ${escapeHtml(
+                                    String(
+                                        row.rowNumber ?? '-'
+                                    )
+                                )}
+                            </td>
+
+                            <td>
+                                <strong>
+                                    ${escapeHtml(fullName)}
+                                </strong>
+                                <div class="employee-sub">
+                                    TCKN:
+                                    ${escapeHtml(
+                                        maskNationalId(
+                                            data.nationalId
+                                        )
+                                    )}
+                                </div>
+                            </td>
+
+                            <td>
+                                ${escapeHtml(positionText)}
+                            </td>
+
+                            <td>
+                                ${
+                                    row.isValid
+                                        ? '<span class="import-row-status ok">Uygun</span>'
+                                        : '<span class="import-row-status error">Hatalı</span>'
+                                }
+                            </td>
+
+                            <td>
+                                ${
+                                    errors.length
+                                        ? `
+                                            <div class="import-errors">
+                                                ${errors
+                                                    .map(
+                                                        error =>
+                                                            '• ' +
+                                                            escapeHtml(
+                                                                error.message ||
+                                                                'Kontrol hatası'
+                                                            )
+                                                    )
+                                                    .join('<br>')
+                                                }
+                                            </div>
+                                        `
+                                        : 'Tüm kontroller başarılı.'
+                                }
+                            </td>
+                        </tr>
+                    `;
+
+                }
+            ).join('');
+
+    }
+
+    document
+        .getElementById('importPreview')
+        .classList
+        .add('show');
+
+    const invalidCount =
+        Number(
+            preview.invalidCount ||
+            0
+        );
+
+    updateImportConfirmButton(
+        preview
+    );
+
+    if(invalidCount > 0){
+
+        const box =
+            document.getElementById(
+                'importGeneralError'
+            );
+
+        const text =
+            document.getElementById(
+                'importGeneralErrorText'
+            );
+
+        if(text){
+            text.textContent =
+                `${invalidCount} satırda hata bulundu. Aşağıdaki tabloda her satırın hata nedeni gösteriliyor. Hata raporunu indirip Excel'de açarak düzeltme yapabilirsiniz.`;
+        }
+
+        if(box){
+            box.classList.add('show');
+        }
+
+    }
+}
+
+
+/* Sürükle / bırak */
+
+document.addEventListener(
+    'DOMContentLoaded',
+    () => {
+
+        const dropzone =
+            document.getElementById(
+                'importDropzone'
+            );
+
+        if(!dropzone){
+            return;
+        }
+
+        [
+            'dragenter',
+            'dragover'
+        ].forEach(
+            eventName => {
+
+                dropzone.addEventListener(
+                    eventName,
+                    event => {
+
+                        event.preventDefault();
+
+                        dropzone
+                            .classList
+                            .add('dragover');
+
+                    }
+                );
+
+            }
+        );
+
+        [
+            'dragleave',
+            'drop'
+        ].forEach(
+            eventName => {
+
+                dropzone.addEventListener(
+                    eventName,
+                    event => {
+
+                        event.preventDefault();
+
+                        dropzone
+                            .classList
+                            .remove('dragover');
+
+                    }
+                );
+
+            }
+        );
+
+        dropzone.addEventListener(
+            'drop',
+            event => {
+
+                const file =
+                    event
+                        .dataTransfer
+                        ?.files?.[0];
+
+                if(file){
+                    setSelectedImportFile(file);
+                }
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   GLOBAL SMART SEARCH
+========================================================= */
+
+const quickActions = [
+    {
+        title:'Personel',
+        sub:'Personel listesine git',
+        keywords:['personel','çalışan','sicil'],
+        action:() => showList()
+    },
+    {
+        title:'Yeni Personel',
+        sub:'Yeni personel kaydı oluştur',
+        keywords:['personel ekle','yeni personel','çalışan ekle','işe al'],
+        action:() => openNewEmployee()
+    },
+    {
+        title:'Toplu Personel Aktar',
+        sub:'Excel ile personel ön kontrolünü başlat',
+        keywords:['toplu personel','excel','import','içe aktar','personel aktar'],
+        action:() => openImportModal()
+    },
+    {
+        title:'İzin Yönetimi',
+        sub:'İzin modülüne git',
+        keywords:['izin','yıllık izin','mazeret'],
+        action:() => window.location.href='/izin'
+    },
+    {
+        title:'Evrak Yönetimi',
+        sub:'Evrak modülüne git',
+        keywords:['evrak','belge','doküman'],
+        action:() => window.location.href='/evrak'
+    },
+    {
+        title:'Raporlar',
+        sub:'Rapor ekranına git',
+        keywords:['rapor','raporlar'],
+        action:() => window.location.href='/raporlar'
+    },
+    {
+        title:'Departmanlar',
+        sub:'Departman yönetimine git',
+        keywords:['departman','organizasyon'],
+        action:() => window.location.href='/departments'
+    },
+    {
+        title:'Kullanıcılar',
+        sub:'Kullanıcı yönetimine git',
+        keywords:['kullanıcı','yetki','rol'],
+        action:() => window.location.href='/users'
+    }
+];
+
+async function runGlobalSearch(){
+
+    const q =
+        document.getElementById('globalSearch').value.trim();
+
+    const box =
+        document.getElementById('globalResults');
+
+    if(q.length < 2){
+        box.classList.remove('show');
+        box.innerHTML = '';
+        return;
+    }
+
+    const lower = q.toLocaleLowerCase('tr-TR');
+
+    let html = '';
+
+    const actions =
+        quickActions.filter(item =>
+            item.title.toLocaleLowerCase('tr-TR').includes(lower) ||
+            item.keywords.some(k =>
+                k.toLocaleLowerCase('tr-TR').includes(lower)
+            )
+        );
+
+    if(actions.length){
+
+        html += `<div class="global-result-group">Hızlı İşlemler</div>`;
+
+        actions.forEach((item,index) => {
+
+            html += `
+                <div
+                    class="global-result-item"
+                    onclick="runQuickAction(${quickActions.indexOf(item)})"
+                >
+                    <div class="global-result-icon">→</div>
+                    <div>
+                        <div class="global-result-title">
+                            ${escapeHtml(item.title)}
+                        </div>
+                        <div class="global-result-sub">
+                            ${escapeHtml(item.sub)}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    try{
+
+        const result =
+            await api(
+                '/api/employees?search=' +
+                encodeURIComponent(q) +
+                '&page=1&pageSize=8'
+            );
+
+        if(result.data?.length){
+
+            html += `<div class="global-result-group">Personeller</div>`;
+
+            result.data.forEach(e => {
+
+                html += `
+                    <div
+                        class="global-result-item"
+                        onclick="openEmployee('${e.id}');closeGlobalSearch();"
+                    >
+                        <div class="global-result-icon">
+                            ${escapeHtml(initials(e.fullName))}
+                        </div>
+
+                        <div>
+                            <div class="global-result-title">
+                                ${escapeHtml(e.fullName)}
+                            </div>
+
+                            <div class="global-result-sub">
+                                ${escapeHtml(e.registryNo)}
+                                ·
+                                ${escapeHtml(statusLabel(e.status))}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+    }catch(error){
+        console.error(error);
+    }
+
+    if(!html){
+
+        html = `
+            <div class="global-result-item">
+                <div>
+                    <div class="global-result-title">
+                        Sonuç bulunamadı
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    box.innerHTML = html;
+    box.classList.add('show');
+}
+
+function runQuickAction(index){
+
+    closeGlobalSearch();
+
+    quickActions[index].action();
+}
+
+function closeGlobalSearch(){
+
+    document.getElementById('globalResults').classList.remove('show');
+}
+
+document
+    .getElementById('globalSearch')
+    .addEventListener('input',function(){
+
+        clearTimeout(globalTimer);
+
+        globalTimer =
+            setTimeout(
+                runGlobalSearch,
+                250
+            );
+    });
+
+document.addEventListener('click',function(event){
+
+    if(!event.target.closest('.global-search-box')){
+        closeGlobalSearch();
+    }
+});
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+document
+    .getElementById('employeeSearch')
+    .addEventListener('input',function(){
+
+        clearTimeout(searchTimer);
+
+        searchTimer = setTimeout(
+            loadEmployees,
+            350
+        );
+    });
+
+document
+    .getElementById('statusFilter')
+    .addEventListener('change',loadEmployees);
+
+document
+    .getElementById('pageSize')
+    .addEventListener('change',loadEmployees);
+
+document
+    .getElementById('nationalId')
+    .addEventListener('input',function(){
+
+        this.value =
+            this.value.replace(/\D/g,'').slice(0,11);
+    });
+
+document
+    .getElementById('hireDate')
+    .addEventListener('change',function(){
+
+        [
+            'firstHireDate',
+            'seniorityBaseDate',
+            'annualLeaveBaseDate'
+        ].forEach(id => {
+
+            const el =
+                document.getElementById(id);
+
+            if(!el.value){
+                el.value = this.value;
+            }
+        });
+    });
+
+
+document.getElementById('maritalStatus')?.addEventListener('change',syncConditionalFields);
+document.getElementById('militaryStatus')?.addEventListener('change',syncConditionalFields);
+document.getElementById('isDisabled')?.addEventListener('change',syncConditionalFields);
+
+/* =========================================================
+   MESLEK KODU AUTOCOMPLETE
+========================================================= */
+
+let occupationSearchTimer = null;
+
+
+/* ---------------------------------------------------------
+   MESLEK KODU ARA
+--------------------------------------------------------- */
+
+async function searchOccupations(searchText) {
+
+    const resultsBox =
+        document.getElementById('occupationResults');
+
+    const searchInput =
+        document.getElementById('occupationSearch');
+
+    const hiddenCode =
+        document.getElementById('occupationCode');
+
+
+    if (!resultsBox || !searchInput || !hiddenCode) {
+        return;
+    }
+
+
+    const query =
+        String(searchText || '').trim();
+
+
+    /*
+     * Kullanıcı mevcut seçimin üstüne yeniden yazmaya
+     * başladıysa eski kod seçimini temizle.
+     */
+
+    hiddenCode.value = '';
+
+
+    if (query.length < 2) {
+
+        resultsBox.innerHTML = '';
+
+        resultsBox.classList.remove('show');
+
+        return;
+
+    }
+
+
+    resultsBox.innerHTML = `
+        <div class="autocomplete-item">
+            Meslek kodları aranıyor...
+        </div>
+    `;
+
+    resultsBox.classList.add('show');
+
+
+    try {
+
+        const result =
+            await api(
+                '/api/master/occupations?search=' +
+                encodeURIComponent(query)
+            );
+
+
+        const occupations =
+            result?.data || [];
+
+
+        if (!occupations.length) {
+
+            resultsBox.innerHTML = `
+                <div class="autocomplete-item"
+                     style="color:var(--slate);cursor:default;">
+                    Sonuç bulunamadı.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        resultsBox.innerHTML =
+            occupations.map(item => {
+
+                const code =
+                    escapeHtml(item.code || '');
+
+                const name =
+                    escapeHtml(item.name || '');
+
+                return `
+                    <div
+                        class="autocomplete-item"
+                        data-code="${code}"
+                        data-name="${name}"
+                    >
+                        <div style="
+                            font-weight:700;
+                            color:var(--ink);
+                        ">
+                            ${code}
+                        </div>
+
+                        <div style="
+                            margin-top:3px;
+                            color:var(--slate);
+                            font-size:11px;
+                        ">
+                            ${name}
+                        </div>
+                    </div>
+                `;
+
+            }).join('');
+
+
+        /*
+         * Sonuçlara tıklama
+         */
+
+        resultsBox
+            .querySelectorAll('.autocomplete-item[data-code]')
+            .forEach(item => {
+
+                item.addEventListener(
+                    'click',
+                    function () {
+
+                        const code =
+                            this.dataset.code;
+
+                        const name =
+                            this.dataset.name;
+
+
+                        /*
+                         * Görünen alan
+                         */
+
+                        searchInput.value =
+                            `${code} - ${name}`;
+
+
+                        /*
+                         * API'ye gönderilecek gerçek değer
+                         */
+
+                        hiddenCode.value =
+                            code;
+
+
+                        resultsBox.innerHTML = '';
+
+                        resultsBox.classList.remove('show');
+
+                    }
+                );
+
+            });
+
+
+    } catch (error) {
+
+        console.error(
+            'Meslek kodu arama hatası:',
+            error
+        );
+
+
+        resultsBox.innerHTML = `
+            <div class="autocomplete-item"
+                 style="color:var(--coral);cursor:default;">
+                Meslek kodları alınamadı.
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   INPUT EVENT
+--------------------------------------------------------- */
+
+document
+    .getElementById('occupationSearch')
+    ?.addEventListener(
+        'input',
+        function () {
+
+            clearTimeout(
+                occupationSearchTimer
+            );
+
+
+            const value =
+                this.value;
+
+
+            occupationSearchTimer =
+                setTimeout(
+                    () => {
+                        searchOccupations(value);
+                    },
+                    300
+                );
+
+        }
+    );
+
+
+/* ---------------------------------------------------------
+   FOCUS EVENT
+
+   Kullanıcı daha önce bir şey yazdıysa tekrar aç.
+--------------------------------------------------------- */
+
+document
+    .getElementById('occupationSearch')
+    ?.addEventListener(
+        'focus',
+        function () {
+
+            const value =
+                this.value.trim();
+
+
+            /*
+             * Düzenleme ekranında:
+             * "2512.01 - Yazılım Geliştirici"
+             *
+             * gibi seçilmiş bir kayıt varsa tekrar
+             * API araması yapmıyoruz.
+             */
+
+            if (
+                value.length >= 2 &&
+                !document.getElementById('occupationCode').value
+            ) {
+
+                searchOccupations(
+                    value
+                );
+
+            }
+
+        }
+    );
+
+
+/* ---------------------------------------------------------
+   DIŞARI TIKLAYINCA KAPAT
+--------------------------------------------------------- */
+
+document.addEventListener(
+    'click',
+    function (event) {
+
+        const wrapper =
+            event.target.closest(
+                '.autocomplete-wrap'
+            );
+
+
+        /*
+         * Tıklanan autocomplete Meslek Kodu alanıysa
+         * kapatma.
+         */
+
+        if (
+            wrapper &&
+            wrapper.contains(
+                document.getElementById(
+                    'occupationSearch'
+                )
+            )
+        ) {
+            return;
+        }
+
+
+        const resultsBox =
+            document.getElementById(
+                'occupationResults'
+            );
+
+
+        if (resultsBox) {
+
+            resultsBox.classList.remove(
+                'show'
+            );
+
+        }
+
+    }
+);
+
+/* =========================================================
+   INIT
+========================================================= */
+
+(async function init(){
+
+    if(!renderUser()){
+        return;
+    }
+
+    if(!userCanManage()){
+
+        const newButton =
+            document.getElementById(
+                'newEmployeeButton'
+            );
+
+        const importButton =
+            document.getElementById(
+                'importEmployeeButton'
+            );
+
+        if(newButton){
+            newButton.style.display = 'none';
+        }
+
+        if(importButton){
+            importButton.style.display = 'none';
+        }
+
+    }
+
+    await Promise.all([
+        loadEmployees(),
+        loadStats()
+    ]);
+
+    /*
+     * Dashboard Veri Kalitesi ekranındaki
+     * "Özlük Kartına Git" butonundan gelindiyse
+     * ilgili personelin detay kartını otomatik aç.
+     */
+    const employeeIdFromDashboard =
+        new URLSearchParams(
+            window.location.search
+        ).get(
+            'employeeId'
+        );
+
+    if(
+        employeeIdFromDashboard
+    ){
+        try{
+            await openEmployee(
+                employeeIdFromDashboard
+            );
+        }catch(error){
+            console.error(
+                'Dashboard personel yönlendirme hatası:',
+                error
+            );
+            showToast(
+                error.message ||
+                'Personel kartı açılamadı.',
+                'error'
+            );
+        }
+    }
+
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1434 @@
+// ============================================================
+// HR PLANET - PERSONEL OZLUK SISTEMI
+// Multi-tenant personel yonetim sistemi
+//
+// NOT:
+// Ucret / bordro modeli bu asamada eklenmemistir.
+//
+// Bu surum mevcut veriyi koruyarak personel ozluk
+// yapisini genisletir.
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum RoleName {
+  SYSTEM_ADMIN
+  KEY_USER
+  HR_SPECIALIST
+  MANAGER
+  EMPLOYEE
+}
+
+enum EmploymentStatus {
+  ACTIVE
+  PROBATION
+  ON_LEAVE
+  TERMINATED
+}
+
+enum Gender {
+  FEMALE
+  MALE
+  UNSPECIFIED
+}
+
+enum MaritalStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
+  UNSPECIFIED
+}
+
+enum MilitaryStatus {
+  NOT_APPLICABLE
+  COMPLETED
+  EXEMPT
+  DEFERRED
+  ACTIVE
+  UNKNOWN
+}
+
+enum ContractType {
+  INDEFINITE
+  FIXED_TERM
+  OTHER
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  OTHER
+}
+
+// ============================================================
+// YAKA TURU
+// ============================================================
+
+enum CollarType {
+  WHITE_COLLAR
+  BLUE_COLLAR
+  OTHER
+}
+
+enum FamilyRelationType {
+  SPOUSE
+  CHILD
+  MOTHER
+  FATHER
+  OTHER
+}
+
+enum EducationLevel {
+  PRIMARY
+  SECONDARY
+  HIGH_SCHOOL
+  ASSOCIATE
+  BACHELOR
+  MASTER
+  DOCTORATE
+  OTHER
+}
+
+enum DocumentType {
+  ID_COPY
+  EMPLOYMENT_CONTRACT
+  CONTRACT_ANNEX
+  RESIDENCE_CERTIFICATE
+  CRIMINAL_RECORD
+  DIPLOMA
+  SGK_REGISTRATION
+  SGK_ENTRY_DECLARATION
+  HEALTH_REPORT
+  OHS_TRAINING_CERT
+  PPE_DELIVERY_FORM
+  EMERGENCY_EVAC_CERT
+  KVKK_CONSENT
+  HANDBOOK_ACK
+  LEAVE_PETITION
+  DISCIPLINARY_RECORD
+  WARNING_LETTER
+  TERMINATION_DOC
+  PAYSLIP
+  DISABILITY_MILITARY_HEALTH
+  PROFESSIONAL_QUALIFICATION
+  TAX_REDUCTION_CERT
+  WORK_PERMIT
+  TEMP_ASSIGNMENT_DOC
+  OVERTIME_APPROVAL
+  SETTLEMENT_DOC
+  WORK_ACCIDENT_REPORT
+  OTHER
+}
+
+enum LeaveType {
+  ANNUAL
+  EXCUSE
+  SICK
+  UNPAID
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum NotificationType {
+  MISSING_DOCUMENT
+  LEAVE_PENDING
+  CONTRACT_EXPIRING
+  PROBATION_ENDING
+  DOCUMENT_EXPIRING
+  BIRTHDAY
+  GENERAL
+}
+
+enum PositionOrganizationLevel {
+  GENERAL_MANAGEMENT
+  DIRECTORATE
+  MANAGEMENT
+  DEPARTMENT
+}
+
+// ============================================================
+// COMPANY
+// ============================================================
+
+model Company {
+  id          String   @id @default(uuid())
+  name        String
+  taxNumber   String?  @map("tax_number")
+  mersisNo    String?  @map("mersis_no")
+  address     String?
+  isActive    Boolean  @default(true) @map("is_active")
+  licenseInfo String?  @map("license_info")
+  companyCode String   @unique @map("company_code")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  users            User[]
+  employees        Employee[]
+  departments      Department[]
+  mandatoryDocs    MandatoryDocumentType[]
+  notifications    Notification[]
+  registrySequence EmployeeRegistrySequence?
+
+  // Sistem Parametreleri / Organizasyon
+  // Yeni dinamik organizasyon modeli
+  organizationUnitTypes    OrganizationUnitType[]
+  organizationUnits        OrganizationUnit[]
+  organizationUnitSequence OrganizationUnitSequence?
+
+  // Gecis surecinde eski organizasyon modelleri korunuyor.
+  generalManagement       GeneralManagement?
+  directorates            Directorate[]
+  managements             Management[]
+  organizationDepartments OrganizationDepartment[]
+  positions               Position[]
+
+  directorateSequence            DirectorateSequence?
+  managementSequence             ManagementSequence?
+  organizationDepartmentSequence OrganizationDepartmentSequence?
+  positionSequence               PositionSequence?
+
+  costCenters   CostCenter[]
+  workLocations WorkLocation[]
+
+  @@map("companies")
+}
+
+// ============================================================
+// DIREKTORLUK KOD SAYACI
+//
+// 80000001
+// 80000002
+// 80000003
+// ...
+//
+// Sirket bazlidir.
+// Kod tekrar kullanilmaz.
+// ============================================================
+
+model DirectorateSequence {
+  companyId  String   @id @map("company_id")
+  nextNumber Int      @default(80000001) @map("next_number")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("directorate_sequences")
+}
+
+// ============================================================
+// MUDURLUK KOD SAYACI
+//
+// 70000001
+// 70000002
+// 70000003
+// ...
+//
+// Sirket bazlidir.
+// Kod tekrar kullanilmaz.
+// ============================================================
+
+model ManagementSequence {
+  companyId  String   @id @map("company_id")
+  nextNumber Int      @default(70000001) @map("next_number")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("management_sequences")
+}
+
+// ============================================================
+// BOLUM KOD SAYACI
+//
+// 60000001
+// 60000002
+// 60000003
+// ...
+//
+// Sirket bazlidir.
+// Kod tekrar kullanilmaz.
+// ============================================================
+
+model OrganizationDepartmentSequence {
+  companyId  String   @id @map("company_id")
+  nextNumber Int      @default(60000001) @map("next_number")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("organization_department_sequences")
+}
+
+// ============================================================
+// OTOMATIK SICIL SAYACI
+//
+// nextNumber = 1   => 00000001
+// nextNumber = 25  => 00000025
+//
+// Sicil tekrar kullanilmaz.
+// ============================================================
+
+model EmployeeRegistrySequence {
+  companyId  String   @id @map("company_id")
+  nextNumber Int      @default(1) @map("next_number")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("employee_registry_sequences")
+}
+
+// ============================================================
+// USERS
+// ============================================================
+
+model User {
+  id           String    @id @default(uuid())
+  companyId    String?   @map("company_id")
+  fullName     String    @map("full_name")
+  email        String    @unique
+  username     String?   @unique
+  passwordHash String    @map("password_hash")
+  role         RoleName  @default(EMPLOYEE)
+  isActive     Boolean   @default(true) @map("is_active")
+  lastLoginAt  DateTime? @map("last_login_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  company        Company?       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  employee       Employee?      @relation("UserEmployee")
+  approvedLeaves LeaveRequest[] @relation("ApprovedBy")
+  notifications  Notification[]
+  auditLogs      AuditLog[]
+
+  @@index([companyId])
+  @@map("users")
+}
+
+// ============================================================
+// DINAMIK ORGANIZASYON BIRIM TIPI
+//
+// Tipler enum degildir.
+// Her sirket kendi organizasyon birim tiplerini tanimlayabilir.
+// ============================================================
+
+model OrganizationUnitType {
+  id        String @id @default(uuid())
+  companyId String @map("company_id")
+
+  code String
+  name String
+
+  levelOrder Int @default(0) @map("level_order")
+
+  isActive Boolean @default(true) @map("is_active")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  units OrganizationUnit[]
+
+  @@unique([companyId, code])
+  @@unique([companyId, name])
+  @@index([companyId])
+  @@index([levelOrder])
+  @@index([isActive])
+  @@map("organization_unit_types")
+}
+
+// ============================================================
+// DINAMIK ORGANIZASYON BIRIMI
+//
+// Tum organizasyon birimleri tek tabloda tutulur.
+// parentUnitId organizasyon agacini kurar.
+// managerPositionId ilgili birimi yoneten pozisyonu tutar.
+// ============================================================
+
+model OrganizationUnit {
+  id        String @id @default(uuid())
+  companyId String @map("company_id")
+
+  code String
+  name String
+
+  typeId       String  @map("type_id")
+  parentUnitId String? @map("parent_unit_id")
+
+  managerPositionId String? @unique @map("manager_position_id")
+
+  description String?
+  isActive    Boolean @default(true) @map("is_active")
+
+  sortOrder Int @default(0) @map("sort_order")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  type OrganizationUnitType @relation(fields: [typeId], references: [id], onDelete: Restrict)
+
+  parentUnit OrganizationUnit? @relation("OrganizationUnitHierarchy", fields: [parentUnitId], references: [id], onDelete: Restrict)
+
+  childUnits OrganizationUnit[] @relation("OrganizationUnitHierarchy")
+
+  positions Position[] @relation("PositionOrganizationUnit")
+
+  managerPosition Position? @relation("OrganizationUnitManagerPosition", fields: [managerPositionId], references: [id], onDelete: SetNull)
+
+  @@unique([companyId, code])
+  @@index([companyId])
+  @@index([typeId])
+  @@index([parentUnitId])
+  @@index([isActive])
+  @@index([sortOrder])
+  @@map("organization_units")
+}
+
+// ============================================================
+// ORGANIZASYON BIRIM KOD SAYACI
+//
+// Yeni dinamik organizasyon yapisinda tum birimler icin
+// tek ortak sayac kullanilir.
+// ============================================================
+
+model OrganizationUnitSequence {
+  companyId  String   @id @map("company_id")
+  nextNumber Int      @default(80000001) @map("next_number")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("organization_unit_sequences")
+}
+
+// ============================================================
+// DEPARTMENTS
+//
+// LEGACY DEPARTMENT MODELI
+//
+// Yeni organizasyon sistemi:
+// Directorate
+// -> Management
+// -> OrganizationDepartment
+// -> Position
+//
+// Bu model mevcut personel verisini korumak icin gecis
+// surecinde tutulmaktadir.
+// ============================================================
+
+model Department {
+  id        String  @id @default(uuid())
+  companyId String  @map("company_id")
+  name      String
+  parentId  String? @map("parent_id")
+
+  company   Company      @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  parent    Department?  @relation("DeptHierarchy", fields: [parentId], references: [id])
+  children  Department[] @relation("DeptHierarchy")
+  employees Employee[]
+
+  @@index([companyId])
+  @@index([parentId])
+  @@map("departments")
+}
+
+// ============================================================
+// SISTEM PARAMETRELERI - ORGANIZASYON YAPISI
+//
+// Organizasyon hiyerarsisi:
+//
+// GeneralManagement
+//   -> Directorate
+//      -> Management
+//         -> OrganizationDepartment
+//
+// Pozisyonlar organizasyonun bu dort seviyesinden
+// herhangi birine baglanabilir.
+//
+// GENERAL_MANAGEMENT
+// DIRECTORATE
+// MANAGEMENT
+// DEPARTMENT
+//
+// Pozisyonlar ayrica parentPositionId ile birbirlerine
+// raporlama hiyerarsisi kurar.
+//
+// GeneralManagement / Directorate / Management / OrganizationDepartment
+// modellerinde managerPositionId ile o birimin yonetici pozisyonu tutulur.
+//
+// Temel kural:
+// - Genel Mudurluk yoneticisi -> organizasyonun kok pozisyonudur
+// - Direktorluk yoneticisi    -> Genel Mudur / CEO pozisyonuna
+// - Mudurluk yoneticisi       -> bagli direktorluk yoneticisine
+// - Bolum yoneticisi          -> bagli mudurluk yoneticisine
+// - Diger pozisyonlar         -> kendi birim yoneticisine
+//
+// Bu otomatik baglama ve bos pozisyon kontrolu controller tarafinda uygulanir.
+// ============================================================
+
+// ============================================================
+// GENEL MUDURLUK / ORGANIZASYON KOKU
+//
+// Her sirket icin yalnizca bir aktif Genel Mudurluk kaydi tutulur.
+// Organizasyon agacinin en ust birimidir.
+//
+// Ornek:
+// 50000001 - Genel Mudurluk
+// -> 900000XX - Genel Mudur / CEO
+//
+// Direktorluk yoneticileri bu kok yonetici pozisyonuna baglanir.
+// ============================================================
+
+model GeneralManagement {
+  id                String   @id @default(uuid())
+  companyId         String   @unique @map("company_id")
+  code              String   @default("50000001")
+  name              String   @default("Genel Mudurluk")
+  description       String?
+  managerPositionId String?  @unique @map("manager_position_id")
+  isActive          Boolean  @default(true) @map("is_active")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  positions Position[] @relation("PositionGeneralManagement")
+
+  managerPosition Position? @relation("GeneralManagementManagerPosition", fields: [managerPositionId], references: [id], onDelete: SetNull)
+
+  @@unique([companyId, code])
+  @@index([isActive])
+  @@map("general_managements")
+}
+
+// ============================================================
+// DIREKTORLUK
+// ============================================================
+
+model Directorate {
+  id                String   @id @default(uuid())
+  companyId         String   @map("company_id")
+  code              String
+  name              String
+  description       String?
+  managerPositionId String?  @unique @map("manager_position_id")
+  isActive          Boolean  @default(true) @map("is_active")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  managements Management[]
+
+  // Bu direktorluk seviyesine bagli tum pozisyonlar.
+  positions Position[] @relation("PositionDirectorate")
+
+  // Direktorlugu yoneten tekil pozisyon.
+  // Ornek: Kurumsal Iliskiler Direktoru.
+  managerPosition Position? @relation("DirectorateManagerPosition", fields: [managerPositionId], references: [id], onDelete: SetNull)
+
+  @@unique([companyId, name])
+  @@unique([companyId, code])
+  @@index([companyId])
+  @@index([isActive])
+  @@map("directorates")
+}
+
+// ============================================================
+// MUDURLUK
+//
+// Her mudurluk yalnizca bir direktorluge baglanir.
+// ============================================================
+
+model Management {
+  id                String   @id @default(uuid())
+  companyId         String   @map("company_id")
+  directorateId     String   @map("directorate_id")
+  code              String
+  name              String
+  description       String?
+  managerPositionId String?  @unique @map("manager_position_id")
+  isActive          Boolean  @default(true) @map("is_active")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  directorate Directorate @relation(fields: [directorateId], references: [id], onDelete: Restrict)
+
+  departments OrganizationDepartment[]
+
+  // Bu mudurluk seviyesine bagli tum pozisyonlar.
+  positions Position[] @relation("PositionManagement")
+
+  // Mudurlugu yoneten tekil pozisyon.
+  // Ornek: Kurumsal Iliskiler Muduru.
+  managerPosition Position? @relation("ManagementManagerPosition", fields: [managerPositionId], references: [id], onDelete: SetNull)
+
+  @@unique([companyId, name])
+  @@unique([companyId, code])
+  @@index([companyId])
+  @@index([directorateId])
+  @@index([isActive])
+  @@map("managements")
+}
+
+// ============================================================
+// BOLUM
+//
+// Her bolum yalnizca bir mudurluge baglanir.
+//
+// Direktorluk bilgisi:
+//
+// Bolum
+// -> Mudurluk
+// -> Direktorluk
+//
+// zincirinden bulunur.
+// ============================================================
+
+model OrganizationDepartment {
+  id                String   @id @default(uuid())
+  companyId         String   @map("company_id")
+  managementId      String   @map("management_id")
+  code              String
+  name              String
+  description       String?
+  managerPositionId String?  @unique @map("manager_position_id")
+  isActive          Boolean  @default(true) @map("is_active")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  management Management @relation(fields: [managementId], references: [id], onDelete: Restrict)
+
+  // Bu bolum seviyesine bagli tum pozisyonlar.
+  positions Position[] @relation("PositionOrganizationDepartment")
+
+  // Bolumu yoneten pozisyon.
+  // Zorunlu degildir; yoksa raporlama mudurluk yoneticisine cikar.
+  managerPosition Position? @relation("DepartmentManagerPosition", fields: [managerPositionId], references: [id], onDelete: SetNull)
+
+  @@unique([companyId, name])
+  @@unique([companyId, code])
+  @@index([companyId])
+  @@index([managementId])
+  @@index([isActive])
+  @@map("organization_departments")
+}
+
+// ============================================================
+// POZISYON KOD SAYACI
+//
+// 90000001
+// 90000002
+// 90000003
+// ...
+//
+// Sirket bazlidir.
+// Kod tekrar kullanilmaz.
+// ============================================================
+
+model PositionSequence {
+  companyId  String   @id @map("company_id")
+  nextNumber Int      @default(90000001) @map("next_number")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("position_sequences")
+}
+
+// ============================================================
+// MASRAF YERI
+// ============================================================
+
+model CostCenter {
+  id          String   @id @default(uuid())
+  companyId   String   @map("company_id")
+  code        String
+  name        String
+  description String?
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  positions Position[]
+
+  @@unique([companyId, code])
+  @@unique([companyId, name])
+  @@index([companyId])
+  @@index([isActive])
+  @@map("cost_centers")
+}
+
+// ============================================================
+// CALISMA LOKASYONU
+// ============================================================
+
+model WorkLocation {
+  id          String   @id @default(uuid())
+  companyId   String   @map("company_id")
+  code        String
+  name        String
+  address     String?
+  city        String?
+  country     String?
+  description String?
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  positions Position[]
+
+  @@unique([companyId, code])
+  @@unique([companyId, name])
+  @@index([companyId])
+  @@index([isActive])
+  @@map("work_locations")
+}
+
+// ============================================================
+// POZISYON
+//
+// Pozisyon personele ait degildir.
+// Organizasyonun kalici bir parcasidir.
+//
+// Personel pozisyona atanir.
+//
+// Her pozisyon:
+//
+// - 8 haneli benzersiz positionCode alir.
+// - 90000001 ile baslar.
+// - GENERAL_MANAGEMENT, DIRECTORATE, MANAGEMENT veya DEPARTMENT seviyesine baglanir.
+// - Bir ust pozisyona baglanabilir.
+// - Masraf yeri ve lokasyona baglanabilir.
+// - Norm kadro sayisi tasir.
+//
+// Ornek:
+//
+// Genel Mudurluk
+// -> Genel Mudur / CEO
+//
+// Finans Direktorlugu
+// -> Finans Direktoru
+//
+// Finans Mudurlugu
+// -> Finans Muduru
+//
+// Finans Bolumu
+// -> Finans Ekip Lideri
+// -> Kidemli Finans Uzmani
+// -> Finans Uzmani
+//
+// Employee.positionMasterId @unique oldugu icin bir pozisyon
+// ayni anda yalnizca bir personele atanabilir.
+// ============================================================
+
+model Position {
+  id           String @id @default(uuid())
+  companyId    String @map("company_id")
+  positionCode String @map("position_code")
+  name         String
+
+  // Yeni dinamik organizasyon baglantisi.
+  // Ilk migration'da mevcut pozisyonlari korumak icin nullable.
+  organizationUnitId String? @map("organization_unit_id")
+
+  parentPositionId String? @map("parent_position_id")
+
+  costCenterId   String? @map("cost_center_id")
+  workLocationId String? @map("work_location_id")
+
+  normCount   Int     @default(1) @map("norm_count")
+  description String?
+  isActive    Boolean @default(true) @map("is_active")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  // Yeni dinamik organizasyon modeli
+  organizationUnit OrganizationUnit? @relation("PositionOrganizationUnit", fields: [organizationUnitId], references: [id], onDelete: Restrict)
+
+  parentPosition Position? @relation("PositionHierarchy", fields: [parentPositionId], references: [id], onDelete: Restrict)
+
+  childPositions Position[] @relation("PositionHierarchy")
+
+  costCenter CostCenter? @relation(fields: [costCenterId], references: [id], onDelete: SetNull)
+
+  workLocation WorkLocation? @relation(fields: [workLocationId], references: [id], onDelete: SetNull)
+
+  employee Employee?
+
+  managedOrganizationUnit OrganizationUnit? @relation("OrganizationUnitManagerPosition")
+
+  // ----------------------------------------------------------
+  // GECIS ALANLARI
+  //
+  // Eski organizasyon modelleri ve baglantilari ilk asamada
+  // korunuyor. Veri tasimasi tamamlaninca ikinci migration'da
+  // kaldirilacak.
+  // ----------------------------------------------------------
+
+  organizationLevel PositionOrganizationLevel @default(DEPARTMENT) @map("organization_level")
+
+  generalManagementId      String? @map("general_management_id")
+  directorateId            String? @map("directorate_id")
+  managementId             String? @map("management_id")
+  organizationDepartmentId String? @map("organization_department_id")
+
+  generalManagement GeneralManagement? @relation("PositionGeneralManagement", fields: [generalManagementId], references: [id], onDelete: Restrict)
+
+  directorate Directorate? @relation("PositionDirectorate", fields: [directorateId], references: [id], onDelete: Restrict)
+
+  management Management? @relation("PositionManagement", fields: [managementId], references: [id], onDelete: Restrict)
+
+  organizationDepartment OrganizationDepartment? @relation("PositionOrganizationDepartment", fields: [organizationDepartmentId], references: [id], onDelete: Restrict)
+
+  managedGeneralManagement GeneralManagement?      @relation("GeneralManagementManagerPosition")
+  managedDirectorate       Directorate?            @relation("DirectorateManagerPosition")
+  managedManagement        Management?             @relation("ManagementManagerPosition")
+  managedDepartment        OrganizationDepartment? @relation("DepartmentManagerPosition")
+
+  @@unique([companyId, positionCode])
+  @@index([companyId])
+  @@index([organizationUnitId])
+  @@index([parentPositionId])
+  @@index([costCenterId])
+  @@index([workLocationId])
+  @@index([isActive])
+  // Gecis indexleri
+  @@index([organizationLevel])
+  @@index([generalManagementId])
+  @@index([directorateId])
+  @@index([managementId])
+  @@index([organizationDepartmentId])
+  @@map("positions")
+}
+
+// ============================================================
+// BANK MASTER
+// ============================================================
+
+model Bank {
+  id              String   @id @default(uuid())
+  bankCode        String?  @unique @map("bank_code")
+  name            String
+  shortName       String?  @map("short_name")
+  eftCode         String?  @map("eft_code")
+  bankType        String?  @map("bank_type")
+  payrollEligible Boolean  @default(true) @map("payroll_eligible")
+  isActive        Boolean  @default(true) @map("is_active")
+  source          String?
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  employeeAccounts EmployeeBankAccount[]
+
+  @@index([name])
+  @@index([eftCode])
+  @@index([isActive])
+  @@map("bank_master")
+}
+
+// ============================================================
+// MESLEK KODU MASTER
+// ============================================================
+
+model Occupation {
+  code      String   @id
+  name      String
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  employees Employee[]
+
+  @@index([name])
+  @@index([isActive])
+  @@map("occupation_master")
+}
+
+// ============================================================
+// SGK BELGE TURU MASTER
+// ============================================================
+
+model SgkDocumentType {
+  code        String   @id
+  name        String
+  description String?
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  employees Employee[]
+
+  @@index([name])
+  @@index([isActive])
+  @@map("sgk_document_type_master")
+}
+
+// ============================================================
+// TESVIK / KANUN NO MASTER
+// ============================================================
+
+model IncentiveLaw {
+  code        String    @id
+  name        String
+  description String?
+  legalBasis  String?   @map("legal_basis")
+  validFrom   DateTime? @map("valid_from")
+  validTo     DateTime? @map("valid_to")
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  employees Employee[]
+
+  @@index([name])
+  @@index([isActive])
+  @@index([validFrom])
+  @@index([validTo])
+  @@map("incentive_law_master")
+}
+
+// ============================================================
+// SGK ISTEN CIKIS KODU MASTER
+// ============================================================
+
+model TerminationReason {
+  code                 String   @id
+  name                 String
+  description          String?
+  severanceEligible    Boolean? @map("severance_eligible")
+  noticeEligible       Boolean? @map("notice_eligible")
+  unemploymentEligible Boolean? @map("unemployment_eligible")
+  isActive             Boolean  @default(true) @map("is_active")
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  employees Employee[]
+
+  @@index([name])
+  @@index([isActive])
+  @@map("termination_reason_master")
+}
+
+// ============================================================
+// EMPLOYEE
+// ============================================================
+
+model Employee {
+  id        String @id @default(uuid())
+  companyId String @map("company_id")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  // ----------------------------------------------------------
+  // KULLANICI HESABI
+  // ----------------------------------------------------------
+
+  userId String? @unique @map("user_id")
+  user   User?   @relation("UserEmployee", fields: [userId], references: [id])
+
+  // ----------------------------------------------------------
+  // SICIL
+  // ----------------------------------------------------------
+
+  registryNo String @map("registry_no")
+
+  // ==========================================================
+  // 01 - KISISEL BILGILER
+  // ==========================================================
+
+  nationalId String @map("national_id")
+
+  firstName String? @map("first_name")
+  lastName  String? @map("last_name")
+
+  // Eski API / listeleme uyumlulugu
+  fullName String @map("full_name")
+
+  birthDate DateTime? @map("birth_date")
+  gender    Gender?   @default(UNSPECIFIED)
+
+  maritalStatus MaritalStatus? @default(UNSPECIFIED) @map("marital_status")
+  marriageDate  DateTime?      @map("marriage_date")
+
+  nationality String?
+
+  // ----------------------------------------------------------
+  // ASKERLIK
+  // ----------------------------------------------------------
+
+  militaryStatus        MilitaryStatus? @default(UNKNOWN) @map("military_status")
+  militaryDefermentDate DateTime?       @map("military_deferment_date")
+
+  // ==========================================================
+  // 02 - ILETISIM BILGILERI
+  // ==========================================================
+
+  phone String?
+
+  // Kisisel e-posta
+  email String?
+
+  // Kurumsal e-posta
+  corporateEmail String? @map("corporate_email")
+
+  address String?
+  city    String?
+  country String?
+
+  // ==========================================================
+  // 07 - ORGANIZASYON BILGILERI
+  // ==========================================================
+
+  departmentId String?     @map("department_id")
+  department   Department? @relation(fields: [departmentId], references: [id])
+
+  // Legacy serbest metin pozisyon alani.
+  // Yeni organizasyon yapisi tamamen Position master uzerinden ilerleyecek.
+  position String?
+
+  // Yeni Position master baglantisi.
+  // @unique sayesinde bir pozisyon ayni anda yalnizca bir personele atanabilir.
+  positionMasterId String?   @unique @map("position_master_id")
+  positionMaster   Position? @relation(fields: [positionMasterId], references: [id])
+
+  // Legacy serbest metin calisma yeri alani.
+  workLocation String? @map("work_location")
+
+  collarType CollarType? @map("collar_type")
+
+  managerId String?   @map("manager_id")
+  manager   Employee? @relation("EmployeeManager", fields: [managerId], references: [id])
+
+  subordinates Employee[] @relation("EmployeeManager")
+
+  // ----------------------------------------------------------
+  // MESLEK KODU
+  // ----------------------------------------------------------
+
+  occupationCode String?     @map("occupation_code")
+  occupation     Occupation? @relation(fields: [occupationCode], references: [code])
+
+  // ==========================================================
+  // ISE GIRIS VE SGK
+  // ==========================================================
+
+  contractType   ContractType?   @map("contract_type")
+  employmentType EmploymentType? @map("employment_type")
+
+  // ----------------------------------------------------------
+  // ENGELLILIK
+  //
+  // Ekranda artik Kisisel Bilgiler yerine
+  // Ise Giris ve SGK bolumunde yonetilecek.
+  // ----------------------------------------------------------
+
+  isDisabled     Boolean @default(false) @map("is_disabled")
+  disabilityRate Float?  @map("disability_rate")
+
+  // ----------------------------------------------------------
+  // SGK BELGE TURU
+  // ----------------------------------------------------------
+
+  sgkDocumentTypeCode String?          @map("sgk_document_type_code")
+  sgkDocumentType     SgkDocumentType? @relation(fields: [sgkDocumentTypeCode], references: [code])
+
+  // ----------------------------------------------------------
+  // TESVIK / KANUN NO
+  // ----------------------------------------------------------
+
+  incentiveCode String?       @map("incentive_code")
+  incentive     IncentiveLaw? @relation(fields: [incentiveCode], references: [code])
+
+  // ----------------------------------------------------------
+  // TARIHLER
+  // ----------------------------------------------------------
+
+  firstHireDate       DateTime? @map("first_hire_date")
+  hireDate            DateTime  @map("hire_date")
+  seniorityBaseDate   DateTime? @map("seniority_base_date")
+  annualLeaveBaseDate DateTime? @map("annual_leave_base_date")
+  groupHireDate       DateTime? @map("group_hire_date")
+
+  // ==========================================================
+  // ISTEN AYRILIS
+  // ==========================================================
+
+  terminationDate       DateTime? @map("termination_date")
+  terminationReasonCode String?   @map("termination_reason_code")
+  terminationNote       String?   @map("termination_note")
+
+  terminationReason TerminationReason? @relation(fields: [terminationReasonCode], references: [code])
+
+  status EmploymentStatus @default(PROBATION)
+
+  // ----------------------------------------------------------
+  // LEGACY ACIL DURUM
+  //
+  // Simdilik SILMIYORUZ.
+  // Mevcut verinin migration sirasinda kaybolmamasi icin
+  // gecici olarak korunuyor.
+  // Yeni kayitlarda EmployeeEmergencyContact kullanilacak.
+  // ----------------------------------------------------------
+
+  emergencyContactName     String? @map("emergency_contact_name")
+  emergencyContactRelation String? @map("emergency_contact_relation")
+  emergencyContactPhone    String? @map("emergency_contact_phone")
+
+  // ----------------------------------------------------------
+  // AUDIT
+  // ----------------------------------------------------------
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // ----------------------------------------------------------
+  // ALT TABLOLAR
+  // ----------------------------------------------------------
+
+  bankAccounts      EmployeeBankAccount[]
+  educations        EmployeeEducation[]
+  familyMembers     EmployeeFamilyMember[]
+  emergencyContacts EmployeeEmergencyContact[]
+  documents         EmployeeDocument[]
+  leaveRequests     LeaveRequest[]
+  assets            AssetAssignment[]
+
+  @@unique([companyId, registryNo])
+  @@unique([companyId, nationalId])
+  @@index([companyId])
+  @@index([status])
+  @@index([departmentId])
+  @@index([managerId])
+  @@index([occupationCode])
+  @@index([sgkDocumentTypeCode])
+  @@index([incentiveCode])
+  @@index([terminationReasonCode])
+  @@index([collarType])
+  @@map("employees")
+}
+
+// ============================================================
+// BANKA HESAPLARI
+// ============================================================
+
+model EmployeeBankAccount {
+  id         String  @id @default(uuid())
+  employeeId String  @map("employee_id")
+  bankId     String  @map("bank_id")
+  accountNo  String? @map("account_no")
+  iban       String?
+  isPrimary  Boolean @default(true) @map("is_primary")
+  isActive   Boolean @default(true) @map("is_active")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  bank     Bank     @relation(fields: [bankId], references: [id])
+
+  @@unique([employeeId, iban])
+  @@index([employeeId])
+  @@index([bankId])
+  @@index([isPrimary])
+  @@map("employee_bank_accounts")
+}
+
+// ============================================================
+// EGITIM BILGILERI
+//
+// Yeni alanlar:
+// - endDate
+// - isContinuing
+//
+// Eski graduationDate ve isGraduated simdilik korunuyor.
+// ============================================================
+
+model EmployeeEducation {
+  id             String          @id @default(uuid())
+  employeeId     String          @map("employee_id")
+  level          EducationLevel?
+  schoolName     String?         @map("school_name")
+  departmentName String?         @map("department_name")
+
+  startDate DateTime? @map("start_date")
+
+  // Yeni yapi
+  endDate      DateTime? @map("end_date")
+  isContinuing Boolean   @default(false) @map("is_continuing")
+
+  // Legacy alanlar - simdilik korunuyor
+  graduationDate DateTime? @map("graduation_date")
+  isGraduated    Boolean?  @map("is_graduated")
+
+  notes String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId])
+  @@index([level])
+  @@index([isContinuing])
+  @@map("employee_educations")
+}
+
+// ============================================================
+// AILE BILGILERI
+//
+// Cocuk secildiginde:
+// - childAllowanceEligible
+// - schoolName
+// - educationStartDate
+// - educationEndDate
+// - isEducationContinuing
+//
+// kullanilacak.
+//
+// Yas kurallari daha sonra bordro parametresinden yonetilecek.
+// ============================================================
+
+model EmployeeFamilyMember {
+  id           String             @id @default(uuid())
+  employeeId   String             @map("employee_id")
+  relationType FamilyRelationType @map("relation_type")
+
+  firstName String  @map("first_name")
+  lastName  String? @map("last_name")
+
+  nationalId String?   @map("national_id")
+  birthDate  DateTime? @map("birth_date")
+
+  gender Gender? @default(UNSPECIFIED)
+
+  educationLevel EducationLevel? @map("education_level")
+
+  schoolName String? @map("school_name")
+
+  // ----------------------------------------------------------
+  // COCUK YARDIMI
+  // ----------------------------------------------------------
+
+  childAllowanceEligible Boolean @default(false) @map("child_allowance_eligible")
+
+  // Mevcut bagimlilik alani korunuyor
+  isDependent Boolean? @map("is_dependent")
+
+  // ----------------------------------------------------------
+  // COCUK EGITIM TAKIBI
+  // ----------------------------------------------------------
+
+  educationStartDate DateTime? @map("education_start_date")
+  educationEndDate   DateTime? @map("education_end_date")
+
+  isEducationContinuing Boolean @default(false) @map("is_education_continuing")
+
+  notes String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId])
+  @@index([relationType])
+  @@index([nationalId])
+  @@index([childAllowanceEligible])
+  @@index([isEducationContinuing])
+  @@map("employee_family_members")
+}
+
+// ============================================================
+// ACIL DURUM ILETISIM
+//
+// Yeni yapi:
+// Bir personele birden fazla acil durum kisisi eklenebilir.
+//
+// Yeni personel kaydinda en az 1 kisi zorunlu olacak.
+// Bu kontrol employee.controller.js tarafinda yapilacak.
+// ============================================================
+
+model EmployeeEmergencyContact {
+  id         String @id @default(uuid())
+  employeeId String @map("employee_id")
+
+  fullName String @map("full_name")
+  relation String
+  phone    String
+
+  isPrimary Boolean @default(false) @map("is_primary")
+
+  notes String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId])
+  @@index([isPrimary])
+  @@map("employee_emergency_contacts")
+}
+
+// ============================================================
+// ZORUNLU EVRAK TANIMLARI
+// ============================================================
+
+model MandatoryDocumentType {
+  id           String  @id @default(uuid())
+  companyId    String  @map("company_id")
+  code         String
+  name         String
+  isRequired   Boolean @default(true) @map("is_required")
+  validityDays Int?    @map("validity_days")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, code])
+  @@map("mandatory_document_types")
+}
+
+// ============================================================
+// PERSONEL EVRAKLARI
+// ============================================================
+
+model EmployeeDocument {
+  id              String       @id @default(uuid())
+  employeeId      String       @map("employee_id")
+  type            DocumentType
+  fileName        String       @map("file_name")
+  filePath        String       @map("file_path")
+  mimeType        String?      @map("mime_type")
+  fileSize        Int?         @map("file_size")
+  issueDate       DateTime?    @map("issue_date")
+  expiryDate      DateTime?    @map("expiry_date")
+  uploadedById    String?      @map("uploaded_by_id")
+  aiExtractedData Json?        @map("ai_extracted_data")
+  createdAt       DateTime     @default(now()) @map("created_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId])
+  @@map("employee_documents")
+}
+
+// ============================================================
+// IZIN
+// ============================================================
+
+model LeaveRequest {
+  id           String      @id @default(uuid())
+  employeeId   String      @map("employee_id")
+  type         LeaveType
+  startDate    DateTime    @map("start_date")
+  endDate      DateTime    @map("end_date")
+  dayCount     Float       @map("day_count")
+  description  String?
+  status       LeaveStatus @default(PENDING)
+  approvedById String?     @map("approved_by_id")
+  decisionNote String?     @map("decision_note")
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt @map("updated_at")
+
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  approvedBy User?    @relation("ApprovedBy", fields: [approvedById], references: [id])
+
+  @@index([employeeId])
+  @@index([status])
+  @@map("leave_requests")
+}
+
+// ============================================================
+// ZIMMET
+// ============================================================
+
+model AssetAssignment {
+  id           String    @id @default(uuid())
+  employeeId   String    @map("employee_id")
+  assetType    String    @map("asset_type")
+  brandModel   String?   @map("brand_model")
+  deliveryDate DateTime  @map("delivery_date")
+  returnDate   DateTime? @map("return_date")
+  notes        String?
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId])
+  @@map("asset_assignments")
+}
+
+// ============================================================
+// NOTIFICATIONS
+// ============================================================
+
+model Notification {
+  id        String           @id @default(uuid())
+  companyId String           @map("company_id")
+  userId    String?          @map("user_id")
+  type      NotificationType
+  title     String
+  message   String
+  isRead    Boolean          @default(false) @map("is_read")
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user    User?   @relation(fields: [userId], references: [id])
+
+  @@index([companyId])
+  @@index([userId])
+  @@index([isRead])
+  @@map("notifications")
+}
+
+// ============================================================
+// AUDIT LOG
+// ============================================================
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?  @map("user_id")
+  action    String
+  entity    String?
+  entityId  String?  @map("entity_id")
+  metadata  Json?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([entity])
+  @@index([entityId])
+  @@map("audit_logs")
+}

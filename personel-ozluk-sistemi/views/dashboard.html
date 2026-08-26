@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Planet — Dashboard</title>
+
+<style>
+  :root{
+    --ink:        #1e293b;
+    --ink-2:      #334155;
+    --ink-3:      #475569;
+    --slate:      #64748b;
+    --slate-light:#94a3b8;
+    --cloud:      #f8fafc;
+    --line:       #e2e8f0;
+    --white:      #FFFFFF;
+
+    /* Login ekranındaki mavi kurumsal palet */
+    --primary:       #6495ff;
+    --primary-dark:  #4f86f7;
+    --primary-darker:#1d4ed8;
+    --primary-tint:  #eef3ff;
+
+    --amber:      #E8A23D;
+    --amber-tint: #FBF0DC;
+
+    --coral:      #E5654A;
+    --coral-tint: #FCE9E4;
+
+    --indigo:     #4C5FD5;
+    --indigo-tint:#EAECFC;
+
+    --teal:       #0F9D8C;
+    --teal-dark:  #0B7C6F;
+    --teal-tint:  #E4F5F2;
+
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+
+    --shadow-1: 0 1px 2px rgba(15,23,42,0.04), 0 1px 0 rgba(15,23,42,0.03);
+    --shadow-2: 0 8px 24px rgba(15,23,42,0.08);
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html, body{ height:100%; }
+
+  body{
+    font-family: 'Segoe UI', sans-serif;
+    background:var(--cloud);
+    color:var(--ink);
+    display:flex;
+    min-height:100vh;
+  }
+
+  h1,h2,h3,.brand-word,.stat-value{
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  ::selection{ background:var(--primary-tint); color:var(--primary-darker); }
+
+  a:focus-visible, button:focus-visible, input:focus-visible{
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* =====================================================
+     SIDEBAR
+  ===================================================== */
+  .sidebar{
+    width:264px;
+    flex-shrink:0;
+    background:linear-gradient(180deg, #1e3a5f 0%, #0f172a 100%);
+    color:#C9D2E6;
+    display:flex;
+    flex-direction:column;
+    position:sticky;
+    top:0;
+    height:100vh;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px 18px 20px;
+  }
+
+  .brand-logo{
+    width:160px;
+    max-width:100%;
+    height:auto;
+    display:block;
+  }
+
+  nav.nav{
+    flex:1;
+    padding:8px 14px;
+    overflow-y:auto;
+  }
+
+  .nav-group{ margin-bottom:22px; }
+
+  .nav-label{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.8px;
+    color:#64748b;
+    padding:0 10px;
+    margin-bottom:8px;
+    font-weight:600;
+  }
+
+  .nav-item{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 12px;
+    border-radius:var(--radius-sm);
+    font-size:14px;
+    font-weight:500;
+    color:#AEB9D4;
+    margin-bottom:2px;
+    transition: background .15s ease, color .15s ease;
+  }
+
+  .nav-item .ic{
+    width:18px; height:18px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .nav-item .ic svg{ width:100%; height:100%; }
+
+  .nav-item:hover{
+    background:rgba(255,255,255,0.06);
+    color:#fff;
+  }
+
+  .nav-item.active{
+    background:rgba(100,149,255,0.18);
+    color:#fff;
+  }
+
+  .nav-item.active::before{
+    content:"";
+    position:absolute;
+    left:-14px;
+    top:8px;
+    bottom:8px;
+    width:3px;
+    border-radius:3px;
+    background:var(--primary);
+  }
+
+  .nav-item .badge{
+    margin-left:auto;
+    background:var(--coral);
+    color:#fff;
+    font-size:10px;
+    font-weight:700;
+    padding:1px 7px;
+    border-radius:20px;
+  }
+
+  .sidebar-footer{
+    padding:16px 18px 20px;
+    border-top:1px solid rgba(255,255,255,0.08);
+  }
+
+  .mini-user{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .avatar{
+    width:36px; height:36px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight:700;
+    font-size:13px;
+    color:#fff;
+    flex-shrink:0;
+    background: var(--primary);
+  }
+
+  .mini-user-text{ line-height:1.2; overflow:hidden; }
+  .mini-user-name{ font-size:13px; font-weight:600; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .mini-user-role{ font-size:11px; color:var(--slate-light); margin-top:2px; }
+
+  /* =====================================================
+     MAIN
+  ===================================================== */
+  .main{
+    flex:1;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .topbar{
+    height:72px;
+    background:var(--white);
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    gap:24px;
+    padding:0 32px;
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+
+  .search-wrap{
+    flex:1;
+    display:flex;
+    justify-content:center;
+  }
+
+  .search-box{
+    position:relative;
+    width:100%;
+    max-width:460px;
+  }
+
+  .search-box svg{
+    position:absolute;
+    left:14px; top:50%;
+    transform:translateY(-50%);
+    width:16px; height:16px;
+    color:var(--slate-light);
+  }
+
+  .search-box input{
+    width:100%;
+    height:42px;
+    border:1px solid var(--line);
+    background:var(--cloud);
+    border-radius:10px;
+    padding:0 14px 0 40px;
+    font-size:13.5px;
+    font-family: 'Segoe UI', sans-serif;
+    color:var(--ink);
+    transition: border-color .15s ease, background .15s ease;
+  }
+
+  .search-box input::placeholder{ color:var(--slate-light); }
+
+  .search-box input:focus{
+    outline:none;
+    border-color:var(--primary);
+    background:var(--white);
+    box-shadow:0 0 0 3px var(--primary-tint);
+  }
+
+  .topbar-right{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    flex-shrink:0;
+  }
+
+  .icon-btn{
+    position:relative;
+    width:38px; height:38px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--white);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--slate);
+    transition: background .15s ease, color .15s ease;
+  }
+  .icon-btn:hover{ background:var(--cloud); color:var(--ink); }
+  .icon-btn svg{ width:17px; height:17px; }
+
+  .icon-btn .dot{
+    position:absolute;
+    top:7px; right:7px;
+    width:7px; height:7px;
+    border-radius:50%;
+    background:var(--coral);
+    border:1.5px solid var(--white);
+  }
+
+  .divider-v{
+    width:1px; height:28px;
+    background:var(--line);
+  }
+
+  .user-chip{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .user-chip .avatar{ width:38px; height:38px; font-size:13px; }
+
+  .user-chip-text{ line-height:1.2; }
+  .user-chip-name{ font-size:13.5px; font-weight:600; color:var(--ink); }
+  .role-pill{
+    display:inline-block;
+    margin-top:3px;
+    font-size:10.5px;
+    font-weight:600;
+    padding:1px 8px;
+    border-radius:20px;
+    background:var(--primary-tint);
+    color:var(--primary-darker);
+  }
+
+  .logout-btn{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    height:38px;
+    padding:0 16px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--white);
+    color:var(--slate);
+    font-size:13px;
+    font-weight:600;
+    transition: all .15s ease;
+  }
+  .logout-btn svg{ width:15px; height:15px; }
+  .logout-btn:hover{
+    background:var(--coral-tint);
+    border-color:#f3c9bd;
+    color:var(--coral);
+  }
+
+  .content{
+    flex:1;
+    padding:32px 32px 56px;
+    max-width:1280px;
+    width:100%;
+    margin:0 auto;
+  }
+
+  .page-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    margin-bottom:28px;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+
+  .greeting{ font-size:26px; font-weight:700; }
+  .greeting span{ color:var(--primary-dark); }
+  .page-sub{ color:var(--slate); font-size:13.5px; margin-top:6px; }
+
+  .date-chip{
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--slate);
+    background:var(--white);
+    border:1px solid var(--line);
+    padding:8px 14px;
+    border-radius:10px;
+  }
+
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:18px;
+    margin-bottom:28px;
+  }
+
+  .stat-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:22px;
+    box-shadow:var(--shadow-1);
+    position:relative;
+    overflow:hidden;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .stat-card:hover{ transform:translateY(-2px); box-shadow:var(--shadow-2); }
+
+  .stat-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+  }
+
+  .stat-icon{
+    width:38px; height:38px;
+    border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .stat-icon svg{ width:19px; height:19px; }
+
+  .stat-icon.teal{ background:var(--teal-tint); color:var(--teal-dark); }
+  .stat-icon.amber{ background:var(--amber-tint); color:#a1731a; }
+  .stat-icon.coral{ background:var(--coral-tint); color:var(--coral); }
+  .stat-icon.indigo{ background:var(--primary-tint); color:var(--primary-darker); }
+
+  .stat-trend{
+    font-size:11px;
+    font-weight:700;
+    padding:3px 8px;
+    border-radius:20px;
+  }
+  .stat-trend.up{ background:var(--teal-tint); color:var(--teal-dark); }
+  .stat-trend.flat{ background:var(--cloud); color:var(--slate); }
+
+  .stat-value{ font-size:32px; font-weight:800; line-height:1; }
+  .stat-label{ font-size:13px; color:var(--slate); margin-top:8px; font-weight:500; }
+
+  .panels{
+    display:grid;
+    grid-template-columns:1.4fr 1fr;
+    gap:18px;
+  }
+
+  .panel{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-1);
+    overflow:hidden;
+  }
+
+  .panel-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 22px;
+    border-bottom:1px solid var(--line);
+  }
+
+  .panel-title{ font-size:15px; font-weight:700; }
+  .panel-link{ font-size:12.5px; font-weight:600; color:var(--primary-dark); }
+  .panel-link:hover{ text-decoration:underline; }
+
+  .panel-body{ padding:8px 10px; }
+
+  .row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px 12px;
+    border-radius:var(--radius-sm);
+    transition: background .15s ease;
+  }
+  .row:hover{ background:var(--cloud); }
+
+  .row .avatar{ width:34px; height:34px; font-size:12px; }
+
+  .row-text{ flex:1; min-width:0; }
+  .row-name{ font-size:13.5px; font-weight:600; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .row-sub{ font-size:12px; color:var(--slate); margin-top:1px; }
+
+  .row-meta{ font-size:11.5px; color:var(--slate-light); flex-shrink:0; white-space:nowrap; }
+
+  .pill{
+    font-size:10.5px;
+    font-weight:700;
+    padding:3px 9px;
+    border-radius:20px;
+    flex-shrink:0;
+  }
+  .pill.amber{ background:var(--amber-tint); color:#a1731a; }
+  .pill.teal{ background:var(--teal-tint); color:var(--teal-dark); }
+
+  .empty{
+    text-align:center;
+    padding:40px 20px 34px;
+    color:var(--slate);
+  }
+  .empty .ic{
+    width:44px; height:44px;
+    margin:0 auto 14px;
+    border-radius:12px;
+    background:var(--cloud);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--slate-light);
+  }
+  .empty .ic svg{ width:22px; height:22px; }
+  .empty-title{ font-size:13.5px; font-weight:600; color:var(--ink); margin-bottom:4px; }
+  .empty-sub{ font-size:12.5px; }
+
+  .skeleton{
+    background: linear-gradient(90deg, var(--cloud) 25%, #ECEFF4 37%, var(--cloud) 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease infinite;
+    border-radius:8px;
+  }
+  @keyframes shimmer{
+    0%{ background-position: 100% 50%; }
+    100%{ background-position: 0 50%; }
+  }
+
+
+  /* =====================================================
+     PERSONEL VERI KALITESI
+  ===================================================== */
+  .quality-panel{
+    margin-top:18px;
+  }
+
+  .quality-shell{
+    padding:22px;
+  }
+
+  .quality-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:18px;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+  }
+
+  .quality-title-wrap{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+
+  .quality-icon{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    background:var(--primary-tint);
+    color:var(--primary-darker);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+  }
+
+  .quality-icon svg{
+    width:21px;
+    height:21px;
+  }
+
+  .quality-title{
+    font-size:16px;
+    font-weight:800;
+    color:var(--ink);
+  }
+
+  .quality-sub{
+    font-size:12.5px;
+    color:var(--slate);
+    margin-top:3px;
+  }
+
+  .quality-score{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+
+  .quality-score-ring{
+    width:62px;
+    height:62px;
+    border-radius:50%;
+    background:conic-gradient(var(--teal) 0deg, var(--line) 0deg);
+    display:grid;
+    place-items:center;
+    position:relative;
+  }
+
+  .quality-score-ring::after{
+    content:"";
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    background:var(--white);
+    position:absolute;
+  }
+
+  .quality-score-value{
+    position:relative;
+    z-index:1;
+    font-size:15px;
+    font-weight:800;
+    color:var(--ink);
+  }
+
+  .quality-score-label{
+    font-size:11px;
+    color:var(--slate);
+    margin-top:2px;
+  }
+
+  .quality-metrics{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:18px;
+  }
+
+  .quality-metric{
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px;
+    background:var(--cloud);
+  }
+
+  .quality-metric-value{
+    font-size:22px;
+    font-weight:800;
+    line-height:1;
+    color:var(--ink);
+  }
+
+  .quality-metric-label{
+    font-size:11.5px;
+    color:var(--slate);
+    margin-top:7px;
+  }
+
+  .quality-metric.critical{
+    background:var(--coral-tint);
+    border-color:#f3c9bd;
+  }
+
+  .quality-metric.warning{
+    background:var(--amber-tint);
+    border-color:#f0d8aa;
+  }
+
+  .quality-metric.check{
+    background:var(--primary-tint);
+    border-color:#d7e3ff;
+  }
+
+  .quality-list{
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+  }
+
+  .quality-table{
+    width:100%;
+    border-collapse:collapse;
+  }
+
+  .quality-table th{
+    background:var(--cloud);
+    color:var(--slate);
+    text-transform:uppercase;
+    letter-spacing:.35px;
+    font-size:10.5px;
+    text-align:left;
+    padding:11px 12px;
+    border-bottom:1px solid var(--line);
+  }
+
+  .quality-table td{
+    padding:12px;
+    border-bottom:1px solid var(--line);
+    font-size:12.5px;
+    vertical-align:middle;
+  }
+
+  .quality-table tr:last-child td{
+    border-bottom:none;
+  }
+
+  .quality-person{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-width:180px;
+  }
+
+  .quality-person .avatar{
+    width:32px;
+    height:32px;
+    font-size:11px;
+  }
+
+  .quality-person-name{
+    font-weight:700;
+    color:var(--ink);
+  }
+
+  .quality-person-sub{
+    font-size:11px;
+    color:var(--slate);
+    margin-top:2px;
+  }
+
+  .quality-message{
+    color:var(--ink-3);
+    line-height:1.45;
+  }
+
+  .quality-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:20px;
+    padding:4px 9px;
+    font-size:10px;
+    font-weight:800;
+    white-space:nowrap;
+  }
+
+  .quality-badge.critical{
+    background:var(--coral-tint);
+    color:#b23f2a;
+  }
+
+  .quality-badge.warning{
+    background:var(--amber-tint);
+    color:#9a6912;
+  }
+
+  .quality-badge.check{
+    background:var(--primary-tint);
+    color:var(--primary-darker);
+  }
+
+  .quality-action{
+    border:1px solid #cfdcff;
+    background:var(--white);
+    color:var(--primary-darker);
+    border-radius:9px;
+    padding:8px 10px;
+    font-size:11.5px;
+    font-weight:700;
+    white-space:nowrap;
+    transition:.15s ease;
+  }
+
+  .quality-action:hover{
+    background:var(--primary-tint);
+    border-color:var(--primary);
+  }
+
+  .quality-toolbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-top:14px;
+    flex-wrap:wrap;
+  }
+
+  .quality-toolbar-text{
+    color:var(--slate);
+    font-size:12px;
+  }
+
+  .quality-more-btn{
+    border:0;
+    background:transparent;
+    color:var(--primary-dark);
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+  }
+
+  .quality-more-btn:hover{
+    text-decoration:underline;
+  }
+
+  .quality-good{
+    text-align:center;
+    padding:28px 18px;
+  }
+
+  .quality-good-icon{
+    width:52px;
+    height:52px;
+    margin:0 auto 10px;
+    border-radius:50%;
+    background:var(--teal-tint);
+    color:var(--teal-dark);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+    font-weight:900;
+  }
+
+  @media (max-width: 900px){
+    .quality-metrics{ grid-template-columns:repeat(2,1fr); }
+    .quality-list{ overflow-x:auto; }
+    .quality-table{ min-width:780px; }
+  }
+
+  @media (max-width: 1080px){
+    .stats{ grid-template-columns:repeat(2, 1fr); }
+    .panels{ grid-template-columns:1fr; }
+  }
+
+  @media (max-width: 800px){
+    .sidebar{ display:none; }
+    .search-wrap{ display:none; }
+    .content{ padding:22px 18px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+<aside class="sidebar">
+  <div class="brand">
+    <img src="/images/hrplogo.png" alt="HR Planet" class="brand-logo">
+  </div>
+
+  <nav class="nav">
+    <div class="nav-group">
+      <div class="nav-label">Genel</div>
+      <a class="nav-item active" href="/dashboard">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></span>
+        Dashboard
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-label">Personel Yönetimi</div>
+      <a class="nav-item" href="/personel">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        Personel
+      </a>
+      <a class="nav-item" href="/departments">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
+        Departmanlar
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-label">Süreçler</div>
+      <a class="nav-item" href="/leaves">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+        İzin Yönetimi
+        <span class="badge" id="navPendingBadge" style="display:none;">0</span>
+      </a>
+      <a class="nav-item" href="/documents">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>
+        Evrak Yönetimi
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-label">Raporlar &amp; Yönetim</div>
+      <a class="nav-item" href="/reports">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-4"/></svg></span>
+        Raporlar
+      </a>
+      <a class="nav-item" href="/users" id="navUsers">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg></span>
+        Kullanıcılar
+      </a>
+    </div>
+
+    <div class="nav-group" id="navSystemGroup" style="display:none;">
+      <div class="nav-label">Sistem</div>
+      <a class="nav-item" href="/system-parameters" id="navSystemParameters">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.5 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.5a1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15.5 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.15.36.37.7.65.97.28.27.65.43 1.04.43H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15z"/></svg></span>
+        Sistem Parametreleri
+      </a>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="mini-user">
+      <div class="avatar" id="sideAvatar">--</div>
+      <div class="mini-user-text">
+        <div class="mini-user-name" id="sideUserName">Yükleniyor…</div>
+        <div class="mini-user-role" id="sideUserRole">—</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+<div class="main">
+
+  <header class="topbar">
+    <div class="search-wrap">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="globalSearch" placeholder="Personel veya departman ara…" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <button class="icon-btn" title="Bildirimler" aria-label="Bildirimler">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="dot" id="notifDot" style="display:none;"></span>
+      </button>
+
+      <div class="divider-v"></div>
+
+      <div class="user-chip">
+        <div class="avatar" id="topAvatar">--</div>
+        <div class="user-chip-text">
+          <div class="user-chip-name" id="topUserName">Yükleniyor…</div>
+          <span class="role-pill" id="topUserRole">—</span>
+        </div>
+      </div>
+
+      <button class="logout-btn" onclick="logout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Çıkış Yap
+      </button>
+    </div>
+  </header>
+
+  <main class="content">
+
+    <div class="page-head">
+      <div>
+        <h1 class="greeting" id="greetingText">Hoş geldiniz, <span id="greetingName">…</span></h1>
+        <p class="page-sub">Bugün panelinizde öne çıkanlar aşağıda özetlendi.</p>
+      </div>
+      <div class="date-chip" id="dateChip">—</div>
+    </div>
+
+    <!-- Stat cards -->
+    <section class="stats" id="statCards">
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon indigo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <span class="stat-trend flat" id="trendTotal">Toplam</span>
+        </div>
+        <div class="stat-value" id="statTotal">–</div>
+        <div class="stat-label">Toplam Personel</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon teal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <span class="stat-trend up" id="trendActive">Aktif</span>
+        </div>
+        <div class="stat-value" id="statActive">–</div>
+        <div class="stat-label">Aktif Personel</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon amber">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <span class="stat-trend flat">Onay bekliyor</span>
+        </div>
+        <div class="stat-value" id="statPendingLeave">–</div>
+        <div class="stat-label">Bekleyen İzin Talebi</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon coral">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+          </div>
+          <span class="stat-trend flat">Deneme süresi</span>
+        </div>
+        <div class="stat-value" id="statProbation">–</div>
+        <div class="stat-label">Deneme Süresinde</div>
+      </div>
+    </section>
+
+    <!-- Panels -->
+    <section class="panels">
+
+      <div class="panel">
+        <div class="panel-head">
+          <span class="panel-title">Son Eklenen Personel</span>
+          <a class="panel-link" href="/personel">Tümünü Gör</a>
+        </div>
+        <div class="panel-body" id="recentEmployeesList">
+          <!-- JS ile doldurulur -->
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <span class="panel-title">Yaklaşan Doğum Günleri</span>
+          <a class="panel-link" href="/personel">Tümünü Gör</a>
+        </div>
+        <div class="panel-body" id="birthdaysList">
+          <!-- JS ile doldurulur -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Personel Veri Kalitesi -->
+    <section class="panel quality-panel" id="dataQualityPanel">
+      <div class="quality-shell">
+
+        <div class="quality-head">
+          <div class="quality-title-wrap">
+            <div class="quality-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+            </div>
+            <div>
+              <div class="quality-title">Personel Veri Kalitesi</div>
+              <div class="quality-sub">Aktif ve deneme süresindeki personellerin özlük, organizasyon, SGK ve bordro verileri kontrol edilir.</div>
+            </div>
+          </div>
+
+          <div class="quality-score">
+            <div class="quality-score-ring" id="qualityScoreRing">
+              <span class="quality-score-value" id="qualityScoreValue">–</span>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:var(--ink);">Tamamlanma</div>
+              <div class="quality-score-label" id="qualityScoreLabel">Kontrol ediliyor…</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="quality-metrics">
+          <div class="quality-metric">
+            <div class="quality-metric-value" id="qualityCheckedEmployees">–</div>
+            <div class="quality-metric-label">Kontrol Edilen Personel</div>
+          </div>
+          <div class="quality-metric critical">
+            <div class="quality-metric-value" id="qualityCriticalCount">–</div>
+            <div class="quality-metric-label">Kritik Eksik</div>
+          </div>
+          <div class="quality-metric warning">
+            <div class="quality-metric-value" id="qualityWarningCount">–</div>
+            <div class="quality-metric-label">Tamamlanması Gereken</div>
+          </div>
+          <div class="quality-metric check">
+            <div class="quality-metric-value" id="qualityCheckCount">–</div>
+            <div class="quality-metric-label">Kontrol Edilmeli</div>
+          </div>
+        </div>
+
+        <div class="quality-list" id="qualityIssueList">
+          <div class="empty">
+            <div class="empty-title">Veri kalite kontrolü yapılıyor…</div>
+            <div class="empty-sub">Personel verileri taranıyor.</div>
+          </div>
+        </div>
+
+        <div class="quality-toolbar" id="qualityToolbar" style="display:none;">
+          <div class="quality-toolbar-text" id="qualityToolbarText"></div>
+          <button class="quality-more-btn" id="qualityMoreButton" type="button" onclick="toggleAllQualityIssues()">Tüm Eksikleri Görüntüle</button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+/* =====================================================
+   AYARLAR
+===================================================== */
+const API_BASE = '';
+
+const ROLE_LABELS = {
+  SYSTEM_ADMIN:  'Sistem Yöneticisi',
+  KEY_USER:      'Anahtar Kullanıcı',
+  HR_SPECIALIST: 'İK Uzmanı',
+  MANAGER:       'Yönetici',
+  EMPLOYEE:      'Çalışan',
+};
+
+const ROLE_COLORS = {
+  SYSTEM_ADMIN:  '#4f86f7',
+  KEY_USER:      '#0F9D8C',
+  HR_SPECIALIST: '#E8A23D',
+  MANAGER:       '#E5654A',
+  EMPLOYEE:      '#64748b',
+};
+
+function initials(name){
+  if(!name) return '--';
+  const parts = name.trim().split(/\s+/);
+  const first = parts[0]?.[0] || '';
+  const last = parts.length > 1 ? parts[parts.length - 1][0] : '';
+  return (first + last).toUpperCase();
+}
+
+function timeGreeting(){
+  const h = new Date().getHours();
+  if(h < 6) return 'İyi geceler';
+  if(h < 12) return 'Günaydın';
+  if(h < 18) return 'İyi günler';
+  return 'İyi akşamlar';
+}
+
+function formatDate(d){
+  return new Intl.DateTimeFormat('tr-TR', { weekday:'long', day:'numeric', month:'long', year:'numeric' }).format(d);
+}
+
+function logout(){
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  window.location.href = '/';
+}
+
+/* ---------- Kullanıcı bilgilerini yerleştir ---------- */
+function renderUser(){
+  const raw = localStorage.getItem('user');
+  const token = localStorage.getItem('token');
+
+  if(!raw || !token){
+    window.location.href = '/';
+    return null;
+  }
+
+  const user = JSON.parse(raw);
+  const roleLabel = ROLE_LABELS[user.role] || user.role;
+  const roleColor = ROLE_COLORS[user.role] || 'var(--slate)';
+  const initialsText = initials(user.fullName);
+
+  document.getElementById('sideAvatar').textContent = initialsText;
+  document.getElementById('sideAvatar').style.background = roleColor;
+  document.getElementById('sideUserName').textContent = user.fullName || 'Kullanıcı';
+  document.getElementById('sideUserRole').textContent = roleLabel;
+
+  document.getElementById('topAvatar').textContent = initialsText;
+  document.getElementById('topAvatar').style.background = roleColor;
+  document.getElementById('topUserName').textContent = user.fullName || 'Kullanıcı';
+  document.getElementById('topUserRole').textContent = roleLabel;
+
+  document.getElementById('greetingName').textContent = (user.fullName || 'Kullanıcı').split(' ')[0];
+  document.getElementById('greetingText').innerHTML =
+    timeGreeting() + ', <span id="greetingName">' + (user.fullName || 'Kullanıcı').split(' ')[0] + '</span> 👋';
+
+  if(!['SYSTEM_ADMIN', 'KEY_USER'].includes(user.role)){
+    const navUsers = document.getElementById('navUsers');
+    if(navUsers) navUsers.style.display = 'none';
+  }
+
+  // Sistem Parametreleri yalnızca Sistem Yöneticisine görünür.
+  // Görsel uyum için mevcut .nav-item / .ic stilleri ve currentColor kullanan SVG kullanılır.
+  const navSystemGroup = document.getElementById('navSystemGroup');
+  if(navSystemGroup && user.role === 'SYSTEM_ADMIN'){
+    navSystemGroup.style.display = '';
+  }
+
+  document.getElementById('dateChip').textContent = formatDate(new Date());
+
+  return { user, token };
+}
+
+/* ---------- Sayaç animasyonu ---------- */
+function animateValue(el, to){
+  const from = 0;
+  const duration = 600;
+  const start = performance.now();
+  function step(ts){
+    const p = Math.min((ts - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(from + (to - from) * eased);
+    if(p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ---------- Boş / hata durumu şablonu ---------- */
+function emptyState(container, title, sub){
+  container.innerHTML =
+    '<div class="empty">' +
+      '<div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>' +
+      '<div class="empty-title">' + title + '</div>' +
+      '<div class="empty-sub">' + sub + '</div>' +
+    '</div>';
+}
+
+/* ---------- Son eklenen personeller ---------- */
+function renderRecentEmployees(list){
+  const container = document.getElementById('recentEmployeesList');
+  if(!list || list.length === 0){
+    emptyState(container, 'Henüz personel eklenmemiş', 'Yeni bir personel kaydı oluşturduğunuzda burada görünecek.');
+    return;
+  }
+  container.innerHTML = list.map(function(e){
+    const date = e.createdAt ? new Intl.DateTimeFormat('tr-TR', {day:'2-digit', month:'short'}).format(new Date(e.createdAt)) : '';
+    return (
+      '<div class="row">' +
+        '<div class="avatar" style="background:#4f86f7">' + initials(e.fullName) + '</div>' +
+        '<div class="row-text">' +
+          '<div class="row-name">' + (e.fullName || '—') + '</div>' +
+          '<div class="row-sub">' + (e.position || 'Pozisyon belirtilmemiş') + '</div>' +
+        '</div>' +
+        '<div class="row-meta">' + date + '</div>' +
+      '</div>'
+    );
+  }).join('');
+}
+
+/* ---------- Yaklaşan doğum günleri ---------- */
+function renderBirthdays(list){
+  const container = document.getElementById('birthdaysList');
+  if(!list || list.length === 0){
+    emptyState(container, 'Yaklaşan doğum günü yok', 'Önümüzdeki 30 gün içinde doğum günü olan personel bulunmuyor.');
+    return;
+  }
+  container.innerHTML = list.map(function(e){
+    const label = e.daysUntil === 0 ? 'Bugün 🎉' : (e.daysUntil + ' gün sonra');
+    const pillClass = e.daysUntil <= 3 ? 'teal' : 'amber';
+    return (
+      '<div class="row">' +
+        '<div class="avatar" style="background:#E8A23D">' + initials(e.fullName) + '</div>' +
+        '<div class="row-text">' +
+          '<div class="row-name">' + (e.fullName || '—') + '</div>' +
+        '</div>' +
+        '<span class="pill ' + pillClass + '">' + label + '</span>' +
+      '</div>'
+    );
+  }).join('');
+}
+
+
+/* ---------- Personel Veri Kalitesi ---------- */
+
+let currentQualityIssues = [];
+let qualityShowAll = false;
+
+function escapeHtml(value){
+  if(value === null || value === undefined) return '';
+  return String(value)
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'","&#039;");
+}
+
+function qualitySeverityLabel(severity){
+  return {
+    CRITICAL:'Kritik',
+    WARNING:'Eksik',
+    CHECK:'Kontrol'
+  }[severity] || severity || 'Kontrol';
+}
+
+function qualitySeverityClass(severity){
+  if(severity === 'CRITICAL') return 'critical';
+  if(severity === 'WARNING') return 'warning';
+  return 'check';
+}
+
+function openEmployeePersonnelCard(employeeId){
+  if(!employeeId) return;
+
+  /*
+   * personel.html tarafinda employeeId query parametresi okunur
+   * ve ilgili personelin detay/özlük karti otomatik açılır.
+   */
+  window.location.href =
+    '/personel?employeeId=' +
+    encodeURIComponent(employeeId);
+}
+
+function renderDataQuality(dataQuality){
+  const dq = dataQuality || {};
+  const rate = Math.max(0, Math.min(100, Number(dq.completionRate || 0)));
+  const ring = document.getElementById('qualityScoreRing');
+
+  document.getElementById('qualityScoreValue').textContent = rate + '%';
+  document.getElementById('qualityScoreLabel').textContent =
+    (dq.affectedEmployeeCount || 0) +
+    ' personelde eksik / kontrol kaydı';
+
+  if(ring){
+    ring.style.background =
+      'conic-gradient(var(--teal) ' +
+      (rate * 3.6) +
+      'deg, var(--line) 0deg)';
+  }
+
+  document.getElementById('qualityCheckedEmployees').textContent =
+    dq.checkedEmployeeCount || 0;
+
+  document.getElementById('qualityCriticalCount').textContent =
+    dq.criticalCount || 0;
+
+  document.getElementById('qualityWarningCount').textContent =
+    dq.warningCount || 0;
+
+  document.getElementById('qualityCheckCount').textContent =
+    dq.checkCount || 0;
+
+  currentQualityIssues = Array.isArray(dq.issues) ? dq.issues : [];
+  qualityShowAll = false;
+  renderQualityIssues();
+}
+
+function renderQualityIssues(){
+  const container = document.getElementById('qualityIssueList');
+  const toolbar = document.getElementById('qualityToolbar');
+  const toolbarText = document.getElementById('qualityToolbarText');
+  const moreButton = document.getElementById('qualityMoreButton');
+
+  if(!container) return;
+
+  if(!currentQualityIssues.length){
+    container.innerHTML =
+      '<div class="quality-good">' +
+        '<div class="quality-good-icon">✓</div>' +
+        '<div class="empty-title">Personel verileri tamam görünüyor</div>' +
+        '<div class="empty-sub">Aktif personeller için tanımlı veri kalite kontrollerinde eksik bulunmadı.</div>' +
+      '</div>';
+
+    if(toolbar) toolbar.style.display = 'none';
+    return;
+  }
+
+  const displayIssues =
+    qualityShowAll
+      ? currentQualityIssues
+      : currentQualityIssues.slice(0, 8);
+
+  const rows = displayIssues.map(function(issue){
+    const severityClass = qualitySeverityClass(issue.severity);
+
+    return (
+      '<tr>' +
+        '<td>' +
+          '<div class="quality-person">' +
+            '<div class="avatar" style="background:#4f86f7">' +
+              escapeHtml(initials(issue.fullName)) +
+            '</div>' +
+            '<div>' +
+              '<div class="quality-person-name">' +
+                escapeHtml(issue.fullName || '—') +
+              '</div>' +
+              '<div class="quality-person-sub">' +
+                'Sicil: ' +
+                escapeHtml(issue.registryNo || '—') +
+                (issue.position ? ' • ' + escapeHtml(issue.position) : '') +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</td>' +
+
+        '<td>' +
+          '<strong>' + escapeHtml(issue.label || issue.field || 'Eksik Bilgi') + '</strong>' +
+        '</td>' +
+
+        '<td class="quality-message">' +
+          escapeHtml(issue.message || 'Kontrol edilmelidir.') +
+        '</td>' +
+
+        '<td>' +
+          '<span class="quality-badge ' + severityClass + '">' +
+            escapeHtml(qualitySeverityLabel(issue.severity)) +
+          '</span>' +
+        '</td>' +
+
+        '<td>' +
+          '<button class="quality-action" type="button" onclick="openEmployeePersonnelCard(\'' +
+            escapeHtml(issue.employeeId || '') +
+          '\')">Özlük Kartına Git</button>' +
+        '</td>' +
+      '</tr>'
+    );
+  }).join('');
+
+  container.innerHTML =
+    '<table class="quality-table">' +
+      '<thead>' +
+        '<tr>' +
+          '<th>Personel</th>' +
+          '<th>Alan</th>' +
+          '<th>Kontrol Sonucu</th>' +
+          '<th>Seviye</th>' +
+          '<th>İşlem</th>' +
+        '</tr>' +
+      '</thead>' +
+      '<tbody>' + rows + '</tbody>' +
+    '</table>';
+
+  if(toolbar){
+    toolbar.style.display = 'flex';
+  }
+
+  if(toolbarText){
+    toolbarText.textContent =
+      currentQualityIssues.length +
+      ' eksik / kontrol kaydı bulundu. ' +
+      new Set(
+        currentQualityIssues.map(function(issue){
+          return issue.employeeId;
+        })
+      ).size +
+      ' personel etkileniyor.';
+  }
+
+  if(moreButton){
+    if(currentQualityIssues.length <= 8){
+      moreButton.style.display = 'none';
+    }else{
+      moreButton.style.display = '';
+      moreButton.textContent =
+        qualityShowAll
+          ? 'İlk 8 Kaydı Göster'
+          : 'Tüm Eksikleri Görüntüle (' + currentQualityIssues.length + ')';
+    }
+  }
+}
+
+function toggleAllQualityIssues(){
+  qualityShowAll = !qualityShowAll;
+  renderQualityIssues();
+
+  if(!qualityShowAll){
+    document
+      .getElementById('dataQualityPanel')
+      ?.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+}
+
+
+/* ---------- Dashboard verisini getir ---------- */
+async function loadDashboard(token){
+  try{
+    const res = await fetch(API_BASE + '/api/dashboard/summary', {
+      headers: { Authorization: 'Bearer ' + token },
+    });
+
+    if(res.status === 401){
+      logout();
+      return;
+    }
+
+    if(!res.ok){
+      throw new Error('İstek başarısız: ' + res.status);
+    }
+
+    const { data } = await res.json();
+
+    animateValue(document.getElementById('statTotal'), data.totalEmployees || 0);
+    animateValue(document.getElementById('statActive'), data.activeEmployees || 0);
+    animateValue(document.getElementById('statPendingLeave'), data.pendingLeaves || 0);
+    animateValue(document.getElementById('statProbation'), data.probationEmployees || 0);
+
+    if(data.pendingLeaves > 0){
+      const badge = document.getElementById('navPendingBadge');
+      badge.style.display = 'inline-block';
+      badge.textContent = data.pendingLeaves;
+      document.getElementById('notifDot').style.display = 'block';
+    }
+
+    renderRecentEmployees(data.recentEmployees);
+    renderBirthdays(data.upcomingBirthdays);
+    renderDataQuality(data.dataQuality);
+
+  }catch(err){
+    console.error('Dashboard verisi alınamadı:', err);
+    ['statTotal','statActive','statPendingLeave','statProbation'].forEach(function(id){
+      document.getElementById(id).textContent = '—';
+    });
+    emptyState(
+      document.getElementById('recentEmployeesList'),
+      'Veriler yüklenemedi',
+      'API adresinin (' + API_BASE + ') erişilebilir olduğundan emin olun.'
+    );
+    emptyState(
+      document.getElementById('birthdaysList'),
+      'Veriler yüklenemedi',
+      'Sunucuya bağlanırken bir sorun oluştu.'
+    );
+
+    emptyState(
+      document.getElementById('qualityIssueList'),
+      'Veri kalite kontrolü yüklenemedi',
+      'Dashboard API yanıtı alınamadı.'
+    );
+  }
+}
+
+/* ---------- Başlat ---------- */
+(function init(){
+  const session = renderUser();
+  if(!session) return;
+  loadDashboard(session.token);
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Personel Yönetim Sistemi</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Segoe UI,sans-serif;
+    background:#f8fafc;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.card{
+    width:450px;
+    background:#ffffff;
+    border:1px solid #e2e8f0;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 12px 30px rgba(15,23,42,.08);
+}
+
+.header{
+    background:#6495ff;
+    color:white;
+    text-align:center;
+    padding:35px;
+}
+
+.logo{
+    width:220px;
+    max-width:100%;
+    height:auto;
+    display:block;
+    margin:0 auto 15px auto;
+}
+
+.body{
+    padding:35px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-top:6px;
+    margin-bottom:20px;
+    border:1px solid #dbe4f0;
+    background:#fafcff;
+    border-radius:8px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    background:#4f86f7;
+    color:white;
+    border:none;
+    padding:12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+.footer{
+    text-align:center;
+    color:#777;
+    font-size:12px;
+    margin-top:20px;
+}
+
+.message{
+    text-align:center;
+    margin-top:15px;
+    font-size:14px;
+    font-weight:600;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+    <div class="header">
+        <img src="/images/hrplogo.png" alt="HR Planet" class="logo">
+        <h2>Personel Yönetim Sistemi</h2>
+    </div>
+
+    <div class="body">
+
+        <label>Şirket Kodu</label>
+        <input
+            id="companyCode"
+            type="text"
+            placeholder="Şirket Kodunu Giriniz">
+
+        <label>Kullanıcı Adı</label>
+        <input
+            id="emailOrUsername"
+            type="text"
+            placeholder="Kullanıcı Adı">
+
+        <label>Şifre</label>
+        <input
+            id="password"
+            type="password"
+            placeholder="Şifre">
+
+        <button id="loginButton">
+            Giriş Yap
+        </button>
+
+        <div id="message" class="message"></div>
+
+        <div class="footer">
+            © 2026 HR Planet - Tüm Hakları Saklıdır.
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+    document
+        .getElementById('loginButton')
+        .addEventListener('click', login);
+
+});
+
+async function login(event){
+
+    event.preventDefault();
+
+    const companyCode =
+        document.getElementById('companyCode').value;
+
+    const emailOrUsername =
+        document.getElementById('emailOrUsername').value;
+
+    const password =
+        document.getElementById('password').value;
+
+    const message =
+        document.getElementById('message');
+
+    try{
+
+        const response = await fetch('/api/auth/login',{
+
+            method:'POST',
+
+            headers:{
+                'Content-Type':'application/json'
+            },
+
+            body: JSON.stringify({
+                companyCode,
+                emailOrUsername,
+                password
+            })
+
+        });
+
+        const result = await response.json();
+
+        if(result.success){
+
+            localStorage.setItem(
+                'token',
+                result.data.token
+            );
+
+            localStorage.setItem(
+                'user',
+                JSON.stringify(result.data.user)
+            );
+
+            message.style.color='green';
+            message.innerText='Giriş başarılı. Yönlendiriliyorsunuz...';
+
+            setTimeout(()=>{
+                window.location.href='/dashboard';
+            },1000);
+
+        }else{
+
+            message.style.color='red';
+            message.innerText='Kullanıcı adı veya şifre hatalı';
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        message.style.color='red';
+        message.innerText='Sunucu bağlantı hatası';
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
