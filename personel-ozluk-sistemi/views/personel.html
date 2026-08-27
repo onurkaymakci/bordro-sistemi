@@ -1741,97 +1741,59 @@ body.import-modal-open{
     </div>
 
     <nav class="nav">
+    <div class="nav-group">
+      <div class="nav-label">Genel</div>
+      <a class="nav-item" href="/dashboard">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></span>
+        Dashboard
+      </a>
+    </div>
 
-        <div class="nav-group">
-            <div class="nav-label">Genel</div>
+    <div class="nav-group">
+      <div class="nav-label">Personel Yönetimi</div>
+      <a class="nav-item active" href="/personel">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        Personel
+      </a>
+      <a class="nav-item" href="/departments">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
+        Departmanlar
+      </a>
+    </div>
 
-            <a class="nav-item" href="/dashboard">
-                <span class="ic">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="7" height="9" rx="1.5"/>
-                        <rect x="14" y="3" width="7" height="5" rx="1.5"/>
-                        <rect x="14" y="12" width="7" height="9" rx="1.5"/>
-                        <rect x="3" y="16" width="7" height="5" rx="1.5"/>
-                    </svg>
-                </span>
-                Dashboard
-            </a>
-        </div>
+    <div class="nav-group">
+      <div class="nav-label">Süreçler</div>
+      <a class="nav-item" href="/izin">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+        İzin Yönetimi
+        <span class="badge" id="navPendingBadge" style="display:none;">0</span>
+      </a>
+      <a class="nav-item" href="/evrak">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>
+        Evrak Yönetimi
+      </a>
+    </div>
 
-        <div class="nav-group">
-            <div class="nav-label">Personel Yönetimi</div>
+    <div class="nav-group">
+      <div class="nav-label">Raporlar &amp; Yönetim</div>
+      <a class="nav-item" href="/raporlar">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-4"/></svg></span>
+        Raporlar
+      </a>
+      <a class="nav-item" href="/users" id="navUsers">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg></span>
+        Kullanıcılar
+      </a>
+    </div>
 
-            <a class="nav-item active" href="/personel">
-                <span class="ic">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/>
-                        <circle cx="10" cy="7" r="4"/>
-                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-                    </svg>
-                </span>
-                Personel
-            </a>
-
-            <a class="nav-item" href="/departments">
-                <span class="ic">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="18" height="18" rx="2"/>
-                        <path d="M3 9h18M9 21V9"/>
-                    </svg>
-                </span>
-                Departmanlar
-            </a>
-        </div>
-
-        <div class="nav-group">
-            <div class="nav-label">Süreçler</div>
-
-            <a class="nav-item" href="/izin">
-                <span class="ic">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="4" width="18" height="18" rx="2"/>
-                        <path d="M16 2v4M8 2v4M3 10h18"/>
-                    </svg>
-                </span>
-                İzin Yönetimi
-            </a>
-
-            <a class="nav-item" href="/evrak">
-                <span class="ic">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                        <path d="M14 2v6h6"/>
-                    </svg>
-                </span>
-                Evrak Yönetimi
-            </a>
-        </div>
-
-        <div class="nav-group">
-            <div class="nav-label">Raporlar &amp; Yönetim</div>
-
-            <a class="nav-item" href="/raporlar">
-                <span class="ic">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 3v18h18"/>
-                        <path d="M18 17V9M13 17V5M8 17v-4"/>
-                    </svg>
-                </span>
-                Raporlar
-            </a>
-
-            <a class="nav-item" href="/users">
-                <span class="ic">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="8" r="4"/>
-                        <path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/>
-                    </svg>
-                </span>
-                Kullanıcılar
-            </a>
-        </div>
-
-    </nav>
+    <div class="nav-group" id="navSystemGroup" style="display:none;">
+      <div class="nav-label">Sistem</div>
+      <a class="nav-item" href="/system-parameters" id="navSystemParameters">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.5 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.5a1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15.5 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.15.36.37.7.65.97.28.27.65.43 1.04.43H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15z"/></svg></span>
+        Sistem Parametreleri
+      </a>
+    </div>
+  </nav>
 
     <div class="sidebar-footer">
         <div class="mini-user">
@@ -2622,6 +2584,11 @@ function renderUser(){
     document.getElementById('topAvatar').textContent = initials(name);
     document.getElementById('topUserName').textContent = name;
     document.getElementById('topUserRole').textContent = role;
+
+    const navUsers = document.getElementById('navUsers');
+    if(navUsers && !['SYSTEM_ADMIN', 'KEY_USER'].includes(currentUser.role)) navUsers.style.display = 'none';
+    const navSystemGroup = document.getElementById('navSystemGroup');
+    if(navSystemGroup && currentUser.role === 'SYSTEM_ADMIN') navSystemGroup.style.display = '';
 
     return true;
 }
