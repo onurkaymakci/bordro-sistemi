@@ -2,6 +2,7 @@ const { z } = require('zod');
 const fs = require('fs');
 const prisma = require('../config/prisma');
 const ApiError = require('../utils/ApiError');
+const { assertEmployeeAccess } = require('../policies/employee-object-access.policy');
 
 const documentTypeSchema = z.object({
   employeeId: z.string().uuid(),
@@ -42,6 +43,7 @@ async function upload(req, res) {
 
 // PRD 11.4 - Evrak listeleme (personel bazli)
 async function listByEmployee(req, res) {
+  await assertEmployeeAccess(req, req.params.employeeId);
   await assertEmployeeInCompany(req.params.employeeId, req.companyId);
 
   const documents = await prisma.employeeDocument.findMany({

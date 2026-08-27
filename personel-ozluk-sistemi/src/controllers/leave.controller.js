@@ -1,6 +1,10 @@
 const { z } = require('zod');
 const prisma = require('../config/prisma');
 const ApiError = require('../utils/ApiError');
+const {
+  getLeaveAccessFilter,
+  resolveLeaveEmployeeId,
+} = require('../policies/employee-object-access.policy');
 
 const leaveSchema = z.object({
   employeeId: z.string().uuid(),
@@ -18,9 +22,10 @@ function calcDayCount(start, end) {
 // PRD 11.5 - Izin Talebi Olustur
 async function create(req, res) {
   const data = leaveSchema.parse(req.body);
+  const employeeId = await resolveLeaveEmployeeId(req, data.employeeId);
 
   const employee = await prisma.employee.findFirst({
-    where: { id: data.employeeId, companyId: req.companyId },
+    where: { id: employeeId, companyId: req.companyId },
   });
   if (!employee) throw new ApiError(404, 'Personel bulunamadi.');
 
@@ -31,6 +36,7 @@ async function create(req, res) {
   const leave = await prisma.leaveRequest.create({
     data: {
       ...data,
+      employeeId,
       dayCount: calcDayCount(data.startDate, data.endDate),
       status: 'PENDING',
     },
@@ -82,8 +88,9 @@ async function decide(req, res) {
 }
 
 async function cancel(req, res) {
+  const accessFilter = await getLeaveAccessFilter(req);
   const leave = await prisma.leaveRequest.findFirst({
-    where: { id: req.params.id, employee: { companyId: req.companyId } },
+    where: { id: req.params.id, ...accessFilter },
   });
   if (!leave) throw new ApiError(404, 'Izin talebi bulunamadi.');
   if (leave.status !== 'PENDING') {
