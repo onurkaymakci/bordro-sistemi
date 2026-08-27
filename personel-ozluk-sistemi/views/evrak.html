@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Evrak Yönetimi | HR Planet</title>
+    <style>
+      :root{
+  --nav:#10233f;
+  --nav2:#183657;
+  --blue:#2563eb;
+  --bg:#f4f7fb;
+  --text:#182438;
+  --muted:#667085;
+  --line:#e3e9f2;
+  --danger:#dc2626;
+  --radius:12px;
+  --shadow:0 5px 18px rgba(16,35,63,.07)
+}
+*{
+  box-sizing:border-box
+}
+body{
+  margin:0;
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text)
+}
+button,input,select{
+  font:inherit
+}
+.layout{
+  display:flex;
+  min-height:100vh
+}
+.sidebar{
+  width:250px;
+  background:var(--nav);
+  color:#fff;
+  padding:24px 16px;
+  position:fixed;
+  inset:0 auto 0 0
+}
+.logo{
+  width:165px;
+  display:block;
+  margin:0 auto 30px
+}
+.nav-label{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:#90a5bd;
+  margin:22px 12px 8px
+}
+.nav{
+  display:flex;
+  gap:11px;
+  align-items:center;
+  color:#cbd8e6;
+  text-decoration:none;
+  padding:12px;
+  border-radius:9px;
+  margin:4px 0
+}
+.nav:hover,.nav.active{
+  background:var(--nav2);
+  color:#fff
+}
+.main{
+  margin-left:250px;
+  width:calc(100% - 250px)
+}
+.topbar{
+  height:72px;
+  background:#fff;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  padding:0 30px;
+  gap:15px
+}
+.avatar{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#e7efff;
+  color:var(--blue);
+  font-weight:700
+}
+.user strong,.user span{
+  display:block
+}
+.user span{
+  font-size:12px;
+  color:var(--muted)
+}
+.logout{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:8px;
+  padding:8px 12px;
+  cursor:pointer
+}
+.content{
+  padding:30px;
+  max-width:1500px;
+  margin:auto
+}
+.heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px
+}
+.heading h1{
+  margin:0 0 7px;
+  font-size:28px
+}
+.heading p{
+  margin:0;
+  color:var(--muted)
+}
+.btn{
+  border:0;
+  border-radius:9px;
+  padding:10px 15px;
+  cursor:pointer;
+  font-weight:600
+}
+.btn-primary{
+  background:var(--blue);
+  color:#fff
+}
+.btn-light{
+  background:#eef3fa;
+  color:#27405e
+}
+.btn-danger{
+  background:#feecec;
+  color:var(--danger)
+}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  margin:24px 0
+}
+.card,.panel{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow)
+}
+.metric{
+  padding:20px
+}
+.metric span{
+  color:var(--muted);
+  font-size:13px
+}
+.metric strong{
+  font-size:28px;
+  display:block;
+  margin-top:8px
+}
+.panel{
+  padding:20px;
+  margin-bottom:18px
+}
+.search-row,.filters{
+  display:flex;
+  gap:12px;
+  align-items:end;
+  flex-wrap:wrap
+}
+.field{
+  flex:1;
+  min-width:180px
+}
+.search-field{
+  position:relative
+}
+.field label{
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:7px
+}
+.control{
+  width:100%;
+  border:1px solid #ccd6e3;
+  border-radius:8px;
+  padding:10px;
+  background:#fff
+}
+.results{
+  position:absolute;
+  background:#fff;
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+  z-index:5;
+  width:min(700px,calc(100vw - 64px));
+  max-height:260px;
+  overflow:auto
+}
+.result{
+  padding:12px;
+  border-bottom:1px solid var(--line);
+  cursor:pointer
+}
+.result:hover{
+  background:#f5f8fd
+}
+.pagination{
+  position:sticky;
+  bottom:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  padding:10px 12px;
+  background:#fff;
+  border-top:1px solid var(--line)
+}
+.pagination-info{
+  color:var(--muted);
+  font-size:12px
+}
+.selected{
+  margin-top:15px;
+  padding:14px;
+  background:#f2f6fc;
+  border-radius:9px;
+  display:flex;
+  gap:25px;
+  flex-wrap:wrap
+}
+.selected span{
+  color:var(--muted);
+  font-size:12px;
+  display:block
+}
+.table-wrap{
+  overflow:auto
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:980px
+}
+th{
+  text-align:left;
+  color:var(--muted);
+  font-size:12px;
+  background:#f8fafc
+}
+th,td{
+  padding:13px;
+  border-bottom:1px solid var(--line)
+}
+.badge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600
+}
+.ok{
+  background:#e8f7ef;
+  color:#18794e
+}
+.warn{
+  background:#fff5d9;
+  color:#9a6700
+}
+.expired{
+  background:#feecec;
+  color:#b42318
+}
+.none{
+  background:#edf1f6;
+  color:#475467
+}
+.actions{
+  display:flex;
+  gap:6px
+}
+.actions .btn{
+  padding:7px 9px;
+  font-size:12px
+}
+.state{
+  text-align:center;
+  padding:55px 20px;
+  color:var(--muted)
+}
+.modal{
+  position:fixed;
+  inset:0;
+  background:#0b1629aa;
+  display:none;
+  place-items:center;
+  z-index:20;
+  padding:18px
+}
+.modal.open{
+  display:grid
+}
+.dialog{
+  width:min(600px,100%);
+  background:#fff;
+  border-radius:14px;
+  padding:24px;
+  max-height:95vh;
+  overflow:auto
+}
+.dialog h2{
+  margin-top:0
+}
+.preview-dialog{
+  width:min(1000px,100%);
+  height:min(85vh,850px);
+  display:flex;
+  flex-direction:column
+}
+.preview-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px
+}
+.preview-frame{
+  width:100%;
+  flex:1;
+  min-height:300px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:#f5f7fa
+}
+.preview-image{
+  max-width:100%;
+  max-height:calc(85vh - 100px);
+  margin:auto;
+  object-fit:contain
+}
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px
+}
+.wide{
+  grid-column:1/-1
+}
+.modal-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:22px
+}
+.toast{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  background:#172b48;
+  color:#fff;
+  border-radius:9px;
+  padding:13px 18px;
+  z-index:50;
+  display:none;
+  max-width:380px
+}
+.toast.error{
+  background:#b42318
+}
+.hidden{
+  display:none!important
+}
+@media(max-width:800px){
+  .sidebar{
+    width:72px;
+    padding:20px 8px
+  }
+  .logo{
+    width:55px
+  }
+  .nav-label{
+    display:none
+  }
+  .nav{
+    font-size:0;
+    justify-content:center
+  }
+  .nav::first-letter{
+    font-size:20px
+  }
+  .main{
+    margin-left:72px;
+    width:calc(100% - 72px)
+  }
+  .content{
+    padding:20px 14px
+  }
+  .topbar{
+    padding:0 14px
+  }
+  .cards{
+    grid-template-columns:1fr
+  }
+  .heading{
+    align-items:flex-start
+  }
+  .form-grid{
+    grid-template-columns:1fr
+  }
+  .wide{
+    grid-column:auto
+  }
+  .user{
+    display:none
+  }
+}
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <img class="logo" src="/images/hrplogo.png" alt="HR Planet">
+        <div class="nav-label">Genel</div>
+        <a class="nav" href="/dashboard">▦ Dashboard</a>
+        <div class="nav-label">Personel Yönetimi</div>
+        <a class="nav" href="/personel">♙ Personel</a>
+        <div class="nav-label">Süreçler</div>
+        <a class="nav" href="/izin">▣ İzin Yönetimi</a>
+        <a class="nav active" href="/evrak">▤ Evrak Yönetimi</a>
+        <div class="nav-label">Raporlar & Yönetim</div>
+        <a class="nav" href="/raporlar">▥ Raporlar</a>
+      </aside>
+      <main class="main">
+        <header class="topbar">
+          <div class="avatar" id="avatar">K</div>
+          <div class="user">
+            <strong id="userName">Kullanıcı</strong>
+            <span id="userRole">
+            </span>
+          </div>
+          <button class="logout" id="logout">Çıkış</button>
+        </header>
+        <section class="content">
+          <div class="heading">
+            <div>
+              <h1>Evrak Yönetimi</h1>
+              <p>Personel evraklarını güvenli biçimde yönetin.</p>
+            </div>
+            <button id="uploadOpen" class="btn btn-primary hidden">+ Yeni Evrak Yükle</button>
+          </div>
+          <div class="cards">
+            <div class="card metric">
+              <span>Toplam Evrak</span>
+              <strong id="total">0</strong>
+            </div>
+            <div class="card metric">
+              <span>Süresi Dolmuş</span>
+              <strong id="expired">0</strong>
+            </div>
+            <div class="card metric">
+              <span>30 Gün İçinde Dolacak</span>
+              <strong id="soon">0</strong>
+            </div>
+          </div>
+          <div class="panel" id="employeePanel">
+            <div class="search-row">
+              <div class="field search-field">
+                <label>Personel ara</label>
+                <input class="control" id="employeeSearch" placeholder="Sicil no, ad-soyad veya pozisyon">
+                <div id="employeeResults" class="results hidden">
+                </div>
+              </div>
+              <button class="btn btn-light" id="employeeSearchBtn">Ara</button>
+            </div>
+            <div id="selectedEmployee" class="selected hidden">
+            </div>
+          </div>
+          <div class="panel">
+            <div class="filters">
+              <div class="field">
+                <label>Evrak Türü</label>
+                <select id="typeFilter" class="control">
+                  <option value="">Tümü</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Dosya Adı</label>
+                <input id="nameFilter" class="control" placeholder="Dosya adı ara">
+              </div>
+              <div class="field">
+                <label>Durum</label>
+                <select id="statusFilter" class="control">
+                  <option value="">Tümü</option>
+                  <option>Geçerli</option>
+                  <option>Süresi Dolmuş</option>
+                  <option>30 Gün İçinde Dolacak</option>
+                  <option>Süresiz</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="panel table-wrap" id="listArea">
+            <div class="state">Evraklarını görmek için bir personel seçin.</div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div class="modal" id="uploadModal">
+      <form class="dialog" id="uploadForm">
+        <h2>Yeni Evrak Yükle</h2>
+        <div class="form-grid">
+          <div class="field wide">
+            <label>Seçili personel</label>
+            <input id="modalEmployee" class="control" disabled>
+          </div>
+          <div class="field">
+            <label>Evrak türü</label>
+            <select id="documentType" name="type" class="control" required>
+            </select>
+          </div>
+          <div class="field">
+            <label>Düzenlenme tarihi</label>
+            <input type="date" name="issueDate" id="issueDate" class="control">
+          </div>
+          <div class="field">
+            <label>Geçerlilik tarihi</label>
+            <input type="date" name="expiryDate" id="expiryDate" class="control">
+          </div>
+          <div class="field wide">
+            <label>Dosya (en fazla 10 MB)</label>
+            <input type="file" name="file" id="file" class="control" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" required>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-light" id="uploadCancel">Vazgeç</button>
+          <button class="btn btn-primary">Yükle</button>
+        </div>
+      </form>
+    </div>
+    <div class="modal" id="previewModal" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
+      <div class="dialog preview-dialog">
+        <div class="preview-header">
+          <h2 id="previewTitle">Evrak Önizleme</h2>
+          <button type="button" class="btn btn-light" id="previewClose">Kapat</button>
+        </div>
+        <div id="previewContent" class="preview-frame"></div>
+      </div>
+    </div>
+    <div id="toast" class="toast">
+    </div>
+    <script>
+      const token = localStorage.getItem('token');
+let user;
+try {
+  user = JSON.parse(localStorage.getItem('user'))
+} catch (e) {
+}
+if (!token || !user)
+  location.href = '/';
+const roles = {
+  SYSTEM_ADMIN : 'Sistem Yöneticisi',
+  KEY_USER : 'Anahtar Kullanıcı',
+  HR_SPECIALIST : 'İK Uzmanı',
+  MANAGER : 'Yönetici',
+  EMPLOYEE : 'Çalışan'
+};
+const canEdit =
+    [ 'SYSTEM_ADMIN', 'KEY_USER', 'HR_SPECIALIST' ].includes(user.role);
+const isEmployee = user.role === 'EMPLOYEE';
+const types = {
+  ID_COPY : 'Kimlik Fotokopisi',
+  EMPLOYMENT_CONTRACT : 'İş Sözleşmesi',
+  CONTRACT_ANNEX : 'Sözleşme Eki',
+  RESIDENCE_CERTIFICATE : 'İkametgâh Belgesi',
+  CRIMINAL_RECORD : 'Adli Sicil Kaydı',
+  DIPLOMA : 'Diploma',
+  SGK_REGISTRATION : 'SGK Tescil Belgesi',
+  SGK_ENTRY_DECLARATION : 'SGK İşe Giriş Bildirgesi',
+  HEALTH_REPORT : 'Sağlık Raporu',
+  OHS_TRAINING_CERT : 'İSG Eğitim Sertifikası',
+  PPE_DELIVERY_FORM : 'KKD Teslim Formu',
+  EMERGENCY_EVAC_CERT : 'Acil Durum Tahliye Sertifikası',
+  KVKK_CONSENT : 'KVKK Onayı',
+  HANDBOOK_ACK : 'El Kitabı Teslim Onayı',
+  LEAVE_PETITION : 'İzin Dilekçesi',
+  DISCIPLINARY_RECORD : 'Disiplin Tutanağı',
+  WARNING_LETTER : 'Uyarı Yazısı',
+  TERMINATION_DOC : 'İşten Ayrılış Belgesi',
+  PAYSLIP : 'Ücret Pusulası',
+  DISABILITY_MILITARY_HEALTH : 'Engellilik / Askerlik / Sağlık Belgesi',
+  PROFESSIONAL_QUALIFICATION : 'Mesleki Yeterlilik Belgesi'
+};
+let selected = null;
+let documents = [];
+let employeePage = 1;
+let employeeSearchTerm = '';
+let previewUrl = null;
+const $ = id => document.getElementById(id);
+$('userName').textContent =
+    user.fullName || user.name || user.email || 'Kullanıcı';
+$('userRole').textContent = roles[user.role] || user.role;
+$('avatar').textContent = ($('userName').textContent[0] || 'K').toUpperCase();
+$('logout').onclick = logout;
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  location.href = '/'
+}
+async function api(url, options = {}) {
+  options.headers = {Authorization : `Bearer ${token}`, ...options.headers};
+  const r = await fetch(url, options);
+  if (r.status === 401) {
+    logout();
+    throw Error('Oturum süreniz doldu.')
+  }
+  if (!r.ok) {
+    let b = {};
+    try {
+      b = await r.json()
+    } catch (e) {
+    }
+    throw Error(b.message || 'İşlem tamamlanamadı.')
+  }
+  return r
+}
+function toast(message, error = true) {
+  const el = $('toast');
+  el.textContent = message;
+  el.className = 'toast' + (error ? ' error' : '');
+  el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 3500)
+}
+Object.entries(types).forEach(([ v, t ]) => {
+  $('typeFilter').add(new Option(t, v));
+  $('documentType').add(new Option(t, v))
+});
+if (canEdit)
+  $('uploadOpen').classList.remove('hidden');
+if (isEmployee) {
+  $('employeePanel').classList.add('hidden');
+  loadDocuments('/api/documents/me')
+} else {
+  const wanted = new URLSearchParams(location.search).get('employeeId');
+  if (wanted)
+    selectById(wanted)
+}
+async function searchEmployees(page = 1) {
+  try {
+    const q = $('employeeSearch').value.trim();
+    if (q !== employeeSearchTerm) {
+      employeeSearchTerm = q;
+      page = 1
+    }
+    const r = await api(
+        `/api/employees?page=${page}&pageSize=20&search=${encodeURIComponent(q)}`);
+    const b = await r.json();
+    employeePage = b.meta.page;
+    const box = $('employeeResults');
+    const results =
+        b.data.length
+            ? b.data
+                  .map(e => `<div class="result" data-id="${e.id}"><b>${
+                           escapeHtml(e.fullName || `${e.firstName || ''} ${
+                                                        e.lastName ||
+                                                        ''}`)}</b><br><small>${
+                           escapeHtml(e.registryNo || '-')} · ${
+                           escapeHtml(position(e))}</small></div>`)
+                  .join('')
+            : '<div class="result">Personel bulunamadı.</div>';
+    box.innerHTML = `${results}<div class="pagination">
+      <button class="btn btn-light" id="employeePrevious" ${b.meta.page <= 1 ? 'disabled' : ''}>Önceki</button>
+      <span class="pagination-info">Sayfa ${b.meta.page} / ${Math.max(b.meta.pageCount, 1)} · ${b.meta.total} sonuç</span>
+      <button class="btn btn-light" id="employeeNext" ${b.meta.page >= b.meta.pageCount ? 'disabled' : ''}>Sonraki</button>
+    </div>`;
+    box.classList.remove('hidden');
+    box.querySelectorAll('[data-id]')
+        .forEach(x => x.onclick = () =>
+                     choose(b.data.find(e => e.id === x.dataset.id)));
+    $('employeePrevious').onclick = () => searchEmployees(employeePage - 1);
+    $('employeeNext').onclick = () => searchEmployees(employeePage + 1)
+  } catch (e) {
+    toast(e.message)
+  }
+}
+function position(e) {
+  return e.position?.name || e.jobPosition?.name || e.positionName || '-'
+}
+async function selectById(id) {
+  try {
+    const r = await api(`/api/employees/${encodeURIComponent(id)}`),
+          b = await r.json();
+    choose(b.data)
+  } catch (e) {
+    toast(e.message)
+  }
+}
+function choose(e) {
+  selected = e;
+  $('employeeResults').classList.add('hidden');
+  $('selectedEmployee').classList.remove('hidden');
+  $('selectedEmployee').innerHTML = `<div><span>Personel</span><b>${
+      escapeHtml(e.fullName ||
+                 `${e.firstName || ''} ${
+                     e.lastName ||
+                     ''}`)}</b></div><div><span>Sicil No</span><b>${
+      escapeHtml(e.registryNo || '-')}</b></div><div><span>Pozisyon</span><b>${
+      escapeHtml(position(e))}</b></div><div><span>Durum</span><b>${
+      escapeHtml(e.status || '-')}</b></div>`;
+  $('modalEmployee').value = e.fullName || '';
+  history.replaceState(null, '',
+                       `/evrak?employeeId=${encodeURIComponent(e.id)}`);
+  loadDocuments(`/api/documents/employee/${e.id}`)
+}
+async function loadDocuments(url) {
+  $('listArea').innerHTML = '<div class="state">Evraklar yükleniyor…</div>';
+  try {
+    const r = await api(url), b = await r.json();
+    documents = b.data;
+    render()
+  } catch (e) {
+    $('listArea').innerHTML = `<div class="state">Evraklar yüklenemedi.<br>${
+        escapeHtml(e.message)}</div>`;
+    toast(e.message)
+  }
+}
+function statusOf(d) {
+  if (!d.expiryDate)
+    return 'Süresiz';
+  const days = (new Date(d.expiryDate) - new Date()) / 86400000;
+  if (days < 0)
+    return 'Süresi Dolmuş';
+  if (days <= 30)
+    return '30 Gün İçinde Dolacak';
+  return 'Geçerli'
+}
+function render() {
+  const filtered = documents.filter(
+      d => (!$('typeFilter').value || d.type === $('typeFilter').value) &&
+           d.fileName.toLocaleLowerCase('tr').includes(
+               $('nameFilter').value.toLocaleLowerCase('tr')) &&
+           (!$('statusFilter').value ||
+            statusOf(d) === $('statusFilter').value));
+  $('total').textContent = documents.length;
+  $('expired').textContent =
+      documents.filter(d => statusOf(d) === 'Süresi Dolmuş').length;
+  $('soon').textContent =
+      documents.filter(d => statusOf(d) === '30 Gün İçinde Dolacak').length;
+  if (!filtered.length) {
+    $('listArea').innerHTML =
+        '<div class="state">Gösterilecek evrak bulunamadı.</div>';
+    return
+  }
+  $('listArea').innerHTML =
+      `<table><thead><tr><th>Evrak Türü</th><th>Dosya Adı</th><th>Düzenlenme Tarihi</th><th>Geçerlilik Sonu</th><th>Dosya Boyutu</th><th>Durum</th><th>İşlemler</th></tr></thead><tbody>${
+          filtered.map(row).join('')}</tbody></table>`;
+  $('listArea')
+      .querySelectorAll('[data-action]')
+      .forEach(b => b.onclick = () => action(b.dataset.action, b.dataset.id))
+}
+function row(d) {
+  const s = statusOf(d), cl = s === 'Geçerli'         ? 'ok'
+                              : s === 'Süresi Dolmuş' ? 'expired'
+                              : s.startsWith('30')    ? 'warn'
+                                                      : 'none';
+  return `<tr><td>${types[d.type] || d.type}</td><td>${
+      escapeHtml(d.fileName)}</td><td>${date(d.issueDate)}</td><td>${
+      date(d.expiryDate)}</td><td>${
+      size(d.fileSize)}</td><td><span class="badge ${cl}">${
+      s}</span></td><td><div class="actions"><button class="btn btn-light" data-action="view" data-id="${
+      d.id}">Görüntüle</button><button class="btn btn-light" data-action="download" data-id="${
+      d.id}">İndir</button>${
+      canEdit ? `<button class="btn btn-danger" data-action="delete" data-id="${
+                    d.id}">Sil</button>`
+              : ''}</div></td></tr>`
+}
+function date(v) {
+  return v ? new Intl.DateTimeFormat('tr-TR').format(new Date(v)) : '-'
+}
+function size(v) {
+  if (v == null)
+    return '-';
+  return v < 1048576 ? `${(v / 1024).toFixed(1)} KB`
+                     : `${(v / 1048576).toFixed(1)} MB`
+}
+function escapeHtml(v) {
+  const d = document.createElement('div');
+  d.textContent = String(v ?? '');
+  return d.innerHTML
+}
+async function action(kind, id) {
+  const d = documents.find(x => x.id === id);
+  if (kind === 'delete') {
+    if (!confirm(`“${d.fileName}” adlı evrak silinsin mi?`))
+      return;
+    try {
+      await api(`/api/documents/${id}`, {method : 'DELETE'});
+      toast('Evrak silindi.', false);
+      reload()
+    } catch (e) {
+      toast(e.message)
+    }
+    return
+  }
+  if (kind === 'view' && /\.(doc|docx)$/i.test(d.fileName))
+    kind = 'download';
+  try {
+    const r = await api(
+        `/api/documents/${id}/${kind === 'view' ? 'file' : 'download'}`),
+          blob = await r.blob(), url = URL.createObjectURL(blob);
+    if (kind === 'view') {
+      openPreview(url, blob.type, d.fileName)
+    } else {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = d.fileName;
+      document.body.append(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url)
+    }
+  } catch (e) {
+    toast(e.message)
+  }
+}
+function openPreview(url, mimeType, fileName) {
+  closePreview();
+  previewUrl = url;
+  $('previewTitle').textContent = fileName;
+  const content = $('previewContent');
+  content.className = mimeType.startsWith('image/') ? 'preview-image' : 'preview-frame';
+  if (mimeType.startsWith('image/')) {
+    content.replaceWith(Object.assign(document.createElement('img'), {
+      id : 'previewContent',
+      className : 'preview-image',
+      src : url,
+      alt : fileName
+    }))
+  } else {
+    content.replaceWith(Object.assign(document.createElement('iframe'), {
+      id : 'previewContent',
+      className : 'preview-frame',
+      src : url,
+      title : fileName
+    }))
+  }
+  $('previewModal').classList.add('open')
+}
+function closePreview() {
+  $('previewModal').classList.remove('open');
+  const content = $('previewContent');
+  if (content)
+    content.removeAttribute('src');
+  if (previewUrl) {
+    URL.revokeObjectURL(previewUrl);
+    previewUrl = null
+  }
+}
+function reload() {
+  loadDocuments(isEmployee ? '/api/documents/me'
+                           : `/api/documents/employee/${selected.id}`)
+}
+$('employeeSearchBtn').onclick = () => searchEmployees(1);
+$('employeeSearch').oninput = () => {
+  employeeSearchTerm = '';
+  employeePage = 1
+};
+$('employeeSearch').onkeydown = e => {
+  if (e.key === 'Enter')
+    searchEmployees(1)
+};
+['typeFilter', 'statusFilter'].forEach(id => $(id).onchange = render);
+$('nameFilter').oninput = render;
+$('uploadOpen').onclick = () => {
+  if (!selected)
+    return toast('Önce bir personel seçin.');
+  $('uploadModal').classList.add('open')
+};
+$('uploadCancel').onclick = () => $('uploadModal').classList.remove('open');
+$('previewClose').onclick = closePreview;
+$('previewModal').onclick = event => {
+  if (event.target === $('previewModal'))
+    closePreview()
+};
+$('uploadForm').onsubmit = async e => {
+  e.preventDefault();
+  const file = $('file').files[0];
+  if (!selected)
+    return toast('Personel seçilmedi.');
+  if (!file)
+    return toast('Dosya seçin.');
+  if (file.size > 10 * 1024 * 1024)
+    return toast('Dosya 10 MB sınırını aşamaz.');
+  if ($('issueDate').value && $('expiryDate').value &&
+      $('expiryDate').value < $('issueDate').value)
+    return toast('Geçerlilik tarihi düzenlenme tarihinden önce olamaz.');
+  const data = new FormData(e.target);
+  data.append('employeeId', selected.id);
+  try {
+    await api('/api/documents', {method : 'POST', body : data});
+    e.target.reset();
+    $('uploadModal').classList.remove('open');
+    toast('Evrak başarıyla yüklendi.', false);
+    reload()
+  } catch (err) {
+    toast(err.message)
+  }
+};
+    </script>
+  </body>
+</html>
